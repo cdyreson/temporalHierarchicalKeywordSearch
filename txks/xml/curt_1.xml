@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mondial>
+   <country car_code="AL" area="28750" capital="foo"
+            memberships="org-BSE">
+      <name>Albania</name>
+      <city id="hello" is_country_cap="yes" country="AL">
+         <name>Tirane</name>
+         <longitude>bar</longitude>
+         <latitude>41.3</latitude>
+         <population year="87">192000</population>
+      </city>
+      <city id="Shh" country="AL">
+         <name>Shkoder</name>
+         <longitude>bar</longitude>
+         <latitude>42.2</latitude>
+         <population year="87">62000</population>
+         <located_at watertype="lake" lake="lake-Skutarisee"/>
+      </city>
+   </country>
+</mondial>

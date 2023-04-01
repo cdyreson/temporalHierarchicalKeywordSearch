@@ -1,0 +1,44 @@
+package messiah.parse.generic;
+
+import messiah.parse.*;
+import messiah.NodeInfo;
+import messiah.database.Database;
+
+/**
+ * This object is in charge of building the node index from node id to node info
+ *
+ * @author Amani Shatnawi
+ */
+public class ItemNodeIndexBuilder implements ParserListener {
+
+    private final Database db;
+    private NodeIdBuilder nodeIdBuilder = null;
+    private PathIndexBuilder pathIndexBuilder = null;
+
+
+    public ItemNodeIndexBuilder(Database db, NodeIdBuilder nodeIdBuilder, PathIndexBuilder pathIndexBuilder) {
+        this.db = db;
+        this.nodeIdBuilder = nodeIdBuilder;
+        this.pathIndexBuilder = pathIndexBuilder;
+
+    }
+
+    @Override
+    public void startDocument() {
+    }
+
+    @Override
+    public void endDocument() {
+    }
+
+    @Override
+    public void start(String str, boolean isAttribute, boolean isValue) {
+        NodeInfo info = new NodeInfo(pathIndexBuilder.getCurrentPathId(), str, nodeIdBuilder.getLevel());
+        db.itemNodeIndex.put(this.nodeIdBuilder.getNodeId(), info);
+    }
+
+    @Override
+    public void end(boolean isAttribute, boolean isValue) {
+    }
+
+}

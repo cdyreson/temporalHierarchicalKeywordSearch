@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="targets" default="all" basedir=".">
+    <target name="delete db" description="deletes the db">
+        <delete>
+            <fileset dir="Databases/"/>
+        </delete>
+    </target>
+    <target name="Main disk search latitude longitude" description="Main search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--disk"/>
+            <arg value="--search"/>
+            <arg value="longitude"/>
+            <arg value="latitude"/>
+        </java>
+    </target>
+    <target name="Main search latitude longitude" description="Main search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--search"/>
+            <arg value="longitude"/>
+            <arg value="latitude"/>
+        </java>
+    </target>
+    <target name="Main search tirane yes" description="Main search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--search"/>
+            <arg value="tirane"/>
+            <arg value="yes"/>
+        </java>
+    </target>
+    <target name="Main search bar latitude" description="Main search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--search"/>
+            <arg value="bar"/>
+            <arg value="latitude"/>
+        </java>
+    </target>
+    <target name="Main search foo bar" description="Main search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--search"/>
+            <arg value="foo"/>
+            <arg value="bar"/>
+        </java>
+    </target>
+    <target name="Main sequenced Parse Search b c" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--sequencedParse"/>
+            <arg value="--sequencedSearch"/>
+            <arg value="b"/>
+            <arg value="c"/>
+        </java>
+    </target>
+    <target name="Main sequenced Parse Search qqq fff" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--sequencedParse"/>
+            <arg value="--sequencedSearch"/>
+            <arg value="qqq"/>
+            <arg value="fff"/>
+
+        </java>
+    </target>
+    <target name="Main nontemporal Parse Search item6 states delay" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--sequencedParse"/>
+            <arg value="--search"/>
+            <arg value="item6"/>
+            <arg value="states"/>
+            <arg value="delay"/>
+        </java>
+    </target>
+    <target name="Main nontemporal disk Search item6 states delay" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--disk"/>
+            <arg value="--search"/>
+            <arg value="high"/>
+            <arg value="school"/>
+            <arg value="female"/>
+        </java>
+    </target>
+    <target name="Main nontemporal disk Parse Search item6 states delay" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--hybrid"/>
+            <arg value="--sequencedParse"/>
+            <arg value="--search"/>
+            <arg value="item6"/>
+            <arg value="states"/>
+            <arg value="delay"/>
+        </java>
+    </target>
+    <target name="Main sequenced Parse Search item6 states delay" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--sequencedParse"/>
+            <arg value="--sequencedSearch"/>
+            <arg value="high"/>
+            <arg value="school"/>
+            <arg value="female"/>
+        </java>
+    </target>
+    <target name="Main sequenced Parse Search b bar" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--sequencedParse"/>
+            <arg value="--sequencedSearch"/>
+            <arg value="b"/>
+            <arg value="bar"/>
+        </java>
+    </target>
+    <target name="Main sequenced Parse Search foo bar" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--sequencedParse"/>
+            <arg value="--sequencedSearch"/>
+            <arg value="foo"/>
+            <arg value="bar"/>
+        </java>
+    </target>
+    <target name="Main sequenced Parse Search lat lon" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--sequencedParse"/>
+            <arg value="--sequencedSearch"/>
+            <arg value="latitude"/>
+            <arg value="longitude"/>
+        </java>
+    </target>
+    <target name="foo sequenced hybrid Parse only" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--hybrid"/>
+            <arg value="--sequencedParse"/>
+        </java>
+    </target>
+    <target name="foo sequenced Memory Parse only" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--sequencedParse"/>
+        </java>
+    </target>
+    <target name="curt Parse only" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--disk"/>
+            <arg value="--parse"/>
+        </java>
+    </target>
+    <target name="curt sequenced Parse only" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--disk"/>
+            <arg value="--sequencedParse"/>
+        </java>
+    </target>
+        <target name="json sequenced Parse only" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--json"/>
+            <arg value="data.json"/>
+            <arg value="--disk"/>
+            <arg value="--jsonParse"/>
+            <arg value="--sequencedSearch"/>
+            <arg value="Brady"/>
+            <arg value="id"/>
+        </java>
+    </target>
+        <target name="foo sequenced Parse only" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--disk"/>
+            <arg value="--sequencedParse"/>
+        </java>
+    </target>
+            <target name="foo nontemporal Parse only" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--disk"/>
+            <arg value="--parse"/>
+        </java>
+    </target>
+    <target name="foo sequenced Search Brady id" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--disk"/>
+            <arg value="--sequencedSearch"/>
+            <arg value="qqqz"/>
+            <arg value="fffz"/>
+        </java>
+    </target>
+        <target name="foo nontemporal Search octavius discretions" description="">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--disk"/>
+            <arg value="--search"/>
+            <arg value="driss"/>
+            <arg value="discretions"/>
+        </java>
+    </target>
+    <target name="foo sequenced Search octavius discretions" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--disk"/>
+            <arg value="--sequencedSearch"/>
+            <arg value="driss"/>
+            <arg value="discretions"/>
+        </java>
+    </target>
+    <target name="foo sequenced Search nine ten" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--disk"/>
+            <arg value="--sequencedSearch"/>
+            <arg value="nine"/>
+            <arg value="ten"/>
+        </java>
+    </target>
+    <target name="foo sequenced Search nine qqq" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--disk"/>
+            <arg value="--sequencedSearch"/>
+            <arg value="nine"/>
+            <arg value="qqq"/>
+        </java>
+    </target>
+            <target name="curt memory nontemporal Parse Search foo bar" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--xml"/>
+            <arg value="curt.xml"/>
+            <arg value="--memory"/>
+            <arg value="--parse"/>
+            <arg value="--search"/>
+            <arg value="foo"/>
+            <arg value="bar"/>
+        </java>
+    </target>
+        <target name="curt memory sequenced Parse Search foo bar" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--xml"/>
+            <arg value="curt.xml"/>
+            <arg value="--memory"/>
+            <arg value="--sequencedParse"/>
+            <arg value="--sequencedSearch"/>
+            <arg value="foo"/>
+            <arg value="bar"/>
+        </java>
+    </target>
+    <target name="foo memory sequenced Parse Search nine ten" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--memory"/>
+            <arg value="--sequencedParse"/>
+            <arg value="--sequencedSearch"/>
+            <arg value="nine"/>
+            <arg value="ten"/>
+        </java>
+    </target>
+    <target name="foo sequenced Parse Search nine ten" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--disk"/>
+            <arg value="--sequencedParse"/>
+            <arg value="--sequencedSearch"/>
+            <arg value="nine"/>
+            <arg value="ten"/>
+        </java>
+    </target>
+    <target name="merge" description="merge">
+        <java classname="messiah.database.berkeleydb.MergeSplitTables">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="foo.xml"/>
+        </java>
+    </target>
+    <target name="Main testNdeindex" description="Main testIndex">
+        <java classname="messiah.storage.NodeIndex">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+        </java>
+    </target>
+    <target name="Main verbose sequencedParse queryFile qwer" description="Main verbose sequencedparse queryFile qwer">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--sequencedParse"/>
+            <arg value="--queryFile"/>
+            <arg value="queries/qwer"/>
+        </java>
+    </target>
+    <target name="Main verbose sequencedParse queryFile asdf" description="Main verbose sequencedparse queryFile asdf">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--sequencedParse"/>
+            <arg value="--queryFile"/>
+            <arg value="queries/asdf"/>
+        </java>
+    </target>
+    <target name="TXKS -m -p curt.xml qwer" description="run TXKS on qwer">
+        <java classname="test.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--memory"/>
+            <arg value="--parse"/>
+            <arg value="xml/curt.xml" />
+            <arg value="queries/qwer"/>
+        </java>
+    </target>
+</project>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<a>
+    <d>foo2
+        <b>
+            foo
+        </b>
+        <c>
+            bar
+        </c> 
+    </d>  
+    <d>foo3
+        <b>
+            foo
+        </b>
+        <c>
+            bar
+        </c> 
+    </d>  
+
+
+</a>

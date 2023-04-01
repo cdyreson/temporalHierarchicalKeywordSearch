@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="targets" default="all" basedir=".">
+    <target name="add timestamps curt to curtTemporal 100 10" description="add timestamps curt to curtTemporal 100 10">
+        <java classname="messiah.CopyAndAddTimestamps">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--from"/>
+            <arg value="curt.xml"/>
+            <arg value="--to"/>
+            <arg value="curtTemporal.xml"/>
+            <arg value="--rangeMax"/>
+            <arg value="100"/>
+            <arg value="--intervalMax"/>
+            <arg value="10"/>
+        </java>
+    </target>
+    <target name="curt memory nontemporal parse search foo bar" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--xml"/>
+            <arg value="curt.xml"/>
+            <arg value="--memory"/>
+            <arg value="--noTimestamps"/>
+            <arg value="--parse"/>
+            <arg value="--search"/>
+            <arg value="@nontemporal foo bar"/>
+        </java>
+    </target>
+        <target name="foo memory nontemporal parse search nine qqq" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--memory"/>
+            <arg value="--noTimestamps"/>
+            <arg value="--parse"/>
+            <arg value="--search"/>
+            <arg value="@nontemporal location payment"/>
+        </java>
+    </target>
+    <target name="curt memory temporal parse search @nonsequenced foo @contains bar" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--xml"/>
+            <arg value="curt.xml"/>
+            <arg value="--memory"/>
+            <arg value="--timestamps"/>
+            <arg value="--maxRange"/>
+            <arg value="100"/>
+            <arg value="--maxInterval"/>
+            <arg value="30"/>
+            <arg value="--randomIntervals"/>
+            <arg value="--parse"/>
+            <arg value="--search"/>
+            <arg value="@nonsequenced foo @intersects bar"/>
+        </java>
+    </target>
+        <target name="foo memory temporal parse search @sequenced nine qqq" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--memory"/>
+            <arg value="--timestamps"/>
+                        <arg value="--maxRange"/>
+                        <arg value="10000"/>
+                        <arg value="--maxInterval"/>
+                        <arg value="1000"/>
+                        <arg value="--randomIntervals"/>
+            <arg value="--parse"/>
+            <arg value="--search"/>
+            <arg value="@sequenced location payment"/>
+        </java>
+    </target>
+            <target name="foo memory temporal deletePercent 30 parse search @sequenced nine qqq" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--xml"/>
+            <arg value="foo.xml"/>
+            <arg value="--memory"/>
+            <arg value="--timestamps"/>
+            <arg value="--percentDelete"/>
+            <arg value="10"/>
+            <arg value="--parse"/>
+            <arg value="--search"/>
+            <arg value="@sequenced location payment"/>
+        </java>
+    </target>
+        <target name="curt memory temporal deletePercent 30 parse search @sequenced foo bar" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--xml"/>
+            <arg value="curt.xml"/>
+            <arg value="--memory"/>
+            <arg value="--timestamps"/>
+            <arg value="--percentDelete"/>
+            <arg value="10"/>
+            <arg value="--parse"/>
+            <arg value="--search"/>
+            <arg value="@sequenced foo bar"/>
+        </java>
+    </target>
+    <target name="curt memory temporal parse search @sequenced foo bar" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--xml"/>
+            <arg value="curt.xml"/>
+            <arg value="--memory"/>
+            <arg value="--timestamps"/>
+            <arg value="--maxRange"/>
+            <arg value="10000"/>
+            <arg value="--maxInterval"/>
+            <arg value="1000"/>
+            <arg value="--randomIntervals"/>
+            <arg value="--parse"/>
+            <arg value="--search"/>
+            <arg value="@sequenced foo bar"/>
+        </java>
+    </target>
+    <target name="delete db" description="deletes the db">
+        <delete>
+            <fileset dir="Databases/"/>
+        </delete>
+    </target>
+    <target name="curt Parse only" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--xml"/>
+            <arg value="curt.xml"/>
+            <arg value="--disk"/>
+            <arg value="--parse"/>
+        </java>
+    </target>
+    <target name="curt sequenced Parse only" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--disk"/>
+            <arg value="--sequencedParse"/>
+        </java>
+    </target>
+    <target name="json sequenced Parse only" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--json"/>
+            <arg value="data.json"/>
+            <arg value="--disk"/>
+            <arg value="--jsonParse"/>
+            <arg value="--sequencedSearch"/>
+            <arg value="Brady"/>
+            <arg value="id"/>
+        </java>
+    </target>
+
+    
+    <target name="merge" description="merge">
+        <java classname="messiah.database.berkeleydb.MergeSplitTables">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="foo.xml"/>
+        </java>
+    </target>
+    <target name="Main testNdeindex" description="Main testIndex">
+        <java classname="messiah.storage.NodeIndex">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+
+</project>
