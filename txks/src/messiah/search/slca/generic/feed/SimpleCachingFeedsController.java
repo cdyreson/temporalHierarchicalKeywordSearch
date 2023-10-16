@@ -22,6 +22,8 @@ import usu.temporal.TimeElement;
 public class SimpleCachingFeedsController implements Iterator<NodeId> {
 
     private final boolean verbose = false;
+    private boolean earliest = false;
+    private boolean latest = false;
 
     //TimeElement lifetime = new TimeElement();
     PriorityQueue<CachedNodeTriple> whoIsNext;
@@ -54,6 +56,14 @@ public class SimpleCachingFeedsController implements Iterator<NodeId> {
         return currentNodeIds;
     }
 
+    public void setEarliest() {
+        earliest = true;
+    }
+    
+    public void setLatest() {
+        latest = true;
+    }
+        
     public SimpleCachingFeedGroup addFeedGroup() {
         SimpleCachingFeedGroup feedGroup = new SimpleCachingFeedGroup();
 
@@ -89,6 +99,7 @@ public class SimpleCachingFeedsController implements Iterator<NodeId> {
                 System.out.print(n + " ");
             }
             System.out.println("");
+            System.out.println("SimpleCachingFeedsController: lca is " + lca);
         }
         return lca;
     }
@@ -102,7 +113,12 @@ public class SimpleCachingFeedsController implements Iterator<NodeId> {
         int i = 0;
         for (CachedNodeTriple trip : whoIsNext) {
             HistoryDLN nodeId = (HistoryDLN) trip.nodeId;
-            Time time2 = nodeId.getTime();
+            Time timeTemp = nodeId.getTime();
+            Time time2 = earliest
+                    ? new Time(timeTemp.getBeginTime())
+                    : latest
+                            ? new Time(0,timeTemp.getEndTime())
+                            : timeTemp;
             time[i++] = time2;
         }
         return time;
@@ -122,8 +138,13 @@ public class SimpleCachingFeedsController implements Iterator<NodeId> {
         Time time = null;
         for (CachedNodeTriple trip : whoIsNext) {
             HistoryDLN nodeId = (HistoryDLN) trip.nodeId;
-            Time time2 = nodeId.getTime();
-            if (verbose) System.out.print("SimpleCachingFeedsController: gather nodeId " + nodeId);
+            Time timeTemp = nodeId.getTime();
+            Time time2 = earliest
+                    ? new Time(timeTemp.getBeginTime())
+                    : latest
+                            ? new Time(0,timeTemp.getEndTime())
+                            : timeTemp;
+            if (verbose) System.out.println("SimpleCachingFeedsController: gathering nodeId " + nodeId);
             if (time == null) {
                 time = time2;
             } else {
@@ -132,6 +153,7 @@ public class SimpleCachingFeedsController implements Iterator<NodeId> {
                 if (time == null) return new TimeElement();
             }
         }
+        if (verbose) System.out.println("SimpleCachingFeedsController: gathered time is " + time);
         return new TimeElement(time);
     }
 
@@ -210,7 +232,7 @@ public class SimpleCachingFeedsController implements Iterator<NodeId> {
     @Override
     public NodeId next() {
         if (verbose) {
-            System.out.println("SimpleCachingFeedsController next");
+            System.out.println("SimpleCachingFeedsController next " + empty);
         }
         if (empty) {
             // Should never get here, asking an empty iterator to produce

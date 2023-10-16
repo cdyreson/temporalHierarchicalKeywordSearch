@@ -70,6 +70,7 @@ public class TemporalNodeIdBuilder<T> extends NodeIdBuilder<T> implements Parser
             // Set up the next one at my level
             timeStack.push(me);
         }
+
     }
 
     @Override

@@ -28,6 +28,7 @@ public class KeywordSearchExpression {
     List<String> words;
     SearchAlgoEnum searchType = SearchAlgoEnum.NontemporalSearch;
     private int operand = -1;
+    private final boolean verbose = false;
 
     /*
      * Create an empty postfix expression
@@ -39,33 +40,37 @@ public class KeywordSearchExpression {
     /*
      * Add a new word/operand to the expression
      */
-    public KeywordSearchExpression(String word) {
+    public KeywordSearchExpression(String word, int count) {
         initialize();
+        if (verbose) System.out.println("KeywordSearchExpression: constructor word " + word);
         words.add(word.toLowerCase());
 
-        stack.push(operand--);
+        stack.push(count);
     }
 
     /*
      * Add a new word/operand to the expression
      */
-    public KeywordSearchExpression(String word1, Integer op, String word2) {
+    public KeywordSearchExpression(String word1, Integer op, String word2, int count1, int count2) {
         initialize();
+        if (verbose) System.out.println("KeywordSearchExpression: constructor word op word " + word1 + " " + op + " " + word2);
         words.add(word1.toLowerCase());
         words.add(word2.toLowerCase());
-        stack.push(operand--);
-        stack.push(operand--);
+        stack.push(count1);
+        stack.push(count2);
         stack.push(op);
     }
 
     /*
      * Add a new expression to the expression
      */
-    public KeywordSearchExpression(String word, Integer op, KeywordSearchExpression exp) {
+    public KeywordSearchExpression(String word, Integer op, KeywordSearchExpression exp, int count) {
         initialize();
+        if (verbose) System.out.println("KeywordSearchExpression: constructor word op exp " + word + " " + op);
+
         words.add(word.toLowerCase());
         words.addAll(exp.words);
-        stack.push(operand--);
+        stack.push(count);
         for (Integer i : exp.stack) {
             stack.push(i);
         }
@@ -75,8 +80,9 @@ public class KeywordSearchExpression {
     /*
      * Add a new expression to the expression
      */
-    public KeywordSearchExpression(KeywordSearchExpression exp, Integer op, String word) {
+    public KeywordSearchExpression(KeywordSearchExpression exp, Integer op, String word, int count) {
         initialize();
+        if (verbose) System.out.println("KeywordSearchExpression: constructor exp op word " +  op + " " + word);
 
         words.addAll(exp.words);
         words.add(word.toLowerCase());
@@ -84,7 +90,7 @@ public class KeywordSearchExpression {
         for (Integer i : exp.stack) {
             stack.push(i);
         }
-        stack.push(operand--);
+        stack.push(count);
         stack.push(op);
     }
 
@@ -93,6 +99,8 @@ public class KeywordSearchExpression {
      */
     public KeywordSearchExpression(KeywordSearchExpression exp1, Integer op, KeywordSearchExpression exp2) {
         initialize();
+        if (verbose) System.out.println("KeywordSearchExpression: constructor exp op exp " + op);
+        
         words.addAll(exp1.words);
         words.addAll(exp2.words);
 
@@ -106,6 +114,7 @@ public class KeywordSearchExpression {
     }
 
     public SearchAlgoEnum getSearchType() {
+        if (verbose) System.out.println("KeywordSearchExpression.java: searchType is " + searchType);
         return searchType;
     }
 
@@ -123,6 +132,12 @@ public class KeywordSearchExpression {
                 //System.out.println("KeywordSearchExpression: Search type is NONSQ");
                 this.searchType = SearchAlgoEnum.TemporalSearch;
                 break;
+            case TXKSParser.K_EARLIEST: 
+                this.searchType = SearchAlgoEnum.EarliestSearch;
+                break;
+            case TXKSParser.K_LATEST: 
+                this.searchType = SearchAlgoEnum.LatestSearch;
+                break;
             default:
                 System.err.println("Bad searh type in Keyword Expression");
                 System.exit(-1);
@@ -130,6 +145,7 @@ public class KeywordSearchExpression {
     }
 
     public Time evaluateTime(Time[] times) {
+        if (verbose) System.out.println("KeywordSearchExpression.java: evaluating " + times.length);
         int limit = times.length;
         // Sanity check - If no elements then return empty element
         if (limit == 0) {
@@ -146,7 +162,8 @@ public class KeywordSearchExpression {
         Time e1, e2, e3;
         while (iter.hasNext()) {
             Integer op = iter.next();
-            switch (op.intValue()) {
+            if (verbose) System.out.println("KeywordSearchExpression.java: switching on " + op);
+            switch (op) {
                 case TXKSParser.K_INTERSECTS:
                     e2 = opStack.pop();
                     e1 = opStack.pop();
@@ -166,9 +183,28 @@ public class KeywordSearchExpression {
                     }
                     opStack.push(e3);
                     break;
+                  
+                case TXKSParser.K_DURING:
+                    e2 = opStack.pop();
+                    e1 = opStack.pop();
+                    e3 = e2.contains(e1);
+                    if (e3 == null) {
+                        return null;
+                    }
+                    opStack.push(e3);
+                    break;
+                    
+                case TXKSParser.K_MEETS:
+                    e2 = opStack.pop();
+                    e1 = opStack.pop();
+                    if (!e1.meets(e2)) {
+                        return null;
+                    }
+                    opStack.push(e1);
+                    break;
 
                 default:
-                    int i = (op.intValue() * -1) - 1;
+                    int i = (op * -1) - 1;
                     opStack.push(times[i]);
             }
         }
@@ -176,6 +212,11 @@ public class KeywordSearchExpression {
     }
 
     public TimeElement evaluate(TimeElement[] times) {
+        if (verbose) {
+            for (TimeElement time : times) {
+                System.out.println("KeywordSearchExpression.java: times " + time);
+            }
+        }
         int limit = times.length;
         // Sanity check - If no elements then return empty element
         if (limit == 0) {
@@ -192,7 +233,8 @@ public class KeywordSearchExpression {
         TimeElement e1, e2, e3;
         while (iter.hasNext()) {
             Integer op = iter.next();
-            switch (op.intValue()) {
+            if (verbose) System.out.println("KeywordSearchExpression.java: switch on " + op);
+            switch (op) {
                 case TXKSParser.K_INTERSECTS:
                     e2 = opStack.pop();
                     e1 = opStack.pop();
@@ -203,7 +245,7 @@ public class KeywordSearchExpression {
                 case TXKSParser.K_CONTAINS:
                     e2 = opStack.pop();
                     e1 = opStack.pop();
-                    e3 = e1.intersection(e2);
+                    e3 = e1.contains(e2);
                     opStack.push(e3);
                     break;
 
@@ -215,7 +257,7 @@ public class KeywordSearchExpression {
                     break;
                     
                 default:
-                    int i = (op.intValue() * -1) - 1;
+                    int i = (op * -1) - 1;
                     opStack.push(times[i]);
             }
         }

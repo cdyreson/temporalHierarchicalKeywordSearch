@@ -42,7 +42,13 @@ public class Search {
         switch (searchAlgo) {
             case SequencedSearch:
             case SequencedFSLCA:
-                this.slcaFinder = new SimpleSequencedSLCA(bdb);
+                this.slcaFinder = new SimpleSequencedSLCA(bdb, SimpleSequencedSLCA.SEQUENCED_SEMANTICS);
+                break;
+            case EarliestSearch:
+                this.slcaFinder = new SimpleSequencedSLCA(bdb, SimpleSequencedSLCA.EARLIEST_SEMANTICS);
+                break;
+            case LatestSearch: 
+                this.slcaFinder = new SimpleSequencedSLCA(bdb, SimpleSequencedSLCA.LATEST_SEMANTICS);
                 break;
             case PartialFSLCA:
             case CompleteFSLCA:
@@ -75,6 +81,11 @@ public class Search {
         sw.stop();
         this.slcaTime = sw.readTime();
         System.out.println(resultSet.size() + " results found");
+/*
+       for (NodeId result: resultSet) {
+            System.out.println("result is " + result);
+        }
+*/
         sw.reset();
         // build result
         if (verbose) {

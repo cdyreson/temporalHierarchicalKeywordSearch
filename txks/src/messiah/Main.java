@@ -119,7 +119,7 @@ public class Main {
      * @param parsedFile Input XML file
      * @param parseDialog A dialog to show the parsing progress; ignored if null
      */
-    public void parseDataset(String datasetName, File parsedFile, ParseDialog parseDialog, IntervalGenerator intervalGenerator) {
+    public void parseDataset(String datasetName, File parsedFile, ParseDialog parseDialog, IntervalGenerator intervalGenerator, int maxNodes) {
         if (bdb == null) {
             System.out.println("Creating in-memory db");
             bdb = new messiah.database.memory.Database(false, /* does not matter for in memory */ false);
@@ -128,11 +128,11 @@ public class Main {
          if (doDiskCopy) {
          messiah.database.memory.Database memdb = (messiah.database.memory.Database) bdb;
          memdb.cacheDiskDBHandle(diskCopyDB);
-         }
+         }S
          */
 
         try {
-            HistoryParseTask task = new HistoryParseTask(bdb, parsedFile, intervalGenerator);
+            HistoryParseTask task = new HistoryParseTask(bdb, parsedFile, intervalGenerator, maxNodes);
             if (parseDialog != null) {
                 parseDialog.registerTask(task);
             }
@@ -152,24 +152,24 @@ public class Main {
      * @param parsedFile Input XML file
      *
      */
-    public void testParser(String datasetName, File parsedFile, boolean isJSON, boolean isTemporal, boolean isRepresentational, IntervalGenerator intervalGenerator) {
+    public void testParser(String datasetName, File parsedFile, boolean isJSON, boolean isTemporal, boolean isRepresentational, IntervalGenerator intervalGenerator, int maxNodes) {
         try {
             if (isJSON) {
-                JSONParseTask task = new JSONParseTask(bdb, parsedFile);
+                JSONParseTask task = new JSONParseTask(bdb, parsedFile, maxNodes);
                 task.doInBackground();
                 resetIndexes();
             } else if (isTemporal) {
-                HistoryParseTask task = new HistoryParseTask(bdb, parsedFile, intervalGenerator);
+                HistoryParseTask task = new HistoryParseTask(bdb, parsedFile, intervalGenerator, maxNodes);
                 //System.out.println("Curt : HistoryParseTask executing ");
                 task.parseThisThing();
                 resetIndexes();
             } else if (isRepresentational) {
-                RepresentationalParseTask task = new RepresentationalParseTask(bdb, parsedFile);
+                RepresentationalParseTask task = new RepresentationalParseTask(bdb, parsedFile, maxNodes);
                 //System.out.println("Curt : executing ");
                 task.doInBackground();
                 resetIndexes();
             } else {
-                CurtParseTask task = new CurtParseTask(bdb, parsedFile);
+                CurtParseTask task = new CurtParseTask(bdb, parsedFile, maxNodes);
                 //System.out.println("Curt : executing ");
                 task.doInBackground();
                 resetIndexes();
@@ -316,6 +316,7 @@ public class Main {
         //foo.closeDB();
         boolean isDiskDb = false;
         boolean isReadOnly = true;
+        int maxNodes = 0;
         boolean isTemporalDB = false; // Set this flag if DB has timestamps
         int consumed = 0;
         String xmlFileName = Config.XML_FOLDER_STRING + "curt.xml";
@@ -408,22 +409,32 @@ public class Main {
             consumed++;
         }
 
+        // Set the maximum parsed nodes
+        if (args[consumed].contentEquals("--maxNodes")) {
+            System.out.println("consuming maxNodes");
+            consumed++;
+            maxNodes = Integer.parseInt(args[consumed]);
+            System.out.println("max nodes is " + maxNodes);
+            consumed++;
+        }
+        
         // Open database for writing iff we are parsing
         if (args[consumed].contentEquals("--parse")) {
+            System.out.println("XML parse " + dbName + " xml file is " + xmlFileName);
             isReadOnly = false;
             foo.openDB(dbName, isDiskDb, isReadOnly, isTemporalDB);
-            foo.testParser(dbName, new File(xmlFileName), false, isTemporalDB, false, intervalGenerator);
+            foo.testParser(dbName, new File(xmlFileName), false, isTemporalDB, false, intervalGenerator, maxNodes);
             consumed++;
         } else if (args[consumed].contentEquals("--jsonParse")) {
             System.out.println("JSON parse " + dbName + " json file is " + xmlFileName);
             isReadOnly = false;
             foo.openDB(dbName, isDiskDb, isReadOnly, isTemporalDB);
-            foo.testParser(dbName, new File(xmlFileName), true, isTemporalDB, false, intervalGenerator);
+            foo.testParser(dbName, new File(xmlFileName), true, isTemporalDB, false, intervalGenerator, maxNodes);
             consumed++;
         } else if (args[consumed].contentEquals("--representational")) {
             isReadOnly = false;
             foo.openDB(dbName, isDiskDb, isReadOnly, true);
-            foo.testParser(dbName, new File(xmlFileName), false, false, true, intervalGenerator);
+            foo.testParser(dbName, new File(xmlFileName), false, false, true, intervalGenerator, maxNodes);
             consumed++;
         }
 

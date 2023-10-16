@@ -12,6 +12,8 @@ import messiah.search.slca.generic.feed.SimpleCachingFeedsController;
 import usu.NodeId;
 import usu.PathId;
 import usu.algebra.KeywordSearchExpression;
+import usu.dln.DLN;
+import usu.dln.TimeElementHistoryDLN;
 import usu.temporal.TimeElement;
 
 /**
@@ -22,15 +24,26 @@ import usu.temporal.TimeElement;
 public class SimpleSequencedSLCA extends SLCAFinder {
 
     private final Database db;
+
+    public static final int SEQUENCED_SEMANTICS = 0;
+    public static final int EARLIEST_SEMANTICS = 1;
+    public final static int LATEST_SEMANTICS = 2;
     private final SimpleCachingFeedsController controller;
     int shift[];
+    int semantics = SEQUENCED_SEMANTICS;
     Map<Integer, Integer> lcaLevelMap;
     int maxLevel = 0;
     boolean verbose = false;
 
-    public SimpleSequencedSLCA(Database db) {
+    public SimpleSequencedSLCA(Database db, int semantics) {
         this.db = db;
+        this.semantics = semantics;
         controller = new SimpleCachingFeedsController();
+        if (semantics == EARLIEST_SEMANTICS) {
+            controller.setEarliest();
+        } else if (semantics == LATEST_SEMANTICS) {
+            controller.setLatest();
+        }
         lcaLevelMap = new HashMap();
     }
 
@@ -126,24 +139,23 @@ public class SimpleSequencedSLCA extends SLCAFinder {
 
         // Now do all of the searching through each merged iterator
         // slca holds the current candidate
-        NodeId nodeId = null;
+        NodeId nodeId;
         while (controller.hasNext()) {
             nodeId = controller.getCandidateSLCA();
+            if (verbose) {
+                System.out.println("SimpleSequencedSLCA next nodeId " + nodeId);
+            }
 
             // Check to see if we are done, out of nodeIds
             if (nodeId == null) {
                 break;
             }
 
-            // Advance controller
-            controller.next();
-            if (verbose) {
-                System.out.println("SimpleSequencedSLCA next nodeId " + nodeId);
-            }
-
             int level = nodeId.getLevel();
             NodeId slca = slcas[level];
             TimeElement lifetime = controller.gather();
+            // Advance controller
+            controller.next();
             //System.out.println("SimpleSequencedSLCA lifetime " + lifetime);
             if (slca == null) {
                 slcas[level] = nodeId;
@@ -175,9 +187,9 @@ public class SimpleSequencedSLCA extends SLCAFinder {
                         // Add liftetime + excludes to level above
                         // Build up excludes from all lower levels
                         if (verbose) {
-                            System.out.println("SimpleSequencedSLCA :  new " + slca);
+                            System.out.println("SimpleSequencedSLCA :  new " + slca + " lvel " + level + " max " + maxLevel);
                         }
-                        for (int i = maxLevel; i > level; i--) {
+                        for (int i = maxLevel; i >= level; i--) {
                             if (slcas[i] != null) {
                                 if (verbose) {
                                     System.out.println("SimpleSequencedSLCA checking " + slcas[i]);
@@ -193,7 +205,7 @@ public class SimpleSequencedSLCA extends SLCAFinder {
                                         if (verbose) {
                                             System.out.println("SimpleSequencedSLCA adding A to result " + slcas[i] + " lifetime " + lifetimes[i] + " excludes " + excludes[i]);
                                         }
-                                        result.add(slcas[i]);
+                                        result.add((NodeId) new TimeElementHistoryDLN((DLN)slcas[i],lifetimes[i]));
                                         for (int j = i - 1; j > 0; j--) {
                                             //if (slca == null) continue;
                                             if (slcas[j] == null) {
@@ -235,7 +247,7 @@ public class SimpleSequencedSLCA extends SLCAFinder {
                             if (verbose) {
                                 System.out.println("SimpleSequencedSLCA adding to result " + slca + " lifetime " + lifetimes[level] + " excludes " + excludes[level]);
                             }
-                            result.add(slca);
+                            result.add((NodeId) new TimeElementHistoryDLN((DLN)slca,lifetimes[level]));
                         }
                         // Add excludes to at least one good level above
                         for (int i = level - 1; i >= 1; i--) {
@@ -268,7 +280,9 @@ public class SimpleSequencedSLCA extends SLCAFinder {
                     if (verbose) {
                         System.out.println("SimpleSequencedSLCA adding to result final " + slcas[i] + " lifetime " + lifetime + " excludes " + excludes[i]);
                     }
-                    result.add(slcas[i]);
+                    // Update the lifetime
+                    result.add((NodeId) new TimeElementHistoryDLN((DLN)slcas[i],lifetime));
+                    //result.add(slcas[i]);
                 }
                 // Exclude from everyone above me who is an ancestor.
                 lifetime = lifetimes[i].union(excludes[i]);

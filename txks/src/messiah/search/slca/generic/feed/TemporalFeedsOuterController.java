@@ -8,7 +8,7 @@ import usu.algebra.KeywordSearchExpression;
 import usu.dln.DLN;
 import usu.dln.HistoryDLN;
 import usu.dln.TimeElementHistoryDLN;
-import usu.temporal.Time;
+//import usu.temporal.Time;
 import usu.temporal.TimeElement;
 
 /**
@@ -19,19 +19,19 @@ import usu.temporal.TimeElement;
  */
 public class TemporalFeedsOuterController implements Iterator<NodeId> {
 
-    private TemporalFeedsController innerController;
+    private final TemporalFeedsController innerController;
     private final boolean verbose = false;
     private NodeId[] lcas;
     private NodeId[][] lcaWindow;
     private TimeElement[][] elements;
-    private Database db;
+    //private Database db;
     private short dimensions;
     private KeywordSearchExpression exp;
     private TimeElementHistoryDLN candidate = null;
     private boolean empty = false;
 
     public TemporalFeedsOuterController(Database db) {
-        this.db = db;
+        //this.db = db;
         innerController = new TemporalFeedsController(db);
     }
 
@@ -74,7 +74,7 @@ public class TemporalFeedsOuterController implements Iterator<NodeId> {
                         }
                     } else {
                         for (int i = 0; i < dimensions; i++) {
-                            System.out.println("TemporalFeedsOuterController: node is " + nodes[i]);
+                            if (verbose) System.out.println("TemporalFeedsOuterController: node is " + nodes[i]);
                             if (!lcaWindow[level][i].equals(nodes[i])) {
                                 elements[level][i].add(((HistoryDLN) nodes[i]).getTime());
                             }

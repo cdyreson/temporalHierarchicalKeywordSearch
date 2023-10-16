@@ -28,6 +28,7 @@ import java.lang.UnsupportedOperationException;
 
 protected static String errorMessage = "";
 protected boolean hasError = false;
+public int operand = -1;
 public static boolean verbose = false;
 //protected static int keywordCount = 0;
 public static List<String> keywords = new ArrayList(10); 
@@ -178,13 +179,13 @@ searchType returns [Integer st]:
       st = k;
     }
     | {
-      st = new Integer(K_NONTEMPORAL);
+      st = K_NONTEMPORAL;
     }
     ;
  
 statedSearchType returns [Integer i]:	
     k=(K_SEQUENCED | K_NONSEQUENCED | K_EARLIEST | K_DURATION | K_LATEST | K_NONTEMPORAL | K_CURRENT ) {
-      i = new Integer($k.type);
+      i = $k.type;
     }
     ;
 
@@ -195,18 +196,18 @@ expression returns [KeywordSearchExpression exp] :
       }
     | 
     (s1=stringOrId {
-        exp = new KeywordSearchExpression($s1.text);
+        exp = new KeywordSearchExpression($s1.text, operand--);
         //System.out.println("Have string  " + $s1.text);
     }
     
     ((op=operator e2=expression {
-        exp = new KeywordSearchExpression(exp, new Integer(op), e2);
+        exp = new KeywordSearchExpression(exp, op, e2);
         //System.out.println("Have expression e2 ");
       })
       | (s2=stringOrId exp1=stringExpression) {
         String s = $s2.text;
-        exp = new KeywordSearchExpression(exp, new Integer(0), s);
-        if (exp1 != null) {exp = new KeywordSearchExpression(exp, new Integer(0), exp1);}
+        exp = new KeywordSearchExpression(exp, 0, s, operand--);
+        if (exp1 != null) {exp = new KeywordSearchExpression(exp, 0, exp1);}
         //System.out.println("Have string  " + $s2.text);
       }
       ) ?
@@ -220,8 +221,8 @@ expression returns [KeywordSearchExpression exp] :
     stringExpression returns [KeywordSearchExpression exp] : 
     (s2=stringOrId exp1=stringExpression {
         String s = $s2.text;
-        if (exp1 != null) {exp = new KeywordSearchExpression(s, new Integer(0), exp1);}
-        else {exp = new KeywordSearchExpression($s2.text);}
+        if (exp1 != null) {exp = new KeywordSearchExpression(s, 0, exp1, operand--);}
+        else {exp = new KeywordSearchExpression($s2.text, operand--);}
         //System.out.println("Have string  " + $s2.text);
       }
       ) |
@@ -261,7 +262,7 @@ expression returns [KeywordSearchExpression exp] :
     */
     
 operator returns [int code]:
-    c = (K_CONTAINS | K_INTERSECTS | K_BEFORE | K_AFTER | K_MEETS) {$code = $c.type;}
+    c = (K_CONTAINS | K_INTERSECTS | K_BEFORE | K_AFTER | K_MEETS | K_DURING) {$code = $c.type;}
     ; 
 
 stringOrId /*returns [String s]*/:
@@ -281,6 +282,7 @@ K_DESCENDANTVERSIONS 	:	'@descendantVersions';
 K_DESCENDANTCHANGES 	:	'@descendantChanges';
 K_SLICE			: 	'@slice';
 K_CONTAINS 		:	'@contains';
+K_DURING 		:	'@during';
 K_INTERSECTS 		:	'@intersects';
 K_BEFORE		:	'@before';
 K_AFTER			:	'@after';

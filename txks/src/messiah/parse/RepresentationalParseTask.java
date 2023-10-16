@@ -13,7 +13,7 @@ public class RepresentationalParseTask {
 
     private final RepresentationalParser parser;
 
-    public RepresentationalParseTask(Database db, File parsedFile) {
+    public RepresentationalParseTask(Database db, File parsedFile, int maxNodes) {
         this.parser = new RepresentationalParser(db, parsedFile);
     }
 

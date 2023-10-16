@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeMap;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import messiah.NodeInfo;
@@ -47,7 +48,10 @@ public class SubtreeResultBuilder extends ResultBuilder {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(resultSet.size() + " results");
         for (NodeId nodeId : resultSet) {
             if (verbose) System.out.println("Curt: Building with " + nodeId + " " + root);
-            root.add(this.buildSubtree(nodeId));
+            DefaultMutableTreeNode newNode = this.buildSubtree(nodeId);
+            if (newNode != null) {
+              root.add(newNode);
+            }
         }
 
         int total = 0;
@@ -55,7 +59,7 @@ public class SubtreeResultBuilder extends ResultBuilder {
             System.out.println(entry.getKey() + " : " + entry.getValue().getValue());
             total += entry.getValue().getValue();
         }
-        System.out.println("total = " + total);
+        System.out.println("total =  " + total + " " + resultSet.size());
 
         return new JTree(root);
     }
@@ -67,9 +71,18 @@ public class SubtreeResultBuilder extends ResultBuilder {
         NodeId upperBound = ancestorId.getNextFirstDescendant(ancLvl);
         if (verbose) System.out.println("Curt: SubtreeResultBuilder ancestorId " + ancestorId + " upperBound " + upperBound);
 
-        // This one works for inmemory
+        // This one works for in memory only!
+        NodeInfo rootNodeInfo = bdb.nodeIndex.get(ancestorId);
         SortedMap<NodeId, NodeInfo> map = bdb.nodeIndex.subMap(ancestorId, upperBound);
-        DefaultMutableTreeNode root = null;
+        SortedMap<NodeId, NodeInfo> myMap = new TreeMap();
+        myMap.put(ancestorId,rootNodeInfo);
+        
+        // For now put into a temporary map, need to populate with on disk stuff
+        for (Entry<NodeId,NodeInfo> entry : map.entrySet()) {
+            myMap.put((NodeId)entry.getKey(), (NodeInfo)entry.getValue());
+        }
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("dummy");
+
         int curLvl = ancLvl - 1;
         Stack<DefaultMutableTreeNode> stack = new Stack<>();
 
@@ -77,8 +90,8 @@ public class SubtreeResultBuilder extends ResultBuilder {
         NodeId lastKey = null;
 
 //        System.out.println("key = " + key);
-        for (Entry<NodeId,NodeInfo> entry : map.entrySet()) {
-            //System.out.println("Curt: SubtreeResultBuilder key " + key);
+        for (Entry<NodeId,NodeInfo> entry : myMap.entrySet()) {
+            // System.out.println("Curt: SubtreeResultBuilder key " + entry.toString());
             NodeId key = entry.getKey();
             NodeInfo info = entry.getValue();
             //if (!key.lessThan(upperBound)) break;

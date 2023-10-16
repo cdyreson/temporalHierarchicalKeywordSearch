@@ -148,6 +148,7 @@ public class HistoryDLN extends DLN implements PathId, NodeId, Serializable, Com
 
     public void setTime(Time t) {
         this.timestamp = t;
+        //System.out.println("Node is in HistoryDLN " + this);
     }
     /*
      public int computeNCALevel(HistoryDLN other) {

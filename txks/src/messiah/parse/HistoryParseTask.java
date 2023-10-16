@@ -23,8 +23,8 @@ import usu.dln.HistoryDLNFactory;
  */
 public class HistoryParseTask extends CurtParseTask {
 
-    public HistoryParseTask(Database db, File inputFile, IntervalGenerator i) throws FileNotFoundException {
-        super(db, inputFile);
+    public HistoryParseTask(Database db, File inputFile, IntervalGenerator i, int maxNodes) throws FileNotFoundException {
+        super(db, inputFile, maxNodes);
         HistoryDLNFactory h = new HistoryDLNFactory();
         this.nodeIdBuilder = new TemporalNodeIdBuilder(h, i);
     }

@@ -255,8 +255,8 @@ public class TimeElement /*implements Serializable*/ {
         constructed.coalesce();
         return constructed;
     }
-
-    /*
+    
+        /*
      A Constructor,
      * Computes the intersection of this Element with another.
      * Returns empty TimeElement if there is no intersection.
@@ -369,6 +369,142 @@ public class TimeElement /*implements Serializable*/ {
             Time overlap = time.intersection(otherTime);
             if (overlap != null) {
                 constructed.add(overlap);
+            }
+
+            // Need to advance one or the other
+            if (time.endsBefore(otherTime)) {
+                if (thisIter.hasNext()) {
+                    time = thisIter.next();
+                } else {
+                    // No more times, done
+                    break;
+                }
+
+            } else {
+                // No more times, done
+                break;
+
+            }
+        } while (true);
+
+        constructed.coalesce();
+        return constructed;
+    }
+
+
+    /*
+     A Constructor,
+     * Computes the times at which this Element contains another.
+     * Returns empty TimeElement if there is no containment.
+     */
+    public TimeElement contains(TimeElement other) {
+        TimeElement constructed = new TimeElement();
+
+        // If either is empty, exit
+        if (this.isEmpty() || other.isEmpty()) {
+            return constructed;
+        }
+
+        Iterator<Time> thisIter = times.iterator();
+        Iterator<Time> otherIter = other.times.iterator();
+
+        Time time = thisIter.next();
+        Time otherTime = otherIter.next();
+
+        do {
+            // Check if this time is before the other
+            if (time.before(otherTime)) {
+                // Rest of loop not executed
+                if (thisIter.hasNext()) {
+                    time = thisIter.next();
+                    continue;
+                } else {
+                    // No more times, done
+                    break;
+                }
+            }
+
+            // Check if the other time is before this, 
+            if (otherTime.before(time)) {
+                if (otherIter.hasNext()) {
+                    otherTime = otherIter.next();
+                    continue;
+                } else {
+                    // No more times, done
+                    break;
+                }
+            }
+
+            // Neither is before the other, must have some overlap
+            Time containment = time.containsIfOverlaps(otherTime);
+            if (containment != null) {
+                constructed.add(containment);
+            }
+
+            // Need to advance one or the other
+            if (time.endsBefore(otherTime)) {
+                if (thisIter.hasNext()) {
+                    time = thisIter.next();
+                } else {
+                    // No more times, done
+                    break;
+                }
+
+            } else {
+                if (otherIter.hasNext()) {
+                    otherTime = otherIter.next();
+                } else {
+                    // No more times, done
+                    break;
+                }
+            }
+        } while (true);
+
+        constructed.coalesce();
+        return constructed;
+    }
+
+    /*
+     A Constructor,
+     * Computes the time this Element contains a single Time.
+     * Returns empty TimeElement if there is no intersection.
+     */
+    public TimeElement contains(Time other) {
+        TimeElement constructed = new TimeElement();
+
+        // If either is empty, exit
+        if (this.isEmpty()) {
+            return constructed;
+        }
+
+        Iterator<Time> thisIter = times.iterator();
+
+        Time time = thisIter.next();
+        Time otherTime = other;
+
+        do {
+            // Check if this time is before the other
+            if (time.before(otherTime)) {
+                // Rest of loop not executed
+                if (thisIter.hasNext()) {
+                    time = thisIter.next();
+                    continue;
+                } else {
+                    // No more times, done
+                    break;
+                }
+            }
+
+            // Check if the other time is before this, 
+            if (otherTime.before(time)) {
+                // No more times, done
+                break;
+            }
+
+            // Neither is before the other, must have some overlap
+            Time containment = time.containsIfOverlaps(otherTime);
+            if (containment != null) {
+                constructed.add(containment);
             }
 
             // Need to advance one or the other

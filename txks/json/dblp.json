@@ -1,0 +1,43 @@
+{ "root" : [
+        {
+            "year": "1961",
+            "mdate": "2003-11-20",
+            "foo1" : "w", "bar1" : "x", "foo2" : "w", "bar2" : "x", "foo3" : "w", "bar3" : "x", "foo4" : "w", "bar4" : "
+x", "foo5" : "w", "bar5" : "x", "author": [
+                "Seymour Ginsburg"
+            ],
+            "type": "article",
+            "journal": "J. ACM",
+            "volume": "8",
+            "pages": "400-403",
+            "url": "db/journals/jacm/jacm8.htmlGinsburg61a",
+            "title": "Compatibility of States in Input-Independent Machines.",
+            "_key": "journals::jacm::Ginsburg61a"
+        },
+        {
+            "_id": {
+                "oid": "595c2c1ba7986c0872e62e62"
+            },
+            "ee": "https://doi.org/10.1016/j.media.2014.01.001",
+            "number": "3",
+            "year": "2014",
+            "mdate": "2017-05-17",
+            "author": [
+                "Nikhil Singh",
+                "P. Thomas Fletcher",
+                "J. Samuel Preston",
+                "Richard D. King",
+                "J. S. Marron",
+                "Michael W. Weiner",
+                "Sarang C. Joshi"
+            ],
+            "type": "article",
+            "journal": "Medical Image Analysis",
+            "volume": "18",
+            "pages": "616-633",
+            "url": "db/journals/mia/mia18.htmlSinghFPKMWJ14",
+            "title": "Quantifying anatomical shape variations in neurological disorders.",
+            "_key": "journals::mia::SinghFPKMWJ14"
+        }
+        ]
+}

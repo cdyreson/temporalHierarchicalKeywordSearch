@@ -431,7 +431,7 @@ public class TempUserInterface extends javax.swing.JFrame {
         // Start parsing
         ParseDialog dialog = new ParseDialog(this, true);
         System.out.println("Start parsing " + datasetName);
-        controller.parseDataset(datasetName, file, dialog, new StaticIntervalGenerator());
+        controller.parseDataset(datasetName, file, dialog, new StaticIntervalGenerator(),0);
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }

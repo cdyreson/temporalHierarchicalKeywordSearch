@@ -162,10 +162,26 @@ public class Time implements Comparable, Serializable {
 
     }
 
+     /*
+     * Contains of two times, if there is no intersection return null
+     */
     public Time contains(Time other) {
-        System.err.println("Time.contains is not implemented");
+        if (this.overlaps(other)) {
+            return containsIfOverlaps(other);
+        }
         return null;
-
+    }
+    
+    public Time containsIfOverlaps(Time other) {
+        return (this.begin <= other.begin)
+                ? (other.end == UNTIL_CHANGED)
+                        ? (end == UNTIL_CHANGED) ? this : null
+                        : (end == UNTIL_CHANGED)
+                                ? null
+                                : (this.end >= other.end)
+                                        ? /* o-b-e-g */ this
+                                        : null
+                : null;        
     }
 
     public List<Time> difference(Time other) {

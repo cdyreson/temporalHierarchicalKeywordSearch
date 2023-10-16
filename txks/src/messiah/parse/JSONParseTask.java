@@ -45,14 +45,16 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
     protected XMLStreamReader reader;
     NodeIdBuilder<DLNFactory> nodeIdBuilder;
     ArrayList<ParserListener> listeners;
+    int maxNodes = 0;
 
     public JSONParseTask(Database db) {
         this.db = db;
     }
 
-    public JSONParseTask(/*Main controller, */Database db, File inputFile) throws FileNotFoundException {
+    public JSONParseTask(/*Main controller, */Database db, File inputFile, int maxNodes) throws FileNotFoundException {
         //this.controller = controller;
         this.db = db;
+        this.maxNodes = maxNodes;
         // check whether input file exists
         if (inputFile.exists()) {
             this.inputFile = inputFile;
@@ -98,6 +100,7 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
      */
     public void parse() {
         System.out.println("JSON CurtParseTask Parsing...");
+        int count = 0;
         try {
             // create the reader for reading XML document
             // traverse all XML nodes
@@ -106,11 +109,14 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
                 // read next node
                 int event = reader.next();
                 parse(event);
+                count++;
                 reader.close();
+                if (this.maxNodes != 0 && count > this.maxNodes) break;
             }
             long time2 = System.currentTimeMillis(); 
             time2 = time2 - time1;
             System.out.println("Time taken " + time2);
+            System.out.println("Total nodes " + count);
             
         } catch (XMLStreamException ex) {
             Logger.getLogger(JSONParseTask.class.getName()).log(Level.SEVERE, null, ex);

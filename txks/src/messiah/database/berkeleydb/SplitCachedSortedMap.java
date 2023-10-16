@@ -54,7 +54,7 @@ public class SplitCachedSortedMap<K extends Comparable, V> implements SortedMap<
 
     private void openSplits() {
         if (isReadOnly || db.metadataTable.containsKey(indexName)) {
-            //System.out.println("Opening many split splitSortedCachedMap");
+            System.out.println("Opening many split splitSortedCachedMap " + indexName);
             currentIndex = db.metadataTable.get(indexName);
             maps = new SortedMap[currentIndex + 1];
             // Open existing tables

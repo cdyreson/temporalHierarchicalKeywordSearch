@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="targets" default="all" basedir="src/usu/grammar">
+     <target name="generate TXKS.g" description="generate parser from TXKS.g">
+        <java jar="../../../lib/antlr-3.5.3-complete.jar">
+            <arg value="TXKS.g"/>
+        </java>
+    </target>
+</project>
