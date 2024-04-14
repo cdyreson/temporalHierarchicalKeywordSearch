@@ -1,5 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="targets" default="all" basedir=".">
+           <target name="foo json memory nontemporal parse search nine qqq" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--json"/>
+            <arg value="foo.json"/>
+            <arg value="--memory"/>
+            <arg value="--jsonParse"/>
+            <arg value="--search"/>
+            <arg value="location payment"/>
+        </java>
+    </target> 
+              <target name="data json memory nontemporal parse search nine qqq" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--json"/>
+            <arg value="data.json"/>
+            <arg value="--memory"/>
+            <arg value="--jsonParse"/>
+            <arg value="--search"/>
+            <arg value="location payment"/>
+        </java>
+    </target> 
     <target name="add timestamps test to testTemporal 100 10" description="add timestamps test to testTemporal 100 10">
         <java classname="messiah.CopyAndAddTimestamps">
             <classpath>

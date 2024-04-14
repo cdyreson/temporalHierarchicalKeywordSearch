@@ -15,7 +15,7 @@ public class Config {
     public static final double SIZE_THRESHOLD = 20;
 
     // Controls how many objects can be in the memory map before dumping to disk
-    public static final int CACHE_MAP_SIZE = 100000;
+    public static final int CACHE_MAP_SIZE = 10000000;
 
     // BerkeleyDB cache size
     public static final int CACHE_SIZE = 200000000;

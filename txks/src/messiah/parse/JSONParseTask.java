@@ -1,7 +1,22 @@
 package messiah.parse;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import static com.fasterxml.jackson.core.JsonToken.END_ARRAY;
+import static com.fasterxml.jackson.core.JsonToken.END_OBJECT;
+import static com.fasterxml.jackson.core.JsonToken.FIELD_NAME;
+import static com.fasterxml.jackson.core.JsonToken.START_ARRAY;
+import static com.fasterxml.jackson.core.JsonToken.START_OBJECT;
+import static com.fasterxml.jackson.core.JsonToken.VALUE_FALSE;
+import static com.fasterxml.jackson.core.JsonToken.VALUE_NULL;
+import static com.fasterxml.jackson.core.JsonToken.VALUE_STRING;
+import static com.fasterxml.jackson.core.JsonToken.VALUE_TRUE;
+import com.fasterxml.jackson.dataformat.xml.XmlFactory;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingWorker;
@@ -46,12 +61,417 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
     NodeIdBuilder<DLNFactory> nodeIdBuilder;
     ArrayList<ParserListener> listeners;
     int maxNodes = 0;
+    private JsonParser jp;
 
     public JSONParseTask(Database db) {
         this.db = db;
     }
-
+    
     public JSONParseTask(/*Main controller, */Database db, File inputFile, int maxNodes) throws FileNotFoundException {
+        //this.controller = controller;
+        this.db = db;
+        this.maxNodes = maxNodes;
+        // check whether input file exists
+        if (inputFile.exists()) {
+            this.inputFile = inputFile;
+        } else {
+            System.out.println("Input file not found " + inputFile);
+            throw new FileNotFoundException();
+        }
+        this.nodeIdBuilder = new NodeIdBuilder(new HistoryDLNFactory());
+
+        try {
+            JsonFactory jf = new JsonFactory();
+            this.jp = jf.createParser(new FileInputStream(this.inputFile));
+            
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JSONParseTask.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(JSONParseTask.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+     private void innerParse() {
+        try {          
+            JsonToken t;
+            // initializing
+            for (ParserListener listener : listeners) {
+                listener.startDocument();
+            }
+            Stack<String> nameStack = new Stack();
+            Stack<Boolean> arrayStack = new Stack();
+            //String currentName = "root";
+            nameStack.push("root");
+            arrayStack.push(false);
+            // Introduce a root element
+            /*
+            for (ParserListener listener : listeners) {
+                listener.start("root", false, false);
+            }
+            */
+            int depth = 0;
+            boolean previousIsFieldName = false;
+            while ((t = this.jp.nextToken()) != null) {
+                //System.out.println("depht is " + depth);
+                switch (t) {
+                    case START_OBJECT:
+                        //System.out.println("start object");
+                        for (ParserListener listener : listeners) {
+                            listener.start(nameStack.peek(), false, false);
+                        } 
+                        arrayStack.push(false);
+                        depth++;
+                        previousIsFieldName = false;
+                        break;
+                    case END_OBJECT:
+                        //System.out.println("end object");
+                        depth--;
+                        arrayStack.pop();
+                        if (arrayStack.peek()) {
+                            
+                        }
+                        for (ParserListener listener : listeners) {
+                            if (depth == 0) {
+                                listener.endDocument();
+                            } else {
+                                listener.end(false, false);
+                            } 
+                        }
+                        //nameStack.pop();
+                        previousIsFieldName = false;
+                        break;
+                    case START_ARRAY:
+                        depth++;
+                        //System.out.println("start array");
+                        break;
+                    case END_ARRAY:
+                        depth--;
+                        //System.out.println("end array");
+                        /*
+                        arrayStack.pop();
+                        nameStack.pop();
+                        //nameStack.pop();
+                        for (ParserListener listener : listeners) {
+                            if (depth == 0) {
+                                listener.endDocument();
+                            } else {
+                                listener.end(false, false);
+                            }
+                        }
+                        previousIsFieldName = false;
+                        */
+                        break;
+                    case FIELD_NAME:
+                        //depth++;
+                        String name = this.jp.getCurrentName();
+                        //System.out.println("field name " + name);
+                        nameStack.push(name);
+                        //currentName = jp.getCurrentName();
+                        //System.out.println("Start element " + reader.getLocalName());
+                        // read the start tag of an element
+                        break;
+                    case VALUE_NUMBER_INT:
+                    case VALUE_NUMBER_FLOAT:
+                    case VALUE_STRING:
+                    case VALUE_FALSE:
+                    case VALUE_TRUE:
+                    case VALUE_NULL:
+                        String value = "";
+                        switch (t) {
+                            case VALUE_FALSE:
+                                value = "false";
+                                break;
+                            case VALUE_TRUE:
+                                value = "true";
+                                break;
+                            case VALUE_NULL:
+                                value = "true";
+                                break;
+                            default:
+                                value = this.jp.getText();
+                                break;
+                        }
+                        //depth--;
+                        //System.out.println("field value " + value);
+                        for (ParserListener listener : listeners) {
+                            listener.start(nameStack.peek(), false, false);
+                        }
+                        for (ParserListener listener : listeners) {
+                            listener.start(value, false, true);
+                        }
+                        for (ParserListener listener : listeners) {
+                            listener.end(false, true);
+                        }
+                        for (ParserListener listener : listeners) {
+                            if (depth == 0) {
+                                listener.endDocument();
+                            } else {
+                                listener.end(false, false);
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (depth > 0) {
+                for (ParserListener listener : listeners) {
+                    listener.endDocument();
+                }
+            }
+
+        } catch (IOException e) {
+            Logger.getLogger(JSONParseTask.class.getName()).log(Level.SEVERE, null, e);
+            System.err.println(" exception in JSON parsing " + e);
+            System.exit(-1);
+        }
+
+    }
+    private void innerParseOld() {
+        /*
+    }
+                   while ((t = jp.nextToken()) != null) {
+                switch (t) {
+                    case START_OBJECT:
+                        xg.writeStartObject();
+                        break;
+                    case END_OBJECT:
+                        xg.writeEndObject();
+                        break;
+                    case START_ARRAY:
+                        xg.writeStartArray();
+                        break;
+                    case END_ARRAY:
+                        xg.writeEndArray();
+                        break;
+                    case FIELD_NAME:
+                        xg.writeFieldName(jp.getCurrentName());
+                        break;
+                    case VALUE_STRING:
+                        xg.writeString(jp.getText());
+                        break;
+                    case VALUE_FALSE:
+                        xg.writeBoolean(false);
+                        break;
+                    case VALUE_TRUE:
+                        xg.writeBoolean(true);
+                        break;
+                    case VALUE_NULL:
+                        xg.writeString("");
+                    // some tokens missing here
+                        break;
+                    default:
+                        break;
+                }
+                */
+        try {
+            /*
+            JsonFactory jf = new JsonFactory();
+            JsonParser jp = jf.createParser("foo");
+            XmlFactory xf = new XmlFactory();
+            //DataOutput out;
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            JsonGenerator xg = xf.createGenerator(out);
+
+            xg.writeFieldName("root"); // need a root element
+
+            */
+            
+            JsonToken t;
+            // initializing
+            for (ParserListener listener : listeners) {
+                listener.startDocument();
+            }
+            Stack<String> nameStack = new Stack();
+            Stack<Boolean> arrayStack = new Stack();
+            //String currentName = "root";
+            nameStack.push("root");
+            arrayStack.push(false);
+            // Introduce a root element
+            for (ParserListener listener : listeners) {
+                listener.start("root", false, false);
+            }
+            int depth = 0;
+            boolean previousIsFieldName = false;
+            while ((t = this.jp.nextToken()) != null) {
+                System.out.println("depht is " + depth);
+                switch (t) {
+                    case START_OBJECT:
+                        System.out.println("start object");
+                        //nameStack.push(currentName);
+                        if (arrayStack.peek()) {
+                            System.out.println(" in context " + nameStack.peek());
+                            if (previousIsFieldName) {
+                                for (ParserListener listener : listeners) {
+                                    listener.start(nameStack.peek(), false, false);
+                                }
+                            }
+                        }
+                        arrayStack.push(false);
+                        depth++;
+                        previousIsFieldName = false;
+                        break;
+                    case END_OBJECT:
+                        System.out.println("end object");
+                        depth--;
+                        arrayStack.pop();
+                        if (arrayStack.peek()) {
+                            
+                        }
+                        for (ParserListener listener : listeners) {
+                            if (depth == 0) {
+                                listener.endDocument();
+                            } else {
+                                listener.end(false, false);
+                            } 
+                        }
+                        //nameStack.pop();
+                        previousIsFieldName = false;
+                        break;
+                    case START_ARRAY:
+                        depth++;
+                        System.out.println("start array");
+                        if (previousIsFieldName) {
+                            arrayStack.push(true);
+                            nameStack.push(nameStack.peek());
+                        }
+                        //nameStack.push(currentName);
+                        previousIsFieldName = false;
+                        break;
+                    case END_ARRAY:
+                        depth--;
+                        System.out.println("end array");
+                        arrayStack.pop();
+                        nameStack.pop();
+                        //nameStack.pop();
+                        for (ParserListener listener : listeners) {
+                            if (depth == 0) {
+                                listener.endDocument();
+                            } else {
+                                listener.end(false, false);
+                            }
+                        }
+                        previousIsFieldName = false;
+                        break;
+                    case FIELD_NAME:
+                        //depth++;
+                        String name = this.jp.getCurrentName();
+                        System.out.println("field name " + name);
+                        nameStack.push(name);
+                        //currentName = jp.getCurrentName();
+                        //System.out.println("Start element " + reader.getLocalName());
+                        // read the start tag of an element
+                        for (ParserListener listener : listeners) {
+                            listener.start(name, false, false);
+                        }
+                        previousIsFieldName = true;
+                        break;
+                    case VALUE_NUMBER_INT:
+                    case VALUE_NUMBER_FLOAT:
+                    case VALUE_STRING:
+                        //depth--;
+                        String text = this.jp.getText();
+                        //String[] words = text.split("\\s+");
+                        System.out.println("field value " + this.jp.getText());
+                        //if (!reader.isWhiteSpace()) {
+                        if (previousIsFieldName) {
+                            nameStack.pop();
+                        } else {
+                            for (ParserListener listener : listeners) {
+                                listener.start(nameStack.peek(), false, false);
+                            }
+                        }
+
+                        //for (String word : words) {
+                            for (ParserListener listener : listeners) {
+                                listener.start(text, false, true);
+                            }
+                            for (ParserListener listener : listeners) {
+                                listener.end(false, true);
+                            }
+                            for (ParserListener listener : listeners) {
+                                if (depth == 0) {
+                                    listener.endDocument();
+                                } else {
+                                    listener.end(false, false);
+                                }
+                            }
+                        //}
+
+                        //}
+                        break;
+                    case VALUE_FALSE:
+                        //depth--;
+                        nameStack.pop();
+                        for (ParserListener listener : listeners) {
+                            listener.start("false", false, true);
+                        }
+                        for (ParserListener listener : listeners) {
+                            listener.end(false, true);
+                        }
+                        for (ParserListener listener : listeners) {
+                            if (depth == 0) {
+                                listener.endDocument();
+                            } else {
+                                listener.end(false, false);
+                            }
+                        }
+                        break;
+                    case VALUE_TRUE:
+                        //depth--;
+                        nameStack.pop();                        
+                        for (ParserListener listener : listeners) {
+                            listener.start("true", false, true);
+                        }
+                        for (ParserListener listener : listeners) {
+                            listener.end(false, true);
+                        }
+                        for (ParserListener listener : listeners) {
+                            if (depth == 0) {
+                                listener.endDocument();
+                            } else {
+                                listener.end(false, false);
+                            }
+                        }
+                        break;
+                    case VALUE_NULL:
+                        //depth--;
+                        nameStack.pop();                        
+                        for (ParserListener listener : listeners) {
+                            listener.start("", false, true);
+                        }
+                        for (ParserListener listener : listeners) {
+                            listener.end(false, true);
+                        }
+                        for (ParserListener listener : listeners) {
+                            if (depth == 0) {
+                                listener.endDocument();
+                            } else {
+                                listener.end(false, false);
+                            }
+                        }
+                        // some tokens missing here
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (depth > 0) {
+                for (ParserListener listener : listeners) {
+                    listener.endDocument();
+                }
+            }
+
+        } catch (IOException e) {
+            Logger.getLogger(JSONParseTask.class.getName()).log(Level.SEVERE, null, e);
+            System.err.println(" exception in JSON parsing " + e);
+            System.exit(-1);
+        }
+
+    }
+
+    public JSONParseTask(/*Main controller, */String old, Database db, File inputFile, int maxNodes) throws FileNotFoundException {
         //this.controller = controller;
         this.db = db;
         this.maxNodes = maxNodes;
@@ -102,9 +522,9 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
         System.out.println("JSON CurtParseTask Parsing...");
         int count = 0;
         try {
-            // create the reader for reading XML document
-            // traverse all XML nodes
-            long time1 = System.currentTimeMillis(); 
+            long time1 = System.currentTimeMillis();
+            innerParse();
+            /*
             while (reader.hasNext()) {
                 // read next node
                 int event = reader.next();
@@ -113,13 +533,12 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
                 reader.close();
                 if (this.maxNodes != 0 && count > this.maxNodes) break;
             }
+            */
             long time2 = System.currentTimeMillis(); 
             time2 = time2 - time1;
             System.out.println("Time taken " + time2);
             System.out.println("Total nodes " + count);
             
-        } catch (XMLStreamException ex) {
-            Logger.getLogger(JSONParseTask.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(JSONParseTask.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -133,15 +552,6 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
      */
     public void parse(int event) {
         //System.out.println("Parsing...");
-        
-        /*
-         if (count == 3000000) {
-         //if (count == 2000) {
-         db.copyPartialDatabaseToDisk();
-         count=0;
-         }
-        */
-         
         switch (event) {
             case XMLStreamConstants.START_DOCUMENT:
                 // initializing

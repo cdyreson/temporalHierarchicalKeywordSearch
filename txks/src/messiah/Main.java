@@ -323,6 +323,7 @@ public class Main {
         String dbName = Config.DB_FOLDER_STRING;
         int maxRange = 100;
         boolean isRandomIntervals = false;
+        boolean isFixedIntervals = false;
         int maxInterval = 100;
         boolean isPercentDelete = false;
         int percentDelete = 0;
@@ -392,6 +393,10 @@ public class Main {
                 consumed++;
                 isRandomIntervals = true;
             }
+            if (args[consumed].contentEquals("--fixedIntervals")) {
+                consumed++;
+                isFixedIntervals = true;
+            }
             if (args[consumed].contentEquals("--percentDelete")) {
                 consumed++;
                 percentDelete = Integer.parseInt(args[consumed]);
@@ -400,7 +405,8 @@ public class Main {
                 System.out.println("here ");
                 intervalGenerator = new DeleteIntervalGenerator(percentDelete);
             }
-            if (isRandomIntervals) intervalGenerator = new RandomIntervalGenerator(maxRange, maxInterval, isRandomIntervals);
+            if (isRandomIntervals) intervalGenerator = new RandomIntervalGenerator(maxRange, maxInterval, true);
+            if (isFixedIntervals) intervalGenerator = new RandomIntervalGenerator(maxRange, maxInterval, false);
         }
 
         // Set the temporalDB flag if the data has timestamps

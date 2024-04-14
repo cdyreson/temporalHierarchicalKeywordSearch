@@ -96,7 +96,7 @@ public class PathIndexBuilder implements ParserListener {
         Database bdb = new messiah.database.berkeleydb.Database(true, false);
         Map<String, PathId> map = bdb.pathNameIndex;
         Map<PathId, PathInfo> map2 = bdb.pathIndex;
-        System.out.println("Doing pathNameIndex..........");
+        // System.out.println("Doing pathNameIndex..........");
         for (String name : map.keySet()) {
             PathId id = map.get(name);
             System.out.println("key = " + name + " --> " + id);
