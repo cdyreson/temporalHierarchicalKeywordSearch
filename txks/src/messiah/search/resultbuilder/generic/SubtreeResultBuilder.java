@@ -130,7 +130,13 @@ public class SubtreeResultBuilder extends ResultBuilder {
                 curLvl--;
             }
 
-            DefaultMutableTreeNode node = new DefaultMutableTreeNode(info.getData());
+            String temp = key.toString();
+            if (temp.contains("[")) {
+                temp = temp.substring(temp.indexOf("["));
+            }
+            DefaultMutableTreeNode node = new DefaultMutableTreeNode(
+                    info.getData() + 
+                    " " + temp);
             if (stack.isEmpty()) {
                 root = node;
             } else {

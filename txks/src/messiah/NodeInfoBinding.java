@@ -13,7 +13,7 @@ import com.sleepycat.bind.tuple.TupleOutput;
 import com.sleepycat.bind.tuple.TupleInput;
 
 /**
- *
+ *  This is not used!
  * @author Curt
  */
 public class NodeInfoBinding extends TupleBinding<NodeInfo> {
@@ -22,7 +22,7 @@ public class NodeInfoBinding extends TupleBinding<NodeInfo> {
         String s = in.readString();
         int i = in.readInt();
         System.out.println("Doing it " + s + " " + i);
-        return new NodeInfo(null, s, i);
+        return new NodeInfo(null, s, i, null);
     }
 
     public void objectToEntry(NodeInfo s, TupleOutput out) {

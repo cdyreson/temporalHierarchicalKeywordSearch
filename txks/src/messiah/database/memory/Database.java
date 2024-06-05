@@ -71,19 +71,6 @@ public class Database extends messiah.database.Database {
             // Snapshot document tables
             nodeIndex = openSortedTable("nodeIndex", NodeId.class, NodeInfo.class);
 
-            // History document tables
-            //ITEMOUT historyNodeIndex = openSortedTable("historyNodeIndex", NodeId.class, NodeInfo.class);
-            // Item document table
-            //ITEMOUT itemNodeIndex = openSortedTable("nodeIndex", NodeId.class, NodeInfo.class);
-            //ITEMOUT itemIdToHistoryIdIndex = openSortedTable("itemIdToHistoryIdIndex", NodeId.class, List.class);
-            //ITEMOUT historyIdToItemIdIndex = openSortedTable("historyIdToItemIdIndex", NodeId.class, NodeId.class);
-            // Tables for testing
-            //node2Index = openSortedTable("node2Index", NodeId.class, Integer.class);
-            //Amani's tables
-            //ITEMOUT  = openTable("historyToItemIndex", NodeId.class, NodeId.class);
-            //ITEMOUT itemToHistoryIndex = openTable("itemToHistoryIndex", NodeId.class, List.class);
-            //itemMetaDataIndex = openTable("itemMetaDataIndex", NodeId.class, NodeMetaData.class);
-            //metaDataIndex = openTable("metaDataIndex", NodeId.class, NodeMetaData.class);
         }
     }
 

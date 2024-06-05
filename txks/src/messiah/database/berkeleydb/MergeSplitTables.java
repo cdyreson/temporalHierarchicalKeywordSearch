@@ -46,7 +46,7 @@ public class MergeSplitTables extends Database {
         keywordIndex2 = openTable("keywordIndex", String.class, KeywordInfo.class);
         keywordPathsIndex2 = openTable("keywordPathsIndex", String.class, Set.class);
         keywordNodesIndex2 = openTable("keywordNodesIndex", String.class, Map.class);
-        nodeIndex2 = openSortedTable((isTemporal)? "temporalNodeIndex" : "nodeIndex", (isTemporal)? new HistoryDLNNodeIdBinding() : new DLNNodeIdBinding(), NodeInfo.class);
+        nodeIndex2 = openSortedTable("nodeIndex", new DLNNodeIdBinding(), NodeInfo.class);
         ((SplitCachedMap) keywordIndex).mergeTable(keywordIndex2);
         ((SplitCachedMap) keywordPathsIndex).mergeTable(keywordPathsIndex2);
         ((SplitCachedMap) keywordNodesIndex).mergeTable(keywordNodesIndex2);

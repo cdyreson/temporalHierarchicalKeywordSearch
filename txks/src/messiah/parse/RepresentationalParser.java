@@ -151,15 +151,8 @@ public class RepresentationalParser {
     private void addTime() {
         NodeId id = historyNodeIdBuilder.getNodeId();
 
-        //ITEMOUT if (db.historyNodeIndex.containsKey(id)) {
-        //ITEMOUT     NodeInfo info = db.historyNodeIndex.get(id);
-        //ITEMOUT     db.historyNodeIndex.remove(id);
-        //ITEMOUT     HistoryDLN dln = new HistoryDLN((DLN) id, time);
-        //ITEMOUT     id = (NodeId) dln;
-        //ITEMOUT     db.historyNodeIndex.put(id, info);
-        //ITEMOUT }
-
         /* Curt modified */
+        /* Curt do we use, need to modify if representation parser ever used
         if (db.nodeIndex.containsKey(id)) {
             NodeInfo info = db.nodeIndex.get(id);
             db.nodeIndex.remove(id);
@@ -167,7 +160,7 @@ public class RepresentationalParser {
             id = (NodeId) dln;
             db.nodeIndex.put(id, info);
         }
-
+        */
     }
 
     public void createListeners() {

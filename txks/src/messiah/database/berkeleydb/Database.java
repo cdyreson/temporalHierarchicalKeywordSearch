@@ -137,42 +137,6 @@ public class Database extends messiah.database.Database {
     }
 
     /*
-     * Close the split tables if needed
-     */
- /*
-    public void closeSplitTables() {
-        Map<String, KeywordInfo> keywordIndex2 = openTable("keywordIndex", String.class, KeywordInfo.class);
-        Map<String, Set<PathId>> keywordPathsIndex2 = openTable("keywordPathsIndex", String.class, Set.class);
-        Map keywordNodesIndex2 = openTable("keywordNodesIndex", String.class, Map.class);
-        Map branchIndex2 = openTable("branchIndex", String.class, List.class);
-        Map prefixIndex2 = openTable("prefixIndex", String.class, List.class);
-        SortedMap nodeIndex2 = openSortedTable((isTemporal)? "temporalNodeIndex" : "nodeIndex", (isTemporal)? new HistoryDLNNodeIdBinding() : new DLNNodeIdBinding(), NodeInfo.class);
-  
-
-        System.out.println("merge keywordIndex");
-        ((SplitMap) keywordIndex).mergeTable(keywordIndex2);
-        System.out.println("merge keywordPathsIndex");
-        ((SplitMap) keywordPathsIndex).mergeTable(keywordPathsIndex2);
-        System.out.println("merge keywordNodesIndex");
-        ((SplitMap) keywordNodesIndex).mergeTable(keywordNodesIndex2);
-        System.out.println("merge branchIndex");
-        ((SplitMap) branchIndex).mergeTable(branchIndex2);
-        System.out.println("merge prefixIndex");
-        ((SplitMap) prefixIndex).mergeTable(prefixIndex2);
-        System.out.println("merge nodeIndex");
-        ((SortedSplitMap) nodeIndex).mergeTable(nodeIndex2);
-
-    }
-     */
-    
-    private void visitTreeUpdateTimestamp(DLN nodeId, Database temporalDB, int rangeMax, int intervalMax, int maxBegin, int maxEnd) {
-        if (nodeIndex.containsKey(nodeId)) {
-            NodeInfo nodeInfo = nodeIndex.get(nodeId);
-            
-        }
-    }
-    
-    /*
      * Copy this nonTemporal database to a temporal database by adding timestamps
      * and converting DLNs to TemporalDLNs.
      * @param - name of the database
@@ -184,28 +148,19 @@ public class Database extends messiah.database.Database {
         HistoryDLNFactory historyFactory = new HistoryDLNFactory();
         NodeId rnodeId = factory.rootId();
         NodeId historyNodeId = historyFactory.rootId();
-        /*
-        while (true) {
-            // Update the information for this node
-            NodeInfo nodeInfo = nodeIndex.get(nodeId);
-            temporalDB.
-            
-        }
-        */
         
         for (String key : keywordNodesIndex.keySet()) {
             Map<PathId, List<NodeId>> map = keywordNodesIndex.get(key);
             for (PathId pathId : map.keySet()) {
                 List<NodeId> a = map.get(pathId);
-                List<NodeId> b = new ArrayList();
                 for (NodeId nodeId : a) {
                     int begin = randomRange.nextInt(rangeMax);
                     int end = Math.min(begin, begin + randomInterval.nextInt(intervalMax));
-                    NodeId temporalNodeId = new HistoryDLN((DLN) nodeId, new Time(begin, end));
-                    b.add(temporalNodeId);
+                    //NodeId temporalNodeId = new HistoryDLN((DLN) nodeId, new Time(begin, end));
                     // Update the node index as well
                     NodeInfo nodeInfo = nodeIndex.get(nodeId);
-                    temporalDB.nodeIndex.put(temporalNodeId, nodeInfo);
+                    nodeInfo.setTimestamp(new Time(begin, end));
+                    temporalDB.nodeIndex.put(nodeId, nodeInfo);
                 }
             }
         }
@@ -226,7 +181,7 @@ public class Database extends messiah.database.Database {
                 keywordIndex = new SplitCachedMap<String, KeywordInfo>(Config.KEYWORD_INDEX_SPLIT_TABLE_SIZE, true, this, "keywordIndex", String.class, KeywordInfo.class);
                 keywordPathsIndex = new SplitCachedMapSetValue<String, Set<PathId>>(Config.KEYWORD_INDEX_SPLIT_TABLE_SIZE, true, this, "keywordPathsIndex", String.class, Set.class);
                 keywordNodesIndex = new SplitCachedMapKeywordNodeIndex(Config.KEYWORD_INDEX_SPLIT_TABLE_SIZE, true, this, "keywordNodesIndex", String.class, Map.class);
-                nodeIndex = new SplitCachedSortedMap<NodeId, NodeInfo>(Config.NODE_INDEX_SPLIT_TABLE_SIZE, true, this, (isTemporal) ? "temporalNodeIndex" : "nodeIndex", (isTemporal) ? new HistoryDLNNodeIdBinding() : new DLNNodeIdBinding(), NodeInfo.class);
+                nodeIndex = new SplitCachedSortedMap<NodeId, NodeInfo>(Config.NODE_INDEX_SPLIT_TABLE_SIZE, true, this, "nodeIndex", new DLNNodeIdBinding(), NodeInfo.class);
 
             } else {
                 // Internal database table
@@ -235,7 +190,7 @@ public class Database extends messiah.database.Database {
                 keywordIndex = new SplitCachedMap<String, KeywordInfo>(Config.KEYWORD_INDEX_SPLIT_TABLE_SIZE, false, this, "keywordIndex", String.class, KeywordInfo.class);
                 keywordPathsIndex = new SplitCachedMapSetValue<String, Set<PathId>>(Config.KEYWORD_INDEX_SPLIT_TABLE_SIZE, false, this, "keywordPathsIndex", String.class, Set.class);
                 keywordNodesIndex = new SplitCachedMapKeywordNodeIndex(Config.KEYWORD_INDEX_SPLIT_TABLE_SIZE, false, this, "keywordNodesIndex", String.class, Map.class);
-                 nodeIndex = new SplitCachedSortedMap<NodeId, NodeInfo>(Config.NODE_INDEX_SPLIT_TABLE_SIZE, false, this, (isTemporal) ? "temporalNodeIndex" : "nodeIndex", (isTemporal) ? new HistoryDLNNodeIdBinding() : new DLNNodeIdBinding(), NodeInfo.class);
+                 nodeIndex = new SplitCachedSortedMap<NodeId, NodeInfo>(Config.NODE_INDEX_SPLIT_TABLE_SIZE, false, this, "nodeIndex", new DLNNodeIdBinding(), NodeInfo.class);
             }
         }
     }

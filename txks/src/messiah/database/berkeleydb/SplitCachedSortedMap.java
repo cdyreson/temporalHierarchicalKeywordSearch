@@ -200,7 +200,53 @@ public class SplitCachedSortedMap<K extends Comparable, V> implements SortedMap<
     public SortedMap<K, V> subMap(K k, K k1) {
         // First find the head key
         // Try the current map
-        //System.out.println("Submap looking for  " + k + " " + k1 + " " + maps[currentIndex].firstKey() + " " + maps[currentIndex].lastKey());
+        System.out.println("Submap looking for  " + k + " " + k1 + " " + maps[currentIndex].firstKey() + " " + maps[currentIndex].lastKey());
+        int minCount = currentIndex;
+        while (minCount > 0) {
+            K min = maps[minCount].firstKey();
+            //K max = maps[count].lastKey();
+            if (k.compareTo(min) >= 0) {
+                break;
+                //return maps[minCount].subMap(k, k1);
+            }
+            minCount--;
+        }
+        
+        int maxCount = currentIndex;
+        while (maxCount > 0) {
+            K max = maps[minCount].lastKey();
+            //K max = maps[count].lastKey();
+            if (k1.compareTo(max) <= 0) {
+                break;
+                //return maps[minCount].subMap(k, k1);
+            }
+            maxCount--;
+        }
+        
+        if (minCount == maxCount) {
+            return maps[minCount].subMap(k, k1);
+        } else {
+            // Look for map containing other key
+            SortedMap<K, V> m = maps[minCount].tailMap(k);
+            for (int j = minCount + 1; j <= maxCount; j++) {
+                if (j == maxCount) {
+                    m.putAll(maps[j].headMap(k1));
+                    System.out.println("Submap finally contained key " + k1);
+                    return m;
+                } else {
+                    m.putAll(maps[j]);
+                }
+            }
+            return m;
+        }
+            
+        //throw new UnsupportedOperationException("SortedSplitMap subMap did not find keys."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+        public SortedMap<K, V> subMapOld(K k, K k1) {
+        // First find the head key
+        // Try the current map
+        System.out.println("Submap looking for  " + k + " " + k1 + " " + maps[currentIndex].firstKey() + " " + maps[currentIndex].lastKey());
         K min = maps[currentIndex].firstKey();
         //K maxNode = maps[currentIndex].lastKey();
         if (min != null) {
@@ -209,14 +255,19 @@ public class SplitCachedSortedMap<K extends Comparable, V> implements SortedMap<
             }
         }
         if (maps[currentIndex].containsKey(k)) {
-            //System.out.println("Submap contained key " + k);
+            System.out.println("Submap contained key " + k);
             return maps[currentIndex].subMap(k, k1);
+        } else {
+            System.out.println("Submap did not contain key " + k + " hashcode " + k.hashCode());
+            for (K key: maps[currentIndex].keySet()) {
+                System.out.println(" key is " + key + " hash " + key.hashCode());
+            }
         }
         // Not in current map, try others
         for (int i = 0; i < currentIndex; i++) {
             //min = maps[currentIndex].firstKey();
             K max = maps[i].lastKey();
-            //System.out.println("Submap looking for  " + max.getClass() + " " + k.getClass() + " " + k + " " + k1 + " " + maps[i].firstKey() + " " + maps[i].lastKey());
+            System.out.println("Submap looking for  " + max.getClass() + " " + k.getClass() + " " + k + " " + k1 + " " + maps[i].firstKey() + " " + maps[i].lastKey());
             if (k.compareTo(max) < 1) {
                 // Found map with starting node
                 if (k1.compareTo(max) < 1) {
@@ -228,7 +279,7 @@ public class SplitCachedSortedMap<K extends Comparable, V> implements SortedMap<
                         max = maps[j].lastKey();
                         if (k1.compareTo(max) < 1) {
                             m.putAll(maps[j].headMap(k1));
-                            //System.out.println("Submap finally contained key " + k1);
+                            System.out.println("Submap finally contained key " + k1);
                             return m;
                         } else {
                             m.putAll(maps[j]);
@@ -240,7 +291,7 @@ public class SplitCachedSortedMap<K extends Comparable, V> implements SortedMap<
         }
         throw new UnsupportedOperationException("SortedSplitMap subMap did not find keys."); //To change body of generated methods, choose Tools | Templates.
     }
-
+        
     @Override
     public Comparator<? super K> comparator() {
         throw new UnsupportedOperationException("SortedSplitMap comparator not supported yet."); //To change body of generated methods, choose Tools | Templates.

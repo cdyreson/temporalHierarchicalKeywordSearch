@@ -93,12 +93,11 @@ public class DataModification {
         // Check that node exists
         if (isContains(nodeId) && ((HistoryDLN)nodeId).getTime().isUntilChanged()) {
             // set the time
-            NodeInfo info = db.nodeIndex.get(nodeId);
+            NodeInfo info = db.nodeIndex.get((DLN)nodeId);
             db.nodeIndex.remove(nodeId);
-            Time t = ((HistoryDLN) nodeId).getTime();
+            Time t = info.getTime();
             t.setEnd(endTime);
-            HistoryDLN dln = new HistoryDLN((DLN) nodeId, t);
-            nodeId = (NodeId) dln;
+            info.setTimestamp(t);
             db.nodeIndex.put(nodeId, info);
             result = true;
             // Walk over children

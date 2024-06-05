@@ -36,7 +36,7 @@ public class NodeIndexBuilder implements ParserListener {
         if (isAttribute && !isValue) {
             str = '@' + str;
         }
-        NodeInfo info = new NodeInfo(pathIndexBuilder.getCurrentPathId(), str, nodeIdBuilder.getLevel());
+        NodeInfo info = new NodeInfo(pathIndexBuilder.getCurrentPathId(), str, nodeIdBuilder.getLevel(), /* default to null for time */ null);
         //System.out.println("Curt: nodeId " + this.nodeIdBuilder.getNodeId() + " info " + info);
         db.nodeIndex.put(this.nodeIdBuilder.getNodeId(), info);
     }

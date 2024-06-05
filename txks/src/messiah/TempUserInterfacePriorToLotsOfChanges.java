@@ -26,16 +26,16 @@ import usu.algebra.KeywordSearchExpression;
  *
  * @author truongbaquan and Curtis Dyreson
  */
-public class TempUserInterface extends javax.swing.JFrame {
+public class TempUserInterfacePriorToLotsOfChanges extends javax.swing.JFrame {
 
     private Main controller = new Main();
 
     /**
      * Creates new form UserInterface
      */
-    public TempUserInterface() {
+    public TempUserInterfacePriorToLotsOfChanges() {
         initComponents();
-        //this.algoComboBox.setModel(new DefaultComboBoxModel(SearchAlgoEnum.values()));
+        this.algoComboBox.setModel(new DefaultComboBoxModel(SearchAlgoEnum.values()));
         this.getRootPane().setDefaultButton(searchButton);
     }
 
@@ -57,9 +57,16 @@ public class TempUserInterface extends javax.swing.JFrame {
         inputPanel = new javax.swing.JPanel();
         searchButton = new javax.swing.JButton();
         searchBox = new javax.swing.JTextField();
+        structureScrollPane = new javax.swing.JScrollPane();
+        structureArea = new javax.swing.JTextArea();
         resultPane = new javax.swing.JScrollPane();
         resultArea = new javax.swing.JTextArea();
         searchTime = new javax.swing.JLabel();
+        algoPanel = new javax.swing.JPanel();
+        autoRadioButton = new javax.swing.JRadioButton();
+        manualRadioButton = new javax.swing.JRadioButton();
+        algoSelectCards = new javax.swing.JPanel();
+        algoComboBox = new javax.swing.JComboBox();
         mainMenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -67,10 +74,10 @@ public class TempUserInterface extends javax.swing.JFrame {
         help_JMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Temporal JSON Keyword Search (TJKS)");
+        setTitle("MESSIAH");
         setName("mainFrame"); // NOI18N
 
-        datasetPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Load JSON "));
+        datasetPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Load XML"));
 
         browseButton.setText("Browse...");
         browseButton.addActionListener(new java.awt.event.ActionListener() {
@@ -80,8 +87,7 @@ public class TempUserInterface extends javax.swing.JFrame {
         });
 
         xmlFile_jTextField.setEditable(false);
-        xmlFile_jTextField.setText("Please select/load a JSON file");
-        xmlFile_jTextField.setToolTipText("Use this box to browse to your JSON");
+        xmlFile_jTextField.setText("Please select/load an XMLfile");
 
         loadDB_Button.setText("Load DB");
         loadDB_Button.addActionListener(new java.awt.event.ActionListener() {
@@ -95,7 +101,7 @@ public class TempUserInterface extends javax.swing.JFrame {
         datasetPanelLayout.setHorizontalGroup(
             datasetPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, datasetPanelLayout.createSequentialGroup()
-                .addComponent(xmlFile_jTextField)
+                .addComponent(xmlFile_jTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(browseButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -109,11 +115,10 @@ public class TempUserInterface extends javax.swing.JFrame {
                     .addComponent(xmlFile_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(browseButton)
                     .addComponent(loadDB_Button))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        inputPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Keyword Search Query"));
-        inputPanel.setToolTipText("Fill in a keyword search query");
+        inputPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Input Panel"));
 
         searchButton.setText("Search");
         searchButton.addActionListener(new java.awt.event.ActionListener() {
@@ -142,6 +147,14 @@ public class TempUserInterface extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        structureScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder("XML Structural Summary"));
+
+        structureArea.setBackground(new java.awt.Color(240, 240, 240));
+        structureArea.setColumns(20);
+        structureArea.setRows(5);
+        structureArea.setEnabled(false);
+        structureScrollPane.setViewportView(structureArea);
+
         resultPane.setViewportBorder(javax.swing.BorderFactory.createTitledBorder("Results"));
 
         resultArea.setEditable(false);
@@ -150,6 +163,44 @@ public class TempUserInterface extends javax.swing.JFrame {
         resultArea.setRows(5);
         resultPane.setViewportView(resultArea);
         resultArea.getAccessibleContext().setAccessibleParent(resultArea);
+
+        algoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Algorithms"));
+
+        algoButtonGroup.add(autoRadioButton);
+        autoRadioButton.setSelected(true);
+        autoRadioButton.setText("Auto");
+
+        algoButtonGroup.add(manualRadioButton);
+        manualRadioButton.setText("Manual");
+
+        algoSelectCards.setLayout(new java.awt.CardLayout());
+
+        algoComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "FullSLCA", "IndexedLookup" }));
+        algoSelectCards.add(algoComboBox, "card2");
+
+        javax.swing.GroupLayout algoPanelLayout = new javax.swing.GroupLayout(algoPanel);
+        algoPanel.setLayout(algoPanelLayout);
+        algoPanelLayout.setHorizontalGroup(
+            algoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(algoPanelLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(algoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(algoSelectCards, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(algoPanelLayout.createSequentialGroup()
+                        .addComponent(autoRadioButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                        .addComponent(manualRadioButton)))
+                .addGap(14, 14, 14))
+        );
+        algoPanelLayout.setVerticalGroup(
+            algoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, algoPanelLayout.createSequentialGroup()
+                .addGroup(algoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(autoRadioButton)
+                    .addComponent(manualRadioButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(algoSelectCards, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         fileMenu.setText("File");
 
@@ -185,29 +236,34 @@ public class TempUserInterface extends javax.swing.JFrame {
                 .addComponent(searchTime, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(structureScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(resultPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 891, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(datasetPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(resultPane)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(datasetPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(inputPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(algoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(datasetPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inputPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addComponent(resultPane, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(structureScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(algoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(datasetPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(inputPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11)
+                        .addComponent(resultPane)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchTime, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-
-        inputPanel.getAccessibleContext().setAccessibleName("Search Query");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -229,9 +285,9 @@ public class TempUserInterface extends javax.swing.JFrame {
             SearchAlgoEnum searchAlgo;
             if (!isAlgoManualSelected()) {
                 searchAlgo = this.controller.selectAlgo(searchText);
-                //this.algoComboBox.setSelectedItem(searchAlgo);
+                this.algoComboBox.setSelectedItem(searchAlgo);
             } else {
-                //searchAlgo = (SearchAlgoEnum) this.algoComboBox.getSelectedItem();
+                searchAlgo = (SearchAlgoEnum) this.algoComboBox.getSelectedItem();
             }
             KeywordSearchExpression exp = this.controller.compileFromString(searchText);
             SearchResult result = this.controller.search(this.isIndexedUsed(),exp);
@@ -287,7 +343,7 @@ public class TempUserInterface extends javax.swing.JFrame {
                 //JTree tree = newDataset.getXmlTree();
                 JTree tree = new JTree();
                 tree.setCellRenderer(new PathTreeCellRenderer());
-                //structureScrollPane.getViewport().add(tree);
+                structureScrollPane.getViewport().add(tree);
                 xmlFile_jTextField.setText(chooser.getSelectedFile().getName());
             } else {
                 System.err.println("Fail to load DB");
@@ -338,11 +394,13 @@ public class TempUserInterface extends javax.swing.JFrame {
 
     private void startParsing(String datasetName, File file) {
         // Start parsing
+        /* Uncomment this to restore
         ParseDialog dialog = new ParseDialog(this, true);
         System.out.println("Start parsing " + datasetName);
         controller.parseDataset(datasetName, file, dialog, new StaticIntervalGenerator(),0);
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
+        */
     }
 
     protected void finishParsing() {
@@ -356,7 +414,7 @@ public class TempUserInterface extends javax.swing.JFrame {
         JTree tree = new JTree();
         //System.out.println("Tree set ");
         tree.setCellRenderer(new PathTreeCellRenderer());
-        //structureScrollPane.getViewport().add(tree);
+        structureScrollPane.getViewport().add(tree);
     }
 
     private boolean isIndexedUsed() {
@@ -364,7 +422,7 @@ public class TempUserInterface extends javax.swing.JFrame {
     }
 
     private boolean isAlgoManualSelected() {
-        return false; //this.manualRadioButton.isSelected();
+        return this.manualRadioButton.isSelected();
     }
 
     private DefaultTreeModel buildPathTreeModel(Collection<Path> paths) {
@@ -495,6 +553,10 @@ return this;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Exit;
     private javax.swing.ButtonGroup algoButtonGroup;
+    private javax.swing.JComboBox algoComboBox;
+    private javax.swing.JPanel algoPanel;
+    private javax.swing.JPanel algoSelectCards;
+    private javax.swing.JRadioButton autoRadioButton;
     private javax.swing.JButton browseButton;
     private javax.swing.JPanel datasetPanel;
     private javax.swing.JMenu fileMenu;
@@ -504,11 +566,14 @@ return this;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JButton loadDB_Button;
     private javax.swing.JMenuBar mainMenuBar;
+    private javax.swing.JRadioButton manualRadioButton;
     private javax.swing.JTextArea resultArea;
     private javax.swing.JScrollPane resultPane;
     private javax.swing.JTextField searchBox;
     private javax.swing.JButton searchButton;
     private javax.swing.JLabel searchTime;
+    private javax.swing.JTextArea structureArea;
+    private javax.swing.JScrollPane structureScrollPane;
     private javax.swing.JTextField xmlFile_jTextField;
     // End of variables declaration//GEN-END:variables
 }

@@ -73,6 +73,27 @@
             <arg value="@nontemporal location payment"/>
         </java>
     </target>
+        <target name="data.json sequenced Parse only" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--json"/>
+            <arg value="data.json"/>
+            <arg value="--disk"/>
+            <arg value="--timestamps"/>
+            <arg value="--maxRange"/>
+            <arg value="100"/>
+            <arg value="--maxInterval"/>
+            <arg value="30"/>
+            <arg value="--randomIntervals"/>
+            <arg value="--jsonParse"/>
+            <arg value="--search"/>
+            <arg value="Brady id"/>
+
+        </java>
+    </target>
     <target name="test memory temporal parse search @nonsequenced foo @meets bar" description="Main sequenced Parse Search">
         <java classname="messiah.Main">
             <classpath>
@@ -298,20 +319,7 @@
             <arg value="--sequencedParse"/>
         </java>
     </target>
-    <target name="json sequenced Parse only" description="Main sequenced Parse Search">
-        <java classname="messiah.Main">
-            <classpath>
-                <pathelement location="dist/TemporalKeywordSearch.jar"/>
-            </classpath>
-            <arg value="--json"/>
-            <arg value="data.json"/>
-            <arg value="--disk"/>
-            <arg value="--jsonParse"/>
-            <arg value="--sequencedSearch"/>
-            <arg value="Brady"/>
-            <arg value="id"/>
-        </java>
-    </target>
+
 
     
     <target name="merge" description="merge">

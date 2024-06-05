@@ -106,28 +106,19 @@ public class Database extends messiah.database.Database {
         HistoryDLNFactory historyFactory = new HistoryDLNFactory();
         NodeId rnodeId = factory.rootId();
         NodeId historyNodeId = historyFactory.rootId();
-        /*
-        while (true) {
-            // Update the information for this node
-            NodeInfo nodeInfo = nodeIndex.get(nodeId);
-            temporalDB.
-            
-        }
-        */
         
         for (String key : keywordNodesIndex.keySet()) {
             Map<PathId, List<NodeId>> map = keywordNodesIndex.get(key);
             for (PathId pathId : map.keySet()) {
                 List<NodeId> a = map.get(pathId);
-                List<NodeId> b = new ArrayList();
                 for (NodeId nodeId : a) {
                     int begin = randomRange.nextInt(rangeMax);
                     int end = Math.min(begin, begin + randomInterval.nextInt(intervalMax));
-                    NodeId temporalNodeId = new HistoryDLN((DLN) nodeId, new Time(begin, end));
-                    b.add(temporalNodeId);
+                    //NodeId temporalNodeId = new HistoryDLN((DLN) nodeId, new Time(begin, end));
                     // Update the node index as well
                     NodeInfo nodeInfo = nodeIndex.get(nodeId);
-                    temporalDB.nodeIndex.put(temporalNodeId, nodeInfo);
+                    nodeInfo.setTimestamp(new Time(begin, end));
+                    temporalDB.nodeIndex.put(nodeId, nodeInfo);
                 }
             }
         }
@@ -142,64 +133,18 @@ public class Database extends messiah.database.Database {
      * Open all of the database tables. Call this once to open the database.
      */
     private void openTablesInner(boolean isReadOnly) {
-        /*
-        if (!alreadyOpen) {
-            if (isReadOnly) {
-                metadataTable = openTable("metadata", String.class, Integer.class);
-                keywordIndex = db.hashMap<String, KeywordInfo>(Config.KEYWORD_INDEX_SPLIT_TABLE_SIZE, true, this, "keywordIndex", String.class, KeywordInfo.class);
-                keywordPathsIndex = new SplitCachedMapSetValue<String, Set<PathId>>(Config.KEYWORD_INDEX_SPLIT_TABLE_SIZE, true, this, "keywordPathsIndex", String.class, Set.class);
-                keywordNodesIndex = new SplitCachedMapKeywordNodeIndex(Config.KEYWORD_INDEX_SPLIT_TABLE_SIZE, true, this, "keywordNodesIndex", String.class, Map.class);
-                nodeIndex = new SplitCachedSortedMap<NodeId, NodeInfo>(Config.NODE_INDEX_SPLIT_TABLE_SIZE, true, this, (isTemporal) ? "temporalNodeIndex" : "nodeIndex", (isTemporal) ? new HistoryDLNNodeIdBinding() : new DLNNodeIdBinding(), NodeInfo.class);
-
-            } else {
-                // Internal database table
-                //System.out.println("DB is on disk");
-                metadataTable = new DBMap<String, Integer>(db, "metadata", Serializer.STRING, Serializer.INTEGER);
-                keywordIndex = new DBMap<String, KeywordInfo>(db, "keywordIndex", Serializer.STRING, new GroupSerializer<KeywordInfo>());
-                keywordPathsIndex = new SplitCachedMapSetValue<String, Set<PathId>>(Config.KEYWORD_INDEX_SPLIT_TABLE_SIZE, false, this, "keywordPathsIndex", String.class, Set.class);
-                keywordNodesIndex = new SplitCachedMapKeywordNodeIndex(Config.KEYWORD_INDEX_SPLIT_TABLE_SIZE, false, this, "keywordNodesIndex", String.class, Map.class);
-                 nodeIndex = new SplitCachedSortedMap<NodeId, NodeInfo>(Config.NODE_INDEX_SPLIT_TABLE_SIZE, false, this, (isTemporal) ? "temporalNodeIndex" : "nodeIndex", (isTemporal) ? new HistoryDLNNodeIdBinding() : new DLNNodeIdBinding(), NodeInfo.class);
-            }
-        }
-        */
     }
 
     /*
      * Open all of the database tables. Call this once to open the database.
      */
     public void openNonSplitTables(boolean isReadOnly) {
-        /*
-        if (!alreadyOpen) {
-            if (isReadOnly) {
-                pathNameIndex = openTable("pathNameIndex", String.class, PathId.class);
-                pathIndex = openTable("pathIndex", PathId.class, PathInfo.class);
-                typeIndex = openTable("typeIndex", PathId.class, TreeSet.class);
-            } else {
-                pathNameIndex = new CachedMap(openTable("pathNameIndex", String.class, PathId.class));
-                pathIndex = new CachedMap(openTable("pathIndex", PathId.class, PathInfo.class));
-                typeIndex = new CachedMap(openTable("typeIndex", PathId.class, TreeSet.class));
-            }
-        }
-        */
     }
 
     /*
      * Open all of the database tables. Call this once to open the database.
      */
     public void commitNonSplitTables() {
-        /*
-        //System.out.println("committing nonsplit");
-        if (!alreadyOpen) {
-            if (!isReadOnly) {
-                CachedMap c = (CachedMap) pathIndex;
-                c.commit();
-                c = (CachedMap) pathNameIndex;
-                c.commit();
-                c = (CachedMap) typeIndex;
-                c.commit();
-            }
-        }
-        */
     }
 
     /* This method commits the open tables, and the database

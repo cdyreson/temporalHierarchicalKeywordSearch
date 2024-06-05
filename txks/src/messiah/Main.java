@@ -9,6 +9,7 @@ import javax.swing.JTree;
 import messiah.database.Database;
 import messiah.parse.CurtParseTask;
 import messiah.parse.DeleteIntervalGenerator;
+import messiah.parse.HistoryJSONParseTask;
 import messiah.parse.HistoryParseTask;
 import messiah.parse.IntervalGenerator;
 import messiah.parse.RandomIntervalGenerator;
@@ -99,6 +100,9 @@ public class Main {
             //    closeDB();
             //}
             //if (bdb == null) bdb = new messiah.database.memory.Database();
+            // Open a disk resident DB
+            openDB(Config.DB_FOLDER_STRING + datasetName, true, true, true /* isTemporal */);
+            
             if (db == null) {
                 db = new DbAccess(bdb);
             }
@@ -155,7 +159,12 @@ public class Main {
     public void testParser(String datasetName, File parsedFile, boolean isJSON, boolean isTemporal, boolean isRepresentational, IntervalGenerator intervalGenerator, int maxNodes) {
         try {
             if (isJSON) {
-                JSONParseTask task = new JSONParseTask(bdb, parsedFile, maxNodes);
+                if (isTemporal) {
+                    
+                }
+                JSONParseTask task = (isTemporal)? 
+                        new HistoryJSONParseTask(bdb, parsedFile, intervalGenerator,maxNodes)
+                        : new JSONParseTask(bdb, parsedFile, maxNodes);
                 task.doInBackground();
                 resetIndexes();
             } else if (isTemporal) {
@@ -316,7 +325,7 @@ public class Main {
         //foo.closeDB();
         boolean isDiskDb = false;
         boolean isReadOnly = true;
-        int maxNodes = 0;
+        int maxNodes = Integer.MAX_VALUE;
         boolean isTemporalDB = false; // Set this flag if DB has timestamps
         int consumed = 0;
         String xmlFileName = Config.XML_FOLDER_STRING + "curt.xml";

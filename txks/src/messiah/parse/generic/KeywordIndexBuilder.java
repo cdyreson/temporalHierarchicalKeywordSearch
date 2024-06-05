@@ -2,17 +2,13 @@ package messiah.parse.generic;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
 import messiah.Config;
 import messiah.KeywordInfo;
-import messiah.NodeInfo;
-import messiah.Path;
 import messiah.database.Database;
 import messiah.parse.*;
 import usu.NodeId;

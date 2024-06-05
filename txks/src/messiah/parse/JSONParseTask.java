@@ -111,7 +111,6 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
             }
             */
             int depth = 0;
-            boolean previousIsFieldName = false;
             while ((t = this.jp.nextToken()) != null) {
                 //System.out.println("depht is " + depth);
                 switch (t) {
@@ -122,7 +121,6 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
                         } 
                         arrayStack.push(false);
                         depth++;
-                        previousIsFieldName = false;
                         break;
                     case END_OBJECT:
                         //System.out.println("end object");
@@ -139,7 +137,6 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
                             } 
                         }
                         //nameStack.pop();
-                        previousIsFieldName = false;
                         break;
                     case START_ARRAY:
                         depth++;
