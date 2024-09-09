@@ -7,7 +7,6 @@ The experiments folder is organized as follows.
  - The `json` directory contains the test JSON datasets.
  - The `dist` directory is the JAR of the TXKS system copied from the code directory.
  - The `lib` directory is the lib for running the system.
- -  The 
 
 ## Loading the Database
 To run the experiments the JSON data needs to be parsed into a BerkeleyDB database.  We assume that the home directory is the `experimentalReproducibility` directory.  You can establish this as follows.
