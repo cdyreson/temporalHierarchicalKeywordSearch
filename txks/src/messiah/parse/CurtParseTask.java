@@ -227,7 +227,7 @@ public class CurtParseTask extends SwingWorker<Void, Void> {
     }
 
     public void parseThisThing() {
-        System.out.println("CurtParseTask: Start parsing");
+        // System.out.println("CurtParseTask: Start parsing");
         // Traverse the tree recursively to compute maximum depth and fanout (level order)
         // of the document tree along with list of paths
         createListeners();
@@ -243,7 +243,7 @@ public class CurtParseTask extends SwingWorker<Void, Void> {
 
     @Override
     public Void doInBackground() throws Exception {
-        System.out.println("CurtParseTask: Start parsing");
+        // System.out.println("CurtParseTask: Start parsing");
         // Traverse the tree recursively to compute maximum depth and fanout (level order)
         // of the document tree along with list of paths
         createListeners();

@@ -54,7 +54,7 @@ public class SplitCachedSortedMap<K extends Comparable, V> implements SortedMap<
 
     private void openSplits() {
         if (isReadOnly || db.metadataTable.containsKey(indexName)) {
-            System.out.println("Opening many split splitSortedCachedMap " + indexName);
+            // System.out.println("Opening many split splitSortedCachedMap " + indexName);
             currentIndex = db.metadataTable.get(indexName);
             maps = new SortedMap[currentIndex + 1];
             // Open existing tables
@@ -200,7 +200,7 @@ public class SplitCachedSortedMap<K extends Comparable, V> implements SortedMap<
     public SortedMap<K, V> subMap(K k, K k1) {
         // First find the head key
         // Try the current map
-        System.out.println("Submap looking for  " + k + " " + k1 + " " + maps[currentIndex].firstKey() + " " + maps[currentIndex].lastKey());
+        //System.out.println("Submap looking for  " + k + " " + k1 + " " + maps[currentIndex].firstKey() + " " + maps[currentIndex].lastKey());
         int minCount = currentIndex;
         while (minCount > 0) {
             K min = maps[minCount].firstKey();
@@ -246,7 +246,7 @@ public class SplitCachedSortedMap<K extends Comparable, V> implements SortedMap<
         public SortedMap<K, V> subMapOld(K k, K k1) {
         // First find the head key
         // Try the current map
-        System.out.println("Submap looking for  " + k + " " + k1 + " " + maps[currentIndex].firstKey() + " " + maps[currentIndex].lastKey());
+        //System.out.println("Submap looking for  " + k + " " + k1 + " " + maps[currentIndex].firstKey() + " " + maps[currentIndex].lastKey());
         K min = maps[currentIndex].firstKey();
         //K maxNode = maps[currentIndex].lastKey();
         if (min != null) {
@@ -267,7 +267,7 @@ public class SplitCachedSortedMap<K extends Comparable, V> implements SortedMap<
         for (int i = 0; i < currentIndex; i++) {
             //min = maps[currentIndex].firstKey();
             K max = maps[i].lastKey();
-            System.out.println("Submap looking for  " + max.getClass() + " " + k.getClass() + " " + k + " " + k1 + " " + maps[i].firstKey() + " " + maps[i].lastKey());
+            //System.out.println("Submap looking for  " + max.getClass() + " " + k.getClass() + " " + k + " " + k1 + " " + maps[i].firstKey() + " " + maps[i].lastKey());
             if (k.compareTo(max) < 1) {
                 // Found map with starting node
                 if (k1.compareTo(max) < 1) {

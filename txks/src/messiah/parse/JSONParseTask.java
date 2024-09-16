@@ -516,7 +516,7 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
      * publish their data to the given listeners
      */
     public void parse() {
-        System.out.println("JSON CurtParseTask Parsing...");
+        // System.out.println("JSON CurtParseTask Parsing...");
         int count = 0;
         try {
             long time1 = System.currentTimeMillis();
@@ -637,7 +637,7 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
     }
 
     public void parseThisThing() {
-        System.out.println("CurtParseTask: Start parsing");
+        // System.out.println("CurtParseTask: Start parsing");
         // Traverse the tree recursively to compute maximum depth and fanout (level order)
         // of the document tree along with list of paths
         createListeners();
@@ -652,7 +652,7 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
 
     @Override
     public Void doInBackground() throws Exception {
-        System.out.println("CurtParseTask: Start parsing");
+        // System.out.println("CurtParseTask: Start parsing");
         // Traverse the tree recursively to compute maximum depth and fanout (level order)
         // of the document tree along with list of paths
         createListeners();
