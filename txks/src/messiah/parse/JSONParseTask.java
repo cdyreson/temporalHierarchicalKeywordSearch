@@ -510,7 +510,7 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
         this.nodeIdBuilder = nodeBuilder;
         this.reader = reader;
     }
-
+ 
     /**
      * The main parsing process which traverses XML nodes sequentially and
      * publish their data to the given listeners

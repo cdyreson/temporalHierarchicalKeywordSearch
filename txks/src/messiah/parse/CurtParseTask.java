@@ -225,7 +225,7 @@ public class CurtParseTask extends SwingWorker<Void, Void> {
         //listeners.add(termNodeIndexBuilder);
 
     }
-
+ 
     public void parseThisThing() {
         // System.out.println("CurtParseTask: Start parsing");
         // Traverse the tree recursively to compute maximum depth and fanout (level order)

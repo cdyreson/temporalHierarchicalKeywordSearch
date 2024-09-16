@@ -51,7 +51,7 @@ public class SplitCachedSortedMap<K extends Comparable, V> implements SortedMap<
         this.maxNumberOfElements = maxNumberOfElements;
         openSplits();
     }
-
+ 
     private void openSplits() {
         if (isReadOnly || db.metadataTable.containsKey(indexName)) {
             // System.out.println("Opening many split splitSortedCachedMap " + indexName);
