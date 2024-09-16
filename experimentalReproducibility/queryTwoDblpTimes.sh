@@ -1,0 +1,5 @@
+java -jar dist/TemporalKeywordSearch.jar --verbose --json twotdblp.json --disk --search "@sequenced foo5 bar5"
+java -jar dist/TemporalKeywordSearch.jar --verbose --json twotdblp.json --disk --search "@sequenced foo4 bar4"
+java -jar dist/TemporalKeywordSearch.jar --verbose --json twotdblp.json --disk --search "@sequenced foo3 bar3"
+java -jar dist/TemporalKeywordSearch.jar --verbose --json twotdblp.json --disk --search "@sequenced foo2 bar2"
+java -jar dist/TemporalKeywordSearch.jar --verbose --json twotdblp.json --disk --search "@sequenced foo1 bar1"
