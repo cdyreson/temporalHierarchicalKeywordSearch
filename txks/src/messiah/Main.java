@@ -426,7 +426,7 @@ public class Main {
 
         // Set the maximum parsed nodes
         if (args[consumed].contentEquals("--maxNodes")) {
-            System.out.println("consuming maxNodes");
+            // System.out.println("consuming maxNodes");
             consumed++;
             maxNodes = Integer.parseInt(args[consumed]);
             System.out.println("max nodes is " + maxNodes);

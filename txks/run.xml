@@ -88,7 +88,10 @@
             <arg value="--maxInterval"/>
             <arg value="30"/>
             <arg value="--randomIntervals"/>
+                        <arg value="--maxNodes"/>
+            <arg value="50"/>
             <arg value="--jsonParse"/>
+
             <arg value="--search"/>
             <arg value="Brady id"/>
 

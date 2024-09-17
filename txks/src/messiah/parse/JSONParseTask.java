@@ -92,7 +92,9 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
         }
     }
     
-     private void innerParse() {
+     private int innerParse() {
+        //System.out.println("maxNodes are " + this.maxNodes);
+         int count = 0;
         try {          
             JsonToken t;
             // initializing
@@ -112,9 +114,11 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
             */
             int depth = 0;
             while ((t = this.jp.nextToken()) != null) {
+                if (this.maxNodes != 0 && count > this.maxNodes) break;
                 //System.out.println("depht is " + depth);
                 switch (t) {
                     case START_OBJECT:
+                        count++;
                         //System.out.println("start object");
                         for (ParserListener listener : listeners) {
                             listener.start(nameStack.peek(), false, false);
@@ -161,6 +165,7 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
                         break;
                     case FIELD_NAME:
                         //depth++;
+                        count++;
                         String name = this.jp.getCurrentName();
                         //System.out.println("field name " + name);
                         nameStack.push(name);
@@ -174,6 +179,7 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
                     case VALUE_FALSE:
                     case VALUE_TRUE:
                     case VALUE_NULL:
+                        count++;
                         String value = "";
                         switch (t) {
                             case VALUE_FALSE:
@@ -224,6 +230,7 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
             System.exit(-1);
         }
 
+        return count;
     }
     private void innerParseOld() {
         /*
@@ -520,7 +527,7 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
         int count = 0;
         try {
             long time1 = System.currentTimeMillis();
-            innerParse();
+            count = innerParse();
             /*
             while (reader.hasNext()) {
                 // read next node
