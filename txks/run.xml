@@ -73,6 +73,44 @@
             <arg value="@nontemporal location payment"/>
         </java>
     </target>
+              <target name="nba20.json only query" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--json"/>
+            <arg value="nba20.json"/>
+            <arg value="--disk"/>
+   
+
+            <arg value="--search"/>
+            <arg value="foo bar"/>
+
+        </java>
+    </target>
+           <target name="nba20.json parse and query" description="Main sequenced Parse Search">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--json"/>
+            <arg value="nba20.json"/>
+            <arg value="--disk"/>
+            <arg value="--timestamps"/>
+            <arg value="--maxRange"/>
+            <arg value="100"/>
+            <arg value="--maxInterval"/>
+            <arg value="30"/>
+            <arg value="--randomIntervals"/>
+            <arg value="--jsonParse"/>
+
+            <arg value="--search"/>
+            <arg value="foo bar"/>
+
+        </java>
+    </target>
         <target name="data.json sequenced Parse only" description="Main sequenced Parse Search">
         <java classname="messiah.Main">
             <classpath>
