@@ -1,21 +1,21 @@
 # Process Trees dataset
-sh queryTwoTrees.sh > results/TwoTrees.txt
-perl processExpSLCA.pl <results/TwoTrees.txt > figures/expTwoTreesSLCA.dat 
-perl processExpResult.pl <results/TwoTrees.txt > figures/expTwoTreesResult.dat 
-sh queryTwoTimeTrees.sh > results/TwoTimeTrees.txt
-perl processExpSLCA.pl <results/TwoTimeTrees.txt > figures/expTwoTimeTreesSLCA.dat 
-perl processExpResult.pl <results/TwoTimeTrees.txt > figures/expTwoTimeTreesResult.dat 
+sh queryTwoTrees.sh > results/twoTrees.txt
+perl processExpSLCA.pl <results/twoTrees.txt > figures/expTwoTreesSLCA.dat 
+perl processExpResult.pl <results/twoTrees.txt > figures/expTwoTreesResult.dat 
+sh queryTwoTimeTrees.sh > results/twoTimeTrees.txt
+perl processExpSLCA.pl <results/twoTimeTrees.txt > figures/expTwoTimeTreesSLCA.dat 
+perl processExpResult.pl <results/twoTimeTrees.txt > figures/expTwoTimeTreesResult.dat 
 # Process Nba dataset
-sh queryTwoNba.sh > results/TwoNba.txt
-perl processExpSLCA.pl <results/TwoNba.txt > figures/expTwoNbaSLCA.dat 
-perl processExpResult.pl <results/TwoNba.txt > figures/expTwoNbaResult.dat 
-sh queryTwoTimeNba.sh > results/TwoTimeNba.txt
-perl processExpSLCA.pl <results/TwoTimeNba.txt > figures/expTwoTimeNbaSLCA.dat 
-perl processExpResult.pl <results/TwoNTimeba.txt > figures/expTwoTimeNbaResult.dat
+sh queryTwoNba.sh > results/twoNba.txt
+perl processExpSLCA.pl <results/twoNba.txt > figures/expTwoNbaSLCA.dat 
+perl processExpResult.pl <results/twoNba.txt > figures/expTwoNbaResult.dat 
+sh queryTwoTimeNba.sh > results/twoTimeNba.txt
+perl processExpSLCA.pl <results/twoTimeNba.txt > figures/expTwoTimeNbaSLCA.dat 
+perl processExpResult.pl <results/twoNTimeba.txt > figures/expTwoTimeNbaResult.dat
 # Process Dblp dataset      
-sh queryTwoDblp.sh > results/TwoDblp.txt
-perl processExpSLCA.pl <results/TwoDblp.txt > figures/expTwoDblpSLCA.dat 
-perl processExpResult.pl <results/TwoDblp.txt > figures/expTwoDblpResult.dat 
-sh queryTwoTimeDblp.sh > results/TwoTimeDblp.txt
-perl processExpSLCA.pl <results/TwoTimeDblp.txt > figures/expTwoTimeDblpSLCA.dat 
-perl processExpResult.pl <results/TwoTimeDblp.txt > figures/expTwoTimeDblpResult.dat
+sh queryTwoDblp.sh > results/twoDblp.txt
+perl processExpSLCA.pl <results/twoDblp.txt > figures/expTwoDblpSLCA.dat 
+perl processExpResult.pl <results/twoDblp.txt > figures/expTwoDblpResult.dat 
+sh queryTwoTimeDblp.sh > results/twoTimeDblp.txt
+perl processExpSLCA.pl <results/twoTimeDblp.txt > figures/expTwoTimeDblpSLCA.dat 
+perl processExpResult.pl <results/twoTimeDblp.txt > figures/expTwoTimeDblpResult.dat
