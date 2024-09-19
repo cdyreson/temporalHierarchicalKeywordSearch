@@ -11,7 +11,7 @@ perl processExpSLCA.pl <results/twoNba.txt > figures/expTwoNbaSLCA.dat
 perl processExpResult.pl <results/twoNba.txt > figures/expTwoNbaResult.dat 
 sh queryTwoTimeNba.sh > results/twoTimeNba.txt
 perl processExpSLCA.pl <results/twoTimeNba.txt > figures/expTwoTimeNbaSLCA.dat 
-perl processExpResult.pl <results/twoNTimeba.txt > figures/expTwoTimeNbaResult.dat
+perl processExpResult.pl <results/twoTimeNba.txt > figures/expTwoTimeNbaResult.dat
 # Process Dblp dataset      
 sh queryTwoDblp.sh > results/twoDblp.txt
 perl processExpSLCA.pl <results/twoDblp.txt > figures/expTwoDblpSLCA.dat 
