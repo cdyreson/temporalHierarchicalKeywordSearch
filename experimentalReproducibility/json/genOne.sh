@@ -1,0 +1,32 @@
+perl ./mod.pl 18978 20 trees.json >trees20.json 
+perl ./mod.pl 18978 40 trees.json >trees40.json 
+perl ./mod.pl 18978 60 trees.json >trees60.json 
+perl ./mod.pl 18978 80 trees.json >trees80.json 
+perl ./mod.pl 18978 100 trees.json >trees100.json 
+perl ./mod.pl 18978 20 trees.json >ttrees20.json 
+perl ./mod.pl 18978 40 trees.json >ttrees40.json 
+perl ./mod.pl 18978 60 trees.json >ttrees60.json 
+perl ./mod.pl 18978 80 trees.json >ttrees80.json 
+perl ./mod.pl 18978 100 trees.json >ttrees100.json 
+ 
+perl ./mod.pl 14325250 20 dblp.json >dblp20.json 
+perl ./mod.pl 14325250 40 dblp.json >dblp40.json 
+perl ./mod.pl 14325250 60 dblp.json >dblp60.json 
+perl ./mod.pl 14325250 80 dblp.json >dblp80.json 
+perl ./mod.pl 14325250 100 dblp.json >dblp100.json 
+perl ./mod.pl 14325250 20 dblp.json >tdblp20.json 
+perl ./mod.pl 14325250 40 dblp.json >tdblp40.json 
+perl ./mod.pl 14325250 60 dblp.json >tdblp60.json 
+perl ./mod.pl 14325250 80 dblp.json >tdblp80.json 
+perl ./mod.pl 14325250 100 dblp.json >tdblp100.json 
+ 
+perl ./mod.pl 1605028 20 nba.json >nba20.json 
+perl ./mod.pl 1605028 40 nba.json >nba40.json 
+perl ./mod.pl 1605028 60 nba.json >nba60.json 
+perl ./mod.pl 1605028 80 nba.json >nba80.json 
+perl ./mod.pl 1605028 100 nba.json >nba100.json 
+perl ./mod.pl 1605028 20 nba.json >tnba20.json 
+perl ./mod.pl 1605028 40 nba.json >tnba40.json 
+perl ./mod.pl 1605028 60 nba.json >tnba60.json 
+perl ./mod.pl 1605028 80 nba.json >tnba80.json 
+perl ./mod.pl 1605028 100 nba.json >tnba100.json 
