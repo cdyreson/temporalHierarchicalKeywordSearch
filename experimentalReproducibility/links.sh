@@ -1,3 +1,4 @@
+#!/bin/bash
 ln -s ../txks/dist dist
 cd json
 ln -s trees/trees.json trees20.json

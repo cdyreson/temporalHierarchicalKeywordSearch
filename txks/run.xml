@@ -89,7 +89,7 @@
             <arg value="30"/>
             <arg value="--randomIntervals"/>
                         <arg value="--maxNodes"/>
-            <arg value="50"/>
+            <arg value="5"/>
             <arg value="--jsonParse"/>
 
             <arg value="--search"/>
