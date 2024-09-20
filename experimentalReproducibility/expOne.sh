@@ -1,4 +1,4 @@
-Process Trees dataset
+# Process Trees dataset
 sh queryOneTrees.sh > results/oneTrees.txt
 perl processExpSLCA.pl <results/oneTrees.txt > figures/expOneTreesSLCA.dat 
 perl processExpResult.pl <results/oneTrees.txt > figures/expOneTreesResult.dat 

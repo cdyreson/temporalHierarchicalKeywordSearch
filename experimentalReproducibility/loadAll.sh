@@ -4,3 +4,4 @@ sh loadOneDblp.sh
 sh loadTwoDblp.sh
 sh loadTwoTrees.sh
 sh loadTwoNba.sh
+sh loadThree.sh
