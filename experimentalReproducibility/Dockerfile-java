@@ -1,0 +1,55 @@
+#Build the dist and node_modules, set up the api
+#FROM fundingsocietiesdocker/openjdk19-alpine
+FROM alpine
+
+WORKDIR /work
+
+
+#RUN apk update && apk add openjdk22 && apk add apache-ant && apk add git
+RUN apk update \
+    && apk add apt \
+    && apk add fontconfig \
+    && apk add openjdk21 \
+    && apk add apache-ant \
+    && apk add curl \
+    && apk add texmf-dist-latex \
+    && apk add git
+
+
+RUN apk add --no-cache msttcorefonts-installer fontconfig
+RUN update-ms-fonts
+
+#ENTRYPOINT [ "ant" ]
+
+# Get the code for the project
+RUN <<EOC
+#apt-get update
+#apt-get install -y curl
+git init
+git clone https://github.com/cdyreson/temporalHierarchicalKeywordSearch.git
+EOC
+
+# Get the test data sets
+WORKDIR /work/temporalHierarchicalKeywordSearch/experimentalReproducibility/json
+RUN <<EOF
+git clone https://frosch.cosy.sbg.ac.at/datasets/json/nba.git
+git clone https://frosch.cosy.sbg.ac.at/datasets/json/trees.git
+git clone https://frosch.cosy.sbg.ac.at/datasets/json/dblp.git
+EOF
+
+# Create the symbolic links
+WORKDIR /work/temporalHierarchicalKeywordSearch/experimentalReproducibility
+#RUN ./links.sh
+RUN <<EOL
+#"sh links.sh"
+EOL
+
+# Compile the system
+#WORKDIR /work/temporalHierarchicalKeywordSearch/txks
+#RUN "curl -O https://www.dropbox.com/scl/fi/kwf0ppm9binf643mpvnf6/assignClojure.xml?rlkey=qhx7712t48j86r0kja6uet87g&st=nduae2s2&dl=0"
+#RUN <<EOA
+#ant compile
+#ant jar
+#EOA
+
+

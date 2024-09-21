@@ -1,0 +1,466 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{filecontents}
+\usepackage{csvsimple}
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\begin{document}
+
+\begin{figure}[t]
+%MINI\begin{minipage}[c]{0.45\linewidth}
+\centering
+\pgfplotsset{
+    width=4.3cm,compat=1.8,
+    every axis legend/.append style={ draw=none, at={(2.45,1)}, anchor=north east,legend columns = 1}
+    }
+    \scalebox{0.9}{
+    
+\begin{tikzpicture}
+\begin{axis}[
+%    title={Cost},
+    xlabel={Size of slice (percentage of dataset size)},
+    ylabel={Time (milliseconds)},
+    xmin=0, xmax=100,
+    ymin=0, ymax=350,
+    xtick={20, 40, 60, 80, 100},
+%    ytick={0,20,40,60,80,100,120},
+%    legend pos=outer south west,
+    ymajorgrids=true,
+    grid style=dashed,
+%    legend style={at={(0.5,-0.3)},
+%    anchor=north,legend columns=1}
+]
+
+\addplot[
+    color=blue,
+    mark=square,
+    ]
+    table {expOneTreesSLCA.dat};    
+%(20, 217.667871)
+%(40, 238.490131)
+%(60, 255.546814)
+%(80, 230.734374)
+%(100, 218.009701)
+   % };
+    \addlegendentry{nontemporal SLCA}
+    
+
+\addplot[
+    color=red,
+    mark=asterisk,
+    ]
+    table {expOneTreesResult.dat};
+    \addlegendentry{nontemporal result}
+
+\addplot[
+    color=green,
+    mark=oplus,
+    ]
+    table {expOneTimeTreesSLCA.dat};
+    \addlegendentry{sequenced SLCA}
+
+\addplot[
+    color=black,
+    mark=diamond,
+    ]
+    table {expOneTimeTreesResult.dat};
+    \addlegendentry{sequenced result}
+\end{axis}
+\end{tikzpicture}
+    } % end scalebox
+\caption{Result constant Trees data}\label{fig:expOneTrees}
+\end{figure}
+
+\begin{figure}[t]
+%MINI\begin{minipage}[c]{0.45\linewidth}
+\centering
+\pgfplotsset{
+    width=4.5cm,compat=1.8,
+    every axis legend/.append style={ draw=none, at={(2.45,1)}, anchor=north east,legend columns = 1}
+    }
+    \scalebox{0.9}{
+
+\begin{tikzpicture}
+\begin{axis}[
+%    title={Cost},
+    xlabel={Size of slice (percentage of dataset size)},
+    ylabel={Time (milliseconds)},
+    xmin=0, xmax=100,
+    ymin=0, ymax=200,
+    xtick={20, 40, 60, 80, 100},
+%    ytick={0,20,40,60,80,100,120},
+%    legend pos=outer south west,
+    ymajorgrids=true,
+    grid style=dashed,
+]
+
+\addplot[
+    color=blue,
+    mark=square,
+    ]
+        table {expOneDblpSLCA.dat};
+    \addlegendentry{nontemporal SLCA}
+    
+
+\addplot[
+    color=red,
+    mark=asterisk,
+    ]
+        table {expOneDblpResult.dat};
+    \addlegendentry{nontemporal result}
+
+\addplot[
+    color=green,
+    mark=oplus,
+    ]
+        table {expOneTimeDblpSLCA.dat};
+    \addlegendentry{sequenced SLCA}
+
+\addplot[
+    color=black,
+    mark=diamond,
+    ]
+        table {expOneTimeDblpResult.dat};
+    \addlegendentry{sequenced result}
+
+\end{axis}
+\end{tikzpicture}
+    
+    }
+ 
+\caption{Result constant DBLP data}\label{fig:expOneDBLP}
+\end{figure}
+
+\begin{figure}[t]
+%MINI\begin{minipage}[c]{0.45\linewidth}
+\centering
+\pgfplotsset{
+    width=4.5cm,compat=1.8,
+    every axis legend/.append style={ draw=none, at={(2.45,1)}, anchor=north east,legend columns = 1}
+    }
+    \scalebox{0.9}{
+
+\begin{tikzpicture}
+\begin{axis}[
+%    title={Cost},
+    xlabel={Size of slice (percentage of dataset size)},
+    ylabel={Time (milliseconds)},
+    xmin=0, xmax=100,
+    ymin=0, ymax=150,
+    xtick={20, 40, 60, 80, 100},
+%    xtick={10\%, 20\%, 30\%, 40\%, 50\%, 60\%, 70\%, 80\%, 90\%, 100\%},
+%    ytick={0,20,40,60,80,100,120},
+%    legend pos=outer south west,
+    ymajorgrids=true,
+    grid style=dashed,
+]
+
+\addplot[
+    color=blue,
+    mark=square,
+    ]
+        table {expOneNbaSLCA.dat};
+    \addlegendentry{nontemporal SLCA}
+    
+
+\addplot[
+    color=red,
+    mark=asterisk,
+    ]
+        table {expOneNbaResult.dat};
+    \addlegendentry{nontemporal result}
+
+\addplot[
+    color=green,
+    mark=oplus,
+    ]
+        table {expOneTimeNbaSLCA.dat};
+    \addlegendentry{sequenced SLCA}
+
+\addplot[
+    color=black,
+    mark=diamond,
+    ]
+        table {expOneTimeNbaResult.dat};
+    \addlegendentry{sequenced result}
+
+\end{axis}
+\end{tikzpicture}
+    
+    }
+ 
+\caption{Result constant NBA data}\label{fig:expOneNBA}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\pgfplotsset{
+    width=4.5cm,compat=1.8,
+    every axis legend/.append style={ draw=none, at={(2.45,1)}, anchor=north east,legend columns = 1}
+    }
+    \scalebox{0.9}{
+
+\begin{tikzpicture}
+\begin{axis}[
+%    title={Cost},
+    xlabel={\# of nodes (thousands)},
+    ylabel={Time (milliseconds)},
+    xmin=0, xmax=6,
+    ymin=0, ymax=3000,
+    xtick={0,1,2,3,4,5},
+%    ytick={0,20,40,60,80,100,120},
+%    legend pos=north west,
+    ymajorgrids=true,
+    grid style=dashed,
+]
+
+\addplot[
+    color=blue,
+    mark=square,
+    ]
+        table {expTwoTreesSLCA.dat};
+    \addlegendentry{nontemporal SLCA}
+    
+
+\addplot[
+    color=red,
+    mark=asterisk,
+    ]
+        table {expTwoTreesResult.dat};
+    \addlegendentry{nontemporal result}
+
+\addplot[
+    color=green,
+    mark=oplus,
+    ]
+        table {expTwoTimeTreesSLCA.dat};
+    \addlegendentry{sequenced SLCA}
+
+\addplot[
+    color=black,
+    mark=diamond,
+    ]
+        table {expTwoTimeTreesResult.dat};
+    \addlegendentry{sequenced result}
+
+\end{axis}
+\end{tikzpicture}
+    
+    }
+\caption{Size of the result increases for the Trees dataset}\label{fig:expTwoTrees}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\pgfplotsset{
+    width=4.5cm,compat=1.8,
+    every axis legend/.append style={ draw=none, at={(2.45,1)}, anchor=north east,legend columns = 1}
+    }
+    \scalebox{0.9}{
+    
+   
+\begin{tikzpicture}
+\begin{axis}[
+%    title={Cost},
+    xlabel={\# of nodes (thousands)},
+    ylabel={Time (milliseconds)},
+    xmin=0, xmax=6,
+    ymin=0, ymax=3000,
+    xtick={0,1,2,3,4,5},
+%    ytick={0,20,40,60,80,100,120},
+%    legend pos=north west,
+    ymajorgrids=true,
+    grid style=dashed,
+]
+
+\addplot[
+    color=blue,
+    mark=square,
+    ]
+        table {expTwoDblpSLCA.dat};
+    \addlegendentry{nontemporal SLCA}
+    
+
+\addplot[
+    color=red,
+    mark=asterisk,
+    ]
+        table {expTwoDblpResult.dat};
+    \addlegendentry{nontemporal result}
+
+\addplot[
+    color=green,
+    mark=oplus,
+    ]
+        table {expTwoTimeDblpSLCA.dat};
+    \addlegendentry{sequenced SLCA}
+
+\addplot[
+    color=black,
+    mark=diamond,
+    ]
+        table {expTwoTimeDblpResult.dat};
+    \addlegendentry{sequenced result}
+
+\end{axis}
+\end{tikzpicture}
+ }
+\caption{Size of the result increases for the DBLP dataset}\label{fig:expTwoDBLP}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\pgfplotsset{
+    width=4.5cm,compat=1.8,
+    every axis legend/.append style={ draw=none, at={(2.45,1)}, anchor=north east,legend columns = 1}
+    }
+    \scalebox{0.9}{
+    
+
+\begin{tikzpicture}
+\begin{axis}[
+%    title={Cost},
+    xlabel={\# of nodes (thousands)},
+    ylabel={Time (milliseconds)},
+    xmin=0, xmax=6,
+    ymin=0, ymax=1000,
+    xtick={0,1,2,3,4,5},
+%    ytick={0,20,40,60,80,100,120},
+%    legend pos=north west,
+    ymajorgrids=true,
+    grid style=dashed,
+]
+
+\addplot[
+    color=blue,
+    mark=square,
+    ]
+        table {expTwoNbaSLCA.dat};
+    \addlegendentry{nontemporal SLCA}
+    
+
+\addplot[
+    color=red,
+    mark=asterisk,
+    ]
+        table {expTwoNbaResult.dat};
+    \addlegendentry{nontemporal result}
+
+\addplot[
+    color=green,
+    mark=oplus,
+    ]
+        table {expTwoTimeNbaSLCA.dat};
+    \addlegendentry{sequenced SLCA}
+
+\addplot[
+    color=black,
+    mark=diamond,
+    ]
+        table {expTwoTimeNbaResult.dat};
+    \addlegendentry{sequenced result}
+
+\end{axis}
+\end{tikzpicture}
+}
+\caption{Size of the result increases for the NBA dataset}\label{fig:expTwoNBA}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\pgfplotsset{
+    width=4.5cm,compat=1.8,
+    every axis legend/.append style={ draw=none, at={(2.35,1)}, anchor=north east,legend columns = 1}
+    }
+    \scalebox{0.9}{
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel={Timeline size},
+    ylabel={Time (milliseconds)},
+    xmin=0, xmax=105,
+    ymin=0, ymax=3000,
+    xtick={1,50,100},
+    ymajorgrids=true,
+    grid style=dashed,
+]
+
+\addplot[
+    color=green,
+    mark=oplus,
+    ]
+        table {expThreeSLCA.dat};
+    \addlegendentry{sequenced SLCA}
+
+\addplot[
+    color=black,
+    mark=diamond,
+    ]
+        table {expThreeResult.dat};
+    \addlegendentry{sequenced result}
+
+\end{axis}
+\end{tikzpicture}
+    }
+ 
+\caption{Duration varies for the DBLP dataset}\label{fig:expThreeDBLP}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\pgfplotsset{
+    width=4.5cm,compat=1.8,
+    every axis legend/.append style={ draw=none, at={(2.50,1)}, anchor=north east,legend columns = 1}
+    }
+    \scalebox{0.9}{
+\begin{tikzpicture}
+\begin{axis}[
+%    title={Cost},
+    xlabel={\# of nodes (thousands)},
+    ylabel={Time (milliseconds)},
+    xmin=0, xmax=6,
+    ymin=0, ymax=3000,
+    xtick={0,1,2,3,4,5},
+%    ytick={0,20,40,60,80,100,120},
+%    legend pos=north west,
+    ymajorgrids=true,
+    grid style=dashed,
+]
+
+\addplot[
+    color=blue,
+    mark=square,
+    ]
+        table {expFourTimeDblpSLCA.dat};
+    \addlegendentry{nonsequenced SLCA}
+
+\addplot[
+    color=red,
+    mark=asterisk,
+    ]
+        table {expFourTimeDblpResult.dat};
+    \addlegendentry{nonsequenced result}
+
+\addplot[
+    color=green,
+    mark=oplus,
+    ]
+        table {expTwoTimeDblpSLCA.dat};
+    \addlegendentry{sequenced SLCA}
+
+\addplot[
+    color=black,
+    mark=diamond,
+    ]
+        table {expTwoTimeDblpResult.dat};
+    \addlegendentry{sequenced result}
+
+\end{axis}
+\end{tikzpicture}
+  
+\caption{Sequenced vs. nonsequenced for the DBLP dataset}\label{fig:expFourDBLP}
+%MINI\end{minipage}
+
+\end{figure}
+
+\end{document}
