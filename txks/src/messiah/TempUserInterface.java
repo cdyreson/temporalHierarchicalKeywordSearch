@@ -305,7 +305,7 @@ public class TempUserInterface extends javax.swing.JFrame {
     private void openDialogForParseFile() {
         // Open a dialog for users to provide the file
         JFileChooser fc = new JFileChooser();
-        FileFilter fileFilter = new FileNameExtensionFilter("XML file", "xml");
+        FileFilter fileFilter = new FileNameExtensionFilter("JSON file", "json");
         fc.setFileFilter(fileFilter);
         fc.setAcceptAllFileFilterUsed(false); // disable the All Files option
         int returnVal = fc.showOpenDialog(null);

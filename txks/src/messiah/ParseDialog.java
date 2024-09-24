@@ -9,7 +9,7 @@ import java.awt.Cursor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.WindowConstants;
-import messiah.parse.CurtParseTask;
+import messiah.parse.HistoryJSONParseTask;
 
 /**
  *
@@ -17,7 +17,7 @@ import messiah.parse.CurtParseTask;
  */
 public class ParseDialog extends javax.swing.JDialog {
 
-    public void registerTask(CurtParseTask task) {
+    public void registerTask(HistoryJSONParseTask task) {
         this.waitLabel.setText("Your file is being parsed. Please wait....");
         task.addPropertyChangeListener(new PropertyChangeListener() {
 

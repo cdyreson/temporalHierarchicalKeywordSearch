@@ -136,7 +136,7 @@ public class Main {
          */
 
         try {
-            HistoryParseTask task = new HistoryParseTask(bdb, parsedFile, intervalGenerator, maxNodes);
+            HistoryJSONParseTask task = new HistoryJSONParseTask(bdb, parsedFile, intervalGenerator, maxNodes);
             if (parseDialog != null) {
                 parseDialog.registerTask(task);
             }
