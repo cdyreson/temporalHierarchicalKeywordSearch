@@ -1,12 +1,12 @@
 # link in the dist directory from the code
 sh links.sh
-# git the test files
-cd json
+curl -O https://www.dropbox.com/scl/fi/ifge4ylsj3depyasa5evg/json.tar.gz?rlkey=8vql1q9utkr5lk67ai34l730f&dl=0
+tar -xzf json.tar.gz
 # construct the data sets
 cd json
-sh genOne.sh
-sh genTwo.sh
-sh genThree.sh
+ln -s twotdblp.json three1dblp.json
+ln -s twotdblp.json three50dblp.json
+ln -s twotdblp.json three100dblp.json
 # load the data
 cd ..
 sh loadAll.sh
