@@ -30,7 +30,8 @@ public class SingleNodeResultBuilder extends ResultBuilder {
         Map<NodeId,NodeInfo> dbMap = (Map)bdb.nodeIndex;
         for (NodeId nodeId : resultSet) {
             NodeInfo info = dbMap.get(nodeId);
-            DefaultMutableTreeNode child = new DefaultMutableTreeNode(db.getLabel(info.getPathId()));
+            //DefaultMutableTreeNode child = new DefaultMutableTreeNode(db.getLabel(info.getPathId()));
+            DefaultMutableTreeNode child = new DefaultMutableTreeNode(info.getData());
             root.add(child);
         }
         return new JTree(root);

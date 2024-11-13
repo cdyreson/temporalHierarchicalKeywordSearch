@@ -20,6 +20,9 @@ import messiah.search.SearchAlgoEnum;
 import messiah.search.generic.ResultSizeEstimator;
 import messiah.search.generic.Search;
 import messiah.search.generic.SearchResult;
+import messiah.search.resultbuilder.ResultBuilder;
+import messiah.search.resultbuilder.generic.SingleNodeResultBuilder;
+import messiah.search.resultbuilder.generic.SubtreeResultBuilder;
 import messiah.storage.generic.DbAccess;
 import messiah.utils.Stopwatch;
 import org.antlr.runtime.ANTLRFileStream;
@@ -84,12 +87,24 @@ public class Main {
         }
     }
 
-    public SearchResult search(boolean indexUsed, KeywordSearchExpression exp) {
-        Search s = new Search(db, bdb, indexUsed, exp);
+    public SearchResult search(boolean indexUsed, KeywordSearchExpression exp, boolean fullResult) {
+        Search s = new Search(db, bdb, indexUsed, exp, createResultBuilder(fullResult));
         // get the search keywords
         //String[] tokens = parseQuery(searchText);
         //generate results and make a JTree
         return s.search();
+    }
+    
+    public ResultBuilder createResultBuilder(boolean fullResult) {
+        ResultBuilder resultBuilder;
+        if (fullResult) {
+            resultBuilder = new SubtreeResultBuilder(db, bdb);
+        } else {
+            resultBuilder = new SingleNodeResultBuilder(db,bdb);
+        }
+        return resultBuilder;
+
+
     }
 
     public DbAccess loadDataset(String datasetName) {
@@ -101,6 +116,7 @@ public class Main {
             //}
             //if (bdb == null) bdb = new messiah.database.memory.Database();
             // Open a disk resident DB
+            System.out.println("openning db " + bdb);
             openDB(Config.DB_FOLDER_STRING + datasetName, true, true, true /* isTemporal */);
             
             if (db == null) {
@@ -317,6 +333,7 @@ public class Main {
         } else {
             this.bdb = new messiah.database.memory.Database(dbName, isReadOnly, isTemporal);
         }
+        //this.db = new DbAccess(this.bdb);
     }
 
     public static void main(String[] args) {
@@ -455,6 +472,11 @@ public class Main {
 
         // Database has been opened by now
         if (consumed < args.length) {
+            boolean fullResult = false;
+            if (args[consumed].contentEquals("--fullResult")) {
+                fullResult = true;
+                consumed++;
+            }
             if (args[consumed].contentEquals("--search")) {
                 // Close DB if initialized to store stuff
                 if (isDiskDb && foo.isInitialized()) {
@@ -474,8 +496,8 @@ public class Main {
                 KeywordSearchExpression exp = compileFromString(s);
                 //if (!foo.isInitialized()) {
                 //    foo.openDB(dbName, isDiskDb, isReadOnly, isTemporalDB);
-                //}
-                SearchResult result = foo.search(true, exp);
+                //} 
+                SearchResult result = foo.search(true, exp, fullResult);
                 //generate results and make a JTree
                 JTree resultTree = result.getResultTree();
             } else if (args[consumed].contentEquals("--queryFile")) {
@@ -495,8 +517,8 @@ public class Main {
                 }
                 fileName.trim();
                 KeywordSearchExpression exp = compile(fileName);
-                foo.db = foo.loadDataset(dbName);
-                SearchResult result = foo.search(true, exp);
+                foo.db = foo.loadDataset(dbName); 
+                SearchResult result = foo.search(true, exp, fullResult);
                 //generate results and make a JTree
                 JTree resultTree = result.getResultTree();
             }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="targets" default="all" basedir=".">
-           <target name="foo json memory nontemporal parse search nine qqq" description="Main sequenced Parse Search">
+    <target name="foo.json: Memory, nontemporal, parse, search 'location payment'" 
+            description="Memory, nontemporal, parse, search 'location payment'">
         <java classname="messiah.Main">
             <classpath>
                 <pathelement location="dist/TemporalKeywordSearch.jar"/>
@@ -10,40 +11,13 @@
             <arg value="foo.json"/>
             <arg value="--memory"/>
             <arg value="--jsonParse"/>
+            <arg value="--fullResult"/>
             <arg value="--search"/>
             <arg value="location payment"/>
         </java>
     </target> 
-              <target name="data json memory nontemporal parse search nine qqq" description="Main sequenced Parse Search">
-        <java classname="messiah.Main">
-            <classpath>
-                <pathelement location="dist/TemporalKeywordSearch.jar"/>
-            </classpath>
-            <arg value="--verbose"/>
-            <arg value="--json"/>
-            <arg value="data.json"/>
-            <arg value="--memory"/>
-            <arg value="--jsonParse"/>
-            <arg value="--search"/>
-            <arg value="location payment"/>
-        </java>
-    </target> 
-    <target name="add timestamps test to testTemporal 100 10" description="add timestamps test to testTemporal 100 10">
-        <java classname="messiah.CopyAndAddTimestamps">
-            <classpath>
-                <pathelement location="dist/TemporalKeywordSearch.jar"/>
-            </classpath>
-            <arg value="--from"/>
-            <arg value="test.xml"/>
-            <arg value="--to"/>
-            <arg value="testTemporal.xml"/>
-            <arg value="--rangeMax"/>
-            <arg value="100"/>
-            <arg value="--intervalMax"/>
-            <arg value="10"/>
-        </java>
-    </target>
-    <target name="test memory nontemporal parse search foo bar" description="Main sequenced Parse Search">
+    <target name="test.xml: Memory, nontemporal, parse, search 'foo bar'" 
+            description="">
         <java classname="messiah.Main">
             <classpath>
                 <pathelement location="dist/TemporalKeywordSearch.jar"/>
@@ -54,11 +28,13 @@
             <arg value="--memory"/>
             <arg value="--noTimestamps"/>
             <arg value="--parse"/>
+            <arg value="--fullResult"/>
             <arg value="--search"/>
             <arg value="@nontemporal foo bar"/>
         </java>
     </target>
-        <target name="foo memory nontemporal parse search nine qqq" description="Main sequenced Parse Search">
+    <target name="foo.xml : Memory, nontemporal, parse, search 'location payment'" 
+            description="Memory, nontemporal, parse, search 'location payment'">
         <java classname="messiah.Main">
             <classpath>
                 <pathelement location="dist/TemporalKeywordSearch.jar"/>
@@ -69,11 +45,13 @@
             <arg value="--memory"/>
             <arg value="--noTimestamps"/>
             <arg value="--parse"/>
+            <arg value="--fullResult"/>
             <arg value="--search"/>
-            <arg value="@nontemporal location payment"/>
+            <arg value="location payment"/>
         </java>
     </target>
-              <target name="nba20.json only query" description="Main sequenced Parse Search">
+    <target name="nba20.json: Disk, temporal, search '@sequenced foo bar'" 
+            description="Disk, nontemporal, search 'foo bar' on a fragment of nba.json">
         <java classname="messiah.Main">
             <classpath>
                 <pathelement location="dist/TemporalKeywordSearch.jar"/>
@@ -82,14 +60,13 @@
             <arg value="--json"/>
             <arg value="nba20.json"/>
             <arg value="--disk"/>
-   
-
+            <arg value="--fullResult"/>
             <arg value="--search"/>
-            <arg value="foo bar"/>
-
+            <arg value="@sequenced foo bar"/>
         </java>
     </target>
-           <target name="nba20.json parse and query" description="Main sequenced Parse Search">
+    <target name="nba20.json: Disk, parse, search '@sequenced foo bar'" 
+            description="Create database, search on fragment of nba.json with added timestamps">
         <java classname="messiah.Main">
             <classpath>
                 <pathelement location="dist/TemporalKeywordSearch.jar"/>
@@ -100,18 +77,17 @@
             <arg value="--disk"/>
             <arg value="--timestamps"/>
             <arg value="--maxRange"/>
-            <arg value="100"/>
+            <arg value="10"/>
             <arg value="--maxInterval"/>
             <arg value="30"/>
-            <arg value="--randomIntervals"/>
             <arg value="--jsonParse"/>
-
-            <arg value="--search"/>
-            <arg value="foo bar"/>
-
+            <arg value="--fullResult"/>
+                <arg value="--search"/>
+                <arg value="@sequenced foo bar"/>
         </java>
     </target>
-        <target name="data.json sequenced Parse only" description="Main sequenced Parse Search">
+    <target name="data.json: Disk, verbose, temporal, parse, search 'Brady id'" 
+            description="">
         <java classname="messiah.Main">
             <classpath>
                 <pathelement location="dist/TemporalKeywordSearch.jar"/>
@@ -126,16 +102,17 @@
             <arg value="--maxInterval"/>
             <arg value="30"/>
             <arg value="--randomIntervals"/>
-                        <arg value="--maxNodes"/>
+            <arg value="--maxNodes"/>
             <arg value="5"/>
             <arg value="--jsonParse"/>
-
+            <arg value="--fullResult"/>
             <arg value="--search"/>
             <arg value="Brady id"/>
 
         </java>
     </target>
-    <target name="test memory temporal parse search @nonsequenced foo @meets bar" description="Main sequenced Parse Search">
+    <target name="test.xml: Memory, temporal, parse, search '@nonsequenced foo @meets bar'" 
+            description="">
         <java classname="messiah.Main">
             <classpath>
                 <pathelement location="dist/TemporalKeywordSearch.jar"/>
@@ -151,11 +128,13 @@
             <arg value="30"/>
             <arg value="--randomIntervals"/>
             <arg value="--parse"/>
+            <arg value="--fullResult"/>
             <arg value="--search"/>
             <arg value="@nonsequenced foo @meets bar"/>
         </java>
     </target>
-    <target name="json dblp memory temporal parse search link name" description="Main sequenced Parse Search">
+    <target name="dblp.json: Memory, verbose, temporal, parse, search '@nonsequenced foo @contains bar'" 
+            description="">
         <java classname="messiah.Main">
             <classpath>
                 <pathelement location="dist/TemporalKeywordSearch.jar"/>
@@ -170,14 +149,15 @@
             <arg value="--maxInterval"/>
             <arg value="30"/>
             <arg value="--randomIntervals"/>
-                                    <arg value="--maxNodes"/>
+            <arg value="--maxNodes"/>
             <arg value="4"/>
             <arg value="--jsonParse"/>
             <arg value="--search"/>
             <arg value="@nonsequenced foo @contains bar"/>
         </java>
     </target>   
-        <target name="json data memory temporal parse search foo1 bar1" description="Main sequenced Parse Search">
+    <target name="data.json: Memory, verbose, temporal, parse, search '@nonsequenced foo @contains bar'" 
+            description="">
         <java classname="messiah.Main">
             <classpath>
                 <pathelement location="dist/TemporalKeywordSearch.jar"/>
@@ -192,36 +172,16 @@
             <arg value="--maxInterval"/>
             <arg value="30"/>
             <arg value="--randomIntervals"/>
-                                    <arg value="--maxNodes"/>
+            <arg value="--maxNodes"/>
             <arg value="4"/>
             <arg value="--jsonParse"/>
+            <arg value="--fullResult"/>
             <arg value="--search"/>
             <arg value="@nonsequenced foo @contains bar"/>
         </java>
     </target>     
-    <target name="json data memory temporal parse search @nonsequenced foo @contains bar" description="Main sequenced Parse Search">
-        <java classname="messiah.Main">
-            <classpath>
-                <pathelement location="dist/TemporalKeywordSearch.jar"/>
-            </classpath>
-            <arg value="--verbose"/>
-            <arg value="--json"/>
-            <arg value="trees1.json"/>
-            <arg value="--memory"/>
-            <arg value="--timestamps"/>
-            <arg value="--maxRange"/>
-            <arg value="100"/>
-            <arg value="--maxInterval"/>
-            <arg value="30"/>
-            <arg value="--randomIntervals"/>
-                                    <arg value="--maxNodes"/>
-            <arg value="4"/>
-            <arg value="--jsonParse"/>
-            <arg value="--search"/>
-            <arg value="@nonsequenced foo @contains bar"/>
-        </java>
-    </target>
-    <target name="test memory temporal parse search @nonsequenced foo @contains bar" description="Main sequenced Parse Search">
+    <target name="test.xml: Memory, verbose, temporal, parse, search '@nonsequenced foo @contains bar'" 
+            description="">
         <java classname="messiah.Main">
             <classpath>
                 <pathelement location="dist/TemporalKeywordSearch.jar"/>
@@ -237,11 +197,13 @@
             <arg value="30"/>
             <arg value="--randomIntervals"/>
             <arg value="--parse"/>
+            <arg value="--fullResult"/>
             <arg value="--search"/>
             <arg value="@nonsequenced foo @contains bar"/>
         </java>
     </target>
-        <target name="foo memory temporal parse search @sequenced nine qqq" description="Main sequenced Parse Search">
+    <target name="foo.xml: Memory, verbose, temporal, parse, search '@sequenced location payment'" 
+            description="">
         <java classname="messiah.Main">
             <classpath>
                 <pathelement location="dist/TemporalKeywordSearch.jar"/>
@@ -251,17 +213,19 @@
             <arg value="foo.xml"/>
             <arg value="--memory"/>
             <arg value="--timestamps"/>
-                        <arg value="--maxRange"/>
-                        <arg value="10000"/>
-                        <arg value="--maxInterval"/>
-                        <arg value="1000"/>
-                        <arg value="--randomIntervals"/>
+            <arg value="--maxRange"/>
+            <arg value="10000"/>
+            <arg value="--maxInterval"/>
+            <arg value="1000"/>
+            <arg value="--randomIntervals"/>
             <arg value="--parse"/>
+            <arg value="--fullResult"/>
             <arg value="--search"/>
             <arg value="@sequenced location payment"/>
         </java>
     </target>
-            <target name="foo memory temporal deletePercent 30 parse search @sequenced nine qqq" description="Main sequenced Parse Search">
+    <target name="foo.xml: Memory, verbose, temporal (deleePercent 10), search '@sequenced sequenced payment'" 
+            description="">
         <java classname="messiah.Main">
             <classpath>
                 <pathelement location="dist/TemporalKeywordSearch.jar"/>
@@ -274,28 +238,13 @@
             <arg value="--percentDelete"/>
             <arg value="10"/>
             <arg value="--parse"/>
+            <arg value="--fullResult"/>
             <arg value="--search"/>
             <arg value="@sequenced location payment"/>
         </java>
     </target>
-        <target name="test memory temporal deletePercent 30 parse search @sequenced foo bar" description="Main sequenced Parse Search">
-        <java classname="messiah.Main">
-            <classpath>
-                <pathelement location="dist/TemporalKeywordSearch.jar"/>
-            </classpath>
-            <arg value="--verbose"/>
-            <arg value="--xml"/>
-            <arg value="test.xml"/>
-            <arg value="--memory"/>
-            <arg value="--timestamps"/>
-            <arg value="--percentDelete"/>
-            <arg value="10"/>
-            <arg value="--parse"/>
-            <arg value="--search"/>
-            <arg value="@sequenced foo bar"/>
-        </java>
-    </target>
-    <target name="test memory temporal parse search @sequenced foo bar" description="Main sequenced Parse Search">
+    <target name="test.xml: Memory, versose, temporal (random intervals), parse, search '@sequenced foo bar'" 
+            description="">
         <java classname="messiah.Main">
             <classpath>
                 <pathelement location="dist/TemporalKeywordSearch.jar"/>
@@ -315,69 +264,11 @@
             <arg value="@sequenced foo bar"/>
         </java>
     </target>
-        <target name="test memory temporal parse search @earliest foo bar" description="Main earliest Parse Search">
-        <java classname="messiah.Main">
-            <classpath>
-                <pathelement location="dist/TemporalKeywordSearch.jar"/>
-            </classpath>
-            <arg value="--verbose"/>
-            <arg value="--xml"/>
-            <arg value="test.xml"/>
-            <arg value="--memory"/>
-            <arg value="--timestamps"/>
-            <arg value="--maxRange"/>
-            <arg value="10000"/>
-            <arg value="--maxInterval"/>
-            <arg value="1000"/>
-            <arg value="--randomIntervals"/>
-            <arg value="--parse"/>
-            <arg value="--search"/>
-            <arg value="@earliest foo bar"/>
-        </java>
-    </target>
-    <target name="delete db" description="deletes the db">
+    <target name="Delete the stored databases (in the Databases folder)" 
+            description="Delete the stored databases (in the Databases folder)">
         <delete>
             <fileset dir="Databases/"/>
         </delete>
-    </target>
-    <target name="test Parse only" description="Main sequenced Parse Search">
-        <java classname="messiah.Main">
-            <classpath>
-                <pathelement location="dist/TemporalKeywordSearch.jar"/>
-            </classpath>
-            <arg value="--xml"/>
-            <arg value="test.xml"/>
-            <arg value="--disk"/>
-            <arg value="--parse"/>
-        </java>
-    </target>
-    <target name="test sequenced Parse only" description="Main sequenced Parse Search">
-        <java classname="messiah.Main">
-            <classpath>
-                <pathelement location="dist/TemporalKeywordSearch.jar"/>
-            </classpath>
-            <arg value="--disk"/>
-            <arg value="--sequencedParse"/>
-        </java>
-    </target>
-
-
-    
-    <target name="merge" description="merge">
-        <java classname="messiah.database.berkeleydb.MergeSplitTables">
-            <classpath>
-                <pathelement location="dist/TemporalKeywordSearch.jar"/>
-            </classpath>
-            <arg value="foo.xml"/>
-        </java>
-    </target>
-    <target name="Main testNdeindex" description="Main testIndex">
-        <java classname="messiah.storage.NodeIndex">
-            <classpath>
-                <pathelement location="dist/TemporalKeywordSearch.jar"/>
-            </classpath>
-        </java>
-    </target>
-
+    </target> 
 
 </project>

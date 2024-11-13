@@ -35,7 +35,7 @@ public class Search {
      @param indexedUsed? - Do we use an index?
      @param searchAlgo - Search algorithm used, currently supports Partial and Complete FSLCA, and sequenced PartialFSLCA
      */
-    public Search(DbAccess db, Database bdb, boolean indexUsed, KeywordSearchExpression exp) {
+    public Search(DbAccess db, Database bdb, boolean indexUsed, KeywordSearchExpression exp, ResultBuilder resultBuilder) {
 
         SearchAlgoEnum searchAlgo = exp.getSearchType();
         this.exp = exp;
@@ -63,7 +63,7 @@ public class Search {
                 System.err.println("Search Type not supported in Search.java");
                 System.exit(-1);
         }
-        this.resultBuilder = new SubtreeResultBuilder(db, bdb);
+        this.resultBuilder = resultBuilder;
         this.resultSizeEstimator = new ResultSizeEstimator(db, bdb);
     }
 
@@ -81,6 +81,10 @@ public class Search {
         sw.stop();
         this.slcaTime = sw.readTime();
         System.out.println(resultSet.size() + " results found");
+        //for (NodeId id : resultSet) {
+        //        System.out.println("id is " + id);
+        //    }
+        //System.exit(-1);
 /*
        for (NodeId result: resultSet) {
             System.out.println("result is " + result);

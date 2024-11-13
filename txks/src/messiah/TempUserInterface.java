@@ -234,7 +234,7 @@ public class TempUserInterface extends javax.swing.JFrame {
                 //searchAlgo = (SearchAlgoEnum) this.algoComboBox.getSelectedItem();
             }
             KeywordSearchExpression exp = this.controller.compileFromString(searchText);
-            SearchResult result = this.controller.search(this.isIndexedUsed(),exp);
+            SearchResult result = this.controller.search(this.isIndexedUsed(),exp,true);
 
             //generate results and make a JTree
             JTree resultTree = result.getResultTree();
