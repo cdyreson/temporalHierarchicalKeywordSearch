@@ -34,6 +34,12 @@ Next change to `experimentalReproducibility` directory in the downloaded code.
 ```
     cd temporalHierarchicalKeywordSearch/experimentalReproducibility
 ```
+Run the script `getData.sh` as follows.
+```
+    sh getData.sh
+```
+The script will execute a curl call to download the data.  Be sure to wait until the call completes (the  `json.tar.gz` file will be created and populated, it is several GB in size so should take some time to download).
+
 Run the script `all.sh` as follows.
 ```
     sh all.sh
