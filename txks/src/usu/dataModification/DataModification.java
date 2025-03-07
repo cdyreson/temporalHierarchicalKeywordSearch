@@ -67,6 +67,7 @@ public class DataModification {
         return false;
     }
 
+    /* Never used
     private int figureOutMaxTime(NodeId nodeId, int maxTime) {
 
         HistoryDLN dln;
@@ -87,7 +88,9 @@ public class DataModification {
         }
         return maxTime;
     }
+    */
 
+    /* Never used
     public boolean deleteNode(NodeId nodeId, int endTime) {
         boolean result = false;
         // Check that node exists
@@ -110,6 +113,7 @@ public class DataModification {
 
         return result;
     }
+    */
 
     public boolean addNode(NodeId parentId, String inputFileName) throws FileNotFoundException {
         boolean result = false;
@@ -130,6 +134,7 @@ public class DataModification {
         return result;
     }
 
+    /* Never used
     public boolean moveNode(NodeId parentId, NodeId nodeId) throws FileNotFoundException, XMLStreamException, IOException {
         boolean deleteNodeTobeMoved = false;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -198,6 +203,6 @@ public class DataModification {
 
         return result;
     }
-
+    */
 }
 

@@ -12,6 +12,7 @@ import usu.algebra.KeywordSearchExpression;
 //import usu.algebra.operator.*;
 //import usu.algebra.operator.specific.*;
 import java.lang.UnsupportedOperationException;
+import usu.temporal.Time;
   }
 
 @lexer::header {
@@ -132,30 +133,6 @@ public Object recoverFromMisMatchedToken(
   }
 }
 
-
-    
-    
-/*
-program returns [Operator exp] :
-    op=kindOfSearch {
-      $exp = $op.exp;
-      if (hasError) { throw new TXKSParseException(errorMessage); }
-      }
-    EOF
-    ;
-
-
-kindOfSearch returns [Operator exp] :
-    K_SEQUENCED expression
-       {$exp = new SequencedSearch($kindOfMatch.exp);}
-    ;
-    
-    expressionContinues2 returns [Operator exp] :
-    (o=operator e=expression {exp = $e.exp;})
-    | (s=stringOrId c=expressionContinues2 {exp = $c.exp;})
-    ;
-  */  
-
 program returns [KeywordSearchExpression exp] :
     exp1=kindOfSearch {
       //exp = null; //$op.exp;
@@ -168,14 +145,14 @@ program returns [KeywordSearchExpression exp] :
 kindOfSearch returns [KeywordSearchExpression exp]:
     s=searchType exp1=expression {
       exp = exp1;
-      //System.out.println("Search type is " + s.intValue());
+      System.out.println("Search type is " + s.intValue());
       exp.setSearchType(s);
     }
     ;
     
 searchType returns [Integer st]:	
     k=statedSearchType {
-      //System.out.println("Have search type " + k);
+      System.out.println("Have search type " + k);
       st = k;
     }
     | {
@@ -185,6 +162,7 @@ searchType returns [Integer st]:
  
 statedSearchType returns [Integer i]:	
     k=(K_SEQUENCED | K_NONSEQUENCED | K_EARLIEST | K_DURATION | K_LATEST | K_NONTEMPORAL | K_CURRENT ) {
+        System.out.println("Search type is " + $k.type);
       i = $k.type;
     }
     ;
@@ -196,23 +174,36 @@ expression returns [KeywordSearchExpression exp] :
       }
     | 
     (s1=stringOrId {
+                  System.out.println("String or id " + $s1.text);
         exp = new KeywordSearchExpression($s1.text, operand--);
         //System.out.println("Have string  " + $s1.text);
-    }
+       }
     
-    ((op=operator e2=expression {
-        exp = new KeywordSearchExpression(exp, op, e2);
-        //System.out.println("Have expression e2 ");
-      })
-      | (s2=stringOrId exp1=stringExpression) {
-        String s = $s2.text;
-        exp = new KeywordSearchExpression(exp, 0, s, operand--);
-        if (exp1 != null) {exp = new KeywordSearchExpression(exp, 0, exp1);}
-        //System.out.println("Have string  " + $s2.text);
-      }
-      ) ?
+       ((op=operator e2=expression {
+          exp = new KeywordSearchExpression(exp, op, e2);
+          //System.out.println("Have expression e2 ");
+          })
+         | (s2=stringOrId exp1=stringExpression) {
+          String s = $s2.text;
+          exp = new KeywordSearchExpression(exp, 0, s, operand--);
+          if (exp1 != null) {exp = new KeywordSearchExpression(exp, 0, exp1);}
+          //System.out.println("Have string  " + $s2.text);
+        }
+        ) ?
       )
-      |
+      | (sliceTime=sliceOperator expS=expression {
+          
+          String sliceText = $sliceTime.text;
+          // Take out @slice keyword
+          sliceText = sliceText.substring(6).trim();
+          // Lop off the square brackets
+          sliceText = sliceText.substring( 1, sliceText.length() - 1 ).trim();
+          
+          exp = new KeywordSearchExpression(new Time(sliceText), expS);
+          
+          System.out.println("Slice expression is " + sliceText);
+          }
+        )
       {
         //System.out.println("Expression done");
       }
@@ -227,42 +218,35 @@ expression returns [KeywordSearchExpression exp] :
       }
       ) |
     {
-      //System.out.println("Done");
+      System.out.println("Done");
       //exp = null;
     }
     ;
     
-    /*
-    expression1 returns [KeywordSearchExpression exp] :
-    ((LPAREN exp1=expression RPAREN) {     
-        System.out.println("Have expression ");
-        exp = exp1;
-      }
-    | s1=stringOrId {
-        exp = new KeywordSearchExpression($s1.text);
-        System.out.println("Have string  " + $s1.text);
+
+
+sliceOperator returns [Time time]:
+   K_SLICE '[' start=INT ('-' stop=INT)? ']' 
+   {
+        //System.out.println("Unary time is " + $start.text + " " + $stop + " " + $c.text);
+        /*
+        if ($stop == null) {     
+          time = new Time($start.text + "-" + $start.text);
+       } else {
+          time = new Time($start.text + "-" + $stop.text);
+       }
+        */
     }
-    )
-    ((op=operator {
-        System.out.println("Have operator " + op);
-      }
-      | s2=stringOrId {
-        String s = $s2.text;
-        exp = new KeywordSearchExpression(exp, new Integer(0), s);
-        System.out.println("Have string  " + $s2.text);
-      }
-      ) e2=expression {
-        exp = new KeywordSearchExpression(exp, new Integer(op), e2);
-        System.out.println("Have expression e2 ");
-      }
-      )? {
-        System.out.println("Expression done");
-      }
-    ;
-    */
-    
+    ; 
+
 operator returns [int code]:
-    c = (K_CONTAINS | K_INTERSECTS | K_BEFORE | K_AFTER | K_MEETS | K_DURING) {$code = $c.type;}
+    c = (K_CONTAINS 
+         | K_INTERSECTS 
+         | K_BEFORE 
+         | K_AFTER 
+         | K_MEETS 
+         | K_DURING 
+         ) {$code = $c.type;}
     ; 
 
 stringOrId /*returns [String s]*/:

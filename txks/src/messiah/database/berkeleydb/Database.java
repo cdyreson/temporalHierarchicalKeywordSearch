@@ -24,7 +24,7 @@ import messiah.KeywordInfo;
 import messiah.database.MapWithDuplicates;
 import messiah.database.DBError;
 //import usu.dln.DLNNodeIdBinding;
-import usu.dln.HistoryDLNNodeIdBinding;
+// import usu.dln.HistoryDLNNodeIdBinding;
 import messiah.NodeInfo;
 import usu.NodeId;
 import usu.PathId;
@@ -93,6 +93,7 @@ public class Database extends messiah.database.Database {
      * Open all of the database tables. Call this once to open the database.
      */
     private void openTables(boolean isReadOnly) {
+        System.out.println("Opening temporal db tablses ");
         if (!alreadyOpen) {
             openNonSplitTables(isReadOnly);
             openSplitTables(isReadOnly);

@@ -105,40 +105,17 @@ public class SimpleCachingFeedsController implements Iterator<NodeId> {
     }
 
     /* 
-     * gather returns the list of times for the current CachedNodeTriple
-     * at the front of the priority queue.  Use it to get the lifetime.
-     */
-    public Time[] gatherTimes() {
-        Time[] time = new Time[whoIsNext.size()];
-        int i = 0;
-        for (CachedNodeTriple trip : whoIsNext) {
-            HistoryDLN nodeId = (HistoryDLN) trip.nodeId;
-            Time timeTemp = nodeId.getTime();
-            Time time2 = earliest
-                    ? new Time(timeTemp.getBeginTime())
-                    : latest
-                            ? new Time(0,timeTemp.getEndTime())
-                            : timeTemp;
-            time[i++] = time2;
-        }
-        return time;
-    }
-
-    /* 
      gather returns the intersection of the times for the current CachedNodeTriple
      at the front of the priority queue.  Use it to get the lifetime.
      */
-    public TimeElement gather() {
-        /*
-         TimeElement lifetime = new TimeElement();
-         for (Integer key : feedMap.keySet()) {
-         lifetime.union(feedMap.get(key).gather());
-         }
-         */
+    public TimeElement gather(int slcaLevel) {
         Time time = null;
         for (CachedNodeTriple trip : whoIsNext) {
             HistoryDLN nodeId = (HistoryDLN) trip.nodeId;
-            Time timeTemp = nodeId.getTime();
+            Time timeTemp = nodeId.getTime(slcaLevel);
+            if (timeTemp == null) {
+                return null;
+            }
             Time time2 = earliest
                     ? new Time(timeTemp.getBeginTime())
                     : latest
@@ -150,7 +127,7 @@ public class SimpleCachingFeedsController implements Iterator<NodeId> {
             } else {
                 time = time.intersection(time2);
                 // If there is no intersection then exit with an empty element
-                if (time == null) return new TimeElement();
+                if (time == null) return null; // new TimeElement();
             }
         }
         if (verbose) System.out.println("SimpleCachingFeedsController: gathered time is " + time);

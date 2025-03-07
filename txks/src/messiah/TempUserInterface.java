@@ -18,7 +18,9 @@ import javax.swing.tree.DefaultTreeModel;
 import messiah.database.Database;
 import messiah.storage.generic.DbAccess;
 import javax.swing.JTree;
+import messiah.parse.RandomIntervalGenerator;
 import messiah.parse.StaticIntervalGenerator;
+import messiah.parse.ParsedTimetampIntervalGenerator;
 import usu.algebra.KeywordSearchExpression;
 
 /**
@@ -50,67 +52,37 @@ public class TempUserInterface extends javax.swing.JFrame {
 
         indexButtonGroup = new javax.swing.ButtonGroup();
         algoButtonGroup = new javax.swing.ButtonGroup();
-        datasetPanel = new javax.swing.JPanel();
-        browseButton = new javax.swing.JButton();
-        xmlFile_jTextField = new javax.swing.JTextField();
-        loadDB_Button = new javax.swing.JButton();
         inputPanel = new javax.swing.JPanel();
         searchButton = new javax.swing.JButton();
         searchBox = new javax.swing.JTextField();
         resultPane = new javax.swing.JScrollPane();
         resultArea = new javax.swing.JTextArea();
         searchTime = new javax.swing.JLabel();
-        mainMenuBar = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        Exit = new javax.swing.JMenuItem();
-        help_JMenu = new javax.swing.JMenu();
+        structuredScrollPane = new javax.swing.JScrollPane();
+        chooseDataPane = new javax.swing.JTabbedPane();
+        parseDataPane = new javax.swing.JPanel();
+        datasetPanel = new javax.swing.JPanel();
+        configurePane = new javax.swing.JTabbedPane();
+        fixedIntervalPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        staticTimestampSizeField = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        randomIntervalPanel = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        timelineSize = new javax.swing.JTextField();
+        maxIntervalSize = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        parseRepresentationPanel = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        browseButton = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        loadDB_Button = new javax.swing.JButton();
+        xmlFile_jTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Temporal JSON Keyword Search (TJKS)");
         setName("mainFrame"); // NOI18N
-
-        datasetPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Load JSON "));
-
-        browseButton.setText("Browse...");
-        browseButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                browseButtonActionPerformed(evt);
-            }
-        });
-
-        xmlFile_jTextField.setEditable(false);
-        xmlFile_jTextField.setText("Please select/load a JSON file");
-        xmlFile_jTextField.setToolTipText("Use this box to browse to your JSON");
-
-        loadDB_Button.setText("Load DB");
-        loadDB_Button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadDB_ButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout datasetPanelLayout = new javax.swing.GroupLayout(datasetPanel);
-        datasetPanel.setLayout(datasetPanelLayout);
-        datasetPanelLayout.setHorizontalGroup(
-            datasetPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, datasetPanelLayout.createSequentialGroup()
-                .addComponent(xmlFile_jTextField)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(browseButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(loadDB_Button)
-                .addContainerGap())
-        );
-        datasetPanelLayout.setVerticalGroup(
-            datasetPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(datasetPanelLayout.createSequentialGroup()
-                .addGroup(datasetPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(xmlFile_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(browseButton)
-                    .addComponent(loadDB_Button))
-                .addContainerGap(26, Short.MAX_VALUE))
-        );
 
         inputPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Keyword Search Query"));
         inputPanel.setToolTipText("Fill in a keyword search query");
@@ -127,10 +99,11 @@ public class TempUserInterface extends javax.swing.JFrame {
         inputPanelLayout.setHorizontalGroup(
             inputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(inputPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(inputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchBox, javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(searchButton, javax.swing.GroupLayout.Alignment.CENTER))
+                .addGroup(inputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addGroup(inputPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(searchBox))
+                    .addComponent(searchButton))
                 .addContainerGap())
         );
         inputPanelLayout.setVerticalGroup(
@@ -138,71 +111,260 @@ public class TempUserInterface extends javax.swing.JFrame {
             .addGroup(inputPanelLayout.createSequentialGroup()
                 .addComponent(searchBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
-                .addComponent(searchButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(searchButton))
         );
 
+        resultPane.setBorder(null);
         resultPane.setViewportBorder(javax.swing.BorderFactory.createTitledBorder("Results"));
 
         resultArea.setEditable(false);
         resultArea.setBackground(new java.awt.Color(240, 240, 240));
         resultArea.setColumns(20);
-        resultArea.setRows(5);
+        resultArea.setRows(10);
+        resultArea.setAutoscrolls(false);
+        resultArea.setBorder(null);
         resultPane.setViewportView(resultArea);
         resultArea.getAccessibleContext().setAccessibleParent(resultArea);
 
-        fileMenu.setText("File");
+        structuredScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder("Structural Summary"));
 
-        jMenuItem1.setText("Open File");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+        chooseDataPane.setBorder(javax.swing.BorderFactory.createTitledBorder("Choose Data"));
+        chooseDataPane.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chooseDataPaneStateChanged(evt);
             }
         });
-        fileMenu.add(jMenuItem1);
 
-        Exit.setText("Exit");
-        Exit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ExitActionPerformed(evt);
+        datasetPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Configure Timestamp Assignment"));
+        datasetPanel.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                datasetPanelFocusGained(evt);
             }
         });
-        fileMenu.add(Exit);
+        datasetPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                datasetPanelComponentShown(evt);
+            }
+        });
 
-        mainMenuBar.add(fileMenu);
+        jLabel1.setText("The same time is used throughout.");
 
-        help_JMenu.setText("Help");
-        mainMenuBar.add(help_JMenu);
+        staticTimestampSizeField.setText("100");
 
-        setJMenuBar(mainMenuBar);
+        jLabel4.setText("Size of timestamp");
+
+        javax.swing.GroupLayout fixedIntervalPanelLayout = new javax.swing.GroupLayout(fixedIntervalPanel);
+        fixedIntervalPanel.setLayout(fixedIntervalPanelLayout);
+        fixedIntervalPanelLayout.setHorizontalGroup(
+            fixedIntervalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(fixedIntervalPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(fixedIntervalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(fixedIntervalPanelLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(staticTimestampSizeField, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(157, Short.MAX_VALUE))
+        );
+        fixedIntervalPanelLayout.setVerticalGroup(
+            fixedIntervalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(fixedIntervalPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(fixedIntervalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(staticTimestampSizeField, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
+
+        configurePane.addTab("Fixed Interval", fixedIntervalPanel);
+
+        jLabel3.setText("Timestamps are randomly generated.");
+
+        timelineSize.setText("100");
+
+        maxIntervalSize.setText("100");
+
+        jLabel5.setText("Size of timeline");
+
+        jLabel6.setText("Maximum interval size");
+
+        javax.swing.GroupLayout randomIntervalPanelLayout = new javax.swing.GroupLayout(randomIntervalPanel);
+        randomIntervalPanel.setLayout(randomIntervalPanelLayout);
+        randomIntervalPanelLayout.setHorizontalGroup(
+            randomIntervalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(randomIntervalPanelLayout.createSequentialGroup()
+                .addGroup(randomIntervalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(randomIntervalPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(randomIntervalPanelLayout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(randomIntervalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(randomIntervalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(maxIntervalSize, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(timelineSize, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(157, Short.MAX_VALUE))
+        );
+        randomIntervalPanelLayout.setVerticalGroup(
+            randomIntervalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(randomIntervalPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(randomIntervalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(timelineSize, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(randomIntervalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(maxIntervalSize, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        configurePane.addTab("Random Interval", randomIntervalPanel);
+
+        jLabel2.setText("Timestamps are in the JSON file to parse.");
+
+        javax.swing.GroupLayout parseRepresentationPanelLayout = new javax.swing.GroupLayout(parseRepresentationPanel);
+        parseRepresentationPanel.setLayout(parseRepresentationPanelLayout);
+        parseRepresentationPanelLayout.setHorizontalGroup(
+            parseRepresentationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(parseRepresentationPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(157, Short.MAX_VALUE))
+        );
+        parseRepresentationPanelLayout.setVerticalGroup(
+            parseRepresentationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(parseRepresentationPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addContainerGap(62, Short.MAX_VALUE))
+        );
+
+        configurePane.addTab("Parse Representation", parseRepresentationPanel);
+
+        javax.swing.GroupLayout datasetPanelLayout = new javax.swing.GroupLayout(datasetPanel);
+        datasetPanel.setLayout(datasetPanelLayout);
+        datasetPanelLayout.setHorizontalGroup(
+            datasetPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(configurePane)
+        );
+        datasetPanelLayout.setVerticalGroup(
+            datasetPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(configurePane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        configurePane.getAccessibleContext().setAccessibleDescription("");
+
+        browseButton.setText("Browse...");
+        browseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout parseDataPaneLayout = new javax.swing.GroupLayout(parseDataPane);
+        parseDataPane.setLayout(parseDataPaneLayout);
+        parseDataPaneLayout.setHorizontalGroup(
+            parseDataPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(parseDataPaneLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(datasetPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(browseButton)
+                .addContainerGap(296, Short.MAX_VALUE))
+        );
+        parseDataPaneLayout.setVerticalGroup(
+            parseDataPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, parseDataPaneLayout.createSequentialGroup()
+                .addComponent(datasetPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(22, 22, 22))
+            .addGroup(parseDataPaneLayout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addComponent(browseButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        chooseDataPane.addTab("Parse New Dataset", parseDataPane);
+
+        jPanel6.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jPanel6FocusGained(evt);
+            }
+        });
+
+        loadDB_Button.setText("Load DB");
+        loadDB_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadDB_ButtonActionPerformed(evt);
+            }
+        });
+
+        xmlFile_jTextField.setEditable(false);
+        xmlFile_jTextField.setText("Please select a JSON file");
+        xmlFile_jTextField.setToolTipText("Use this box to browse to your JSON");
+        xmlFile_jTextField.setBorder(null);
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(xmlFile_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(loadDB_Button)
+                .addContainerGap(670, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(loadDB_Button)
+                    .addComponent(xmlFile_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(99, Short.MAX_VALUE))
+        );
+
+        chooseDataPane.addTab("Load Existing Dataset", jPanel6);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(searchTime, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(resultPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 891, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(searchTime, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(structuredScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(datasetPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(inputPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())))
+                            .addComponent(chooseDataPane, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(inputPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(resultPane))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(datasetPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inputPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addComponent(resultPane, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(chooseDataPane, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(inputPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(resultPane, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))
+                    .addComponent(structuredScrollPane))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchTime, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -262,13 +424,6 @@ public class TempUserInterface extends javax.swing.JFrame {
     private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
         openDialogForParseFile();
     }//GEN-LAST:event_browseButtonActionPerformed
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        openDialogForParseFile();
-}//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_ExitActionPerformed
 
     private void loadDB_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadDB_ButtonActionPerformed
         // Create the dialog to select a FOLDER representing the loaded databases
@@ -283,17 +438,38 @@ public class TempUserInterface extends javax.swing.JFrame {
         if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             // Yes. Try to load it.
             DbAccess newDataset = controller.loadDataset(chooser.getSelectedFile().getName());
+            
             if (newDataset != null) {
                 //JTree tree = newDataset.getXmlTree();
-                JTree tree = new JTree();
-                tree.setCellRenderer(new PathTreeCellRenderer());
+                //JTree tree = new JTree();
+                //tree.setCellRenderer(new PathTreeCellRenderer());
                 //structureScrollPane.getViewport().add(tree);
                 xmlFile_jTextField.setText(chooser.getSelectedFile().getName());
+                populateStructuralSummary();
             } else {
                 System.err.println("Fail to load DB");
             }
         }
     }//GEN-LAST:event_loadDB_ButtonActionPerformed
+
+    private void datasetPanelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_datasetPanelFocusGained
+        // TODO add your handling code here:
+        System.out.println("Focus gained parse");
+    }//GEN-LAST:event_datasetPanelFocusGained
+
+    private void jPanel6FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPanel6FocusGained
+        System.out.println("Focus gained load");
+    }//GEN-LAST:event_jPanel6FocusGained
+
+    private void chooseDataPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chooseDataPaneStateChanged
+
+        int selectedIndex = chooseDataPane.getSelectedIndex();
+        System.out.println("State changed " + selectedIndex);
+    }//GEN-LAST:event_chooseDataPaneStateChanged
+
+    private void datasetPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_datasetPanelComponentShown
+        System.out.println("Component shown ");
+    }//GEN-LAST:event_datasetPanelComponentShown
 
     /**
      * Reads and displays the XML file
@@ -340,9 +516,66 @@ public class TempUserInterface extends javax.swing.JFrame {
         // Start parsing
         ParseDialog dialog = new ParseDialog(this, true);
         System.out.println("Start parsing " + datasetName);
-        controller.parseDataset(datasetName, file, dialog, new StaticIntervalGenerator(),0);
+        switch (configurePane.getSelectedIndex()) {
+            case 0:
+                int size = Integer.parseInt(this.staticTimestampSizeField.getText());
+                // Set to 100 if too small
+                if (size <= 0) {
+                    size = 100;
+                }
+                controller.parseDataset(datasetName, file, dialog, new StaticIntervalGenerator(size), 0);
+                break;
+            case 1:
+                int timelineSize = Integer.parseInt(this.timelineSize.getText());
+                int maxIntervalSize = Integer.parseInt(this.maxIntervalSize.getText());
+                // Set to 100 if too small
+                if (timelineSize <= 0) {
+                    size = 100;
+                }
+                if (maxIntervalSize <= 0) {
+                    size = 100;
+                }
+                if (timelineSize < maxIntervalSize) {
+                    timelineSize = maxIntervalSize;
+                }
+                controller.parseDataset(datasetName, file, dialog, new RandomIntervalGenerator(timelineSize, maxIntervalSize, true), 0);
+                break;
+            default:
+                controller.parseDataset(datasetName, file, dialog, new ParsedTimetampIntervalGenerator(), 0);
+                break;
+        }
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
+    }
+    
+    protected void populateStructuralSummary() {
+        Database db = controller.getCurIndex().getDb();
+        Set<String> pathNames = db.pathNameIndex.keySet();
+        //System.out.println("DB got ");
+        //JTree tree = db.getXmlTree();
+        //JTree tree = new JTree();
+        //System.out.println("Tree set ");
+        //tree.setCellRenderer(new PathTreeCellRenderer());
+        //structuredScrollPane.getViewport().add(tree);
+            // you have list of words - wordList
+        List<String> wordList= new ArrayList<String>(pathNames);
+        Collections.sort(wordList);
+
+        // create list model for JList
+        DefaultListModel<String> model = new DefaultListModel<String>();
+        // add all words from wordList to model
+        for(String s : wordList){
+           //System.out.println("adding " + s);
+           // Remove '#' and the "#.root.
+           if (s.length() > 6) model.addElement(s.substring(7));
+        }
+
+        // create JList with model - model
+        JList<String> list = new JList<String>(model);
+
+        // create scroll pane for scrolling JList
+        structuredScrollPane.getViewport().add(list);
+        //structuredScrollPane.getViewport().add(tree);
     }
 
     protected void finishParsing() {
@@ -350,13 +583,8 @@ public class TempUserInterface extends javax.swing.JFrame {
         //Display Tree
         controller.resetIndexes();
         //System.out.println("Indexes reset ");
-        Database db = controller.getCurIndex().getDb();
-        //System.out.println("DB got ");
-        //JTree tree = db.getXmlTree();
-        JTree tree = new JTree();
-        //System.out.println("Tree set ");
-        tree.setCellRenderer(new PathTreeCellRenderer());
-        //structureScrollPane.getViewport().add(tree);
+
+        populateStructuralSummary();
     }
 
     private boolean isIndexedUsed() {
@@ -440,15 +668,17 @@ public class TempUserInterface extends javax.swing.JFrame {
         public Component getTreeCellRendererComponent(JTree tree, Object value,
                 boolean selected, boolean expanded, boolean leaf, int row,
                 boolean hasFocus) {
+            
+            //return this;
 
-//            String stringValue = tree.convertValueToText(value, selected,
-//                    expanded, leaf, row, false);
-//            this.setText(stringValue);
-//            this.setEnabled(tree.isEnabled());
+            String stringValue = tree.convertValueToText(value, selected,
+                    expanded, leaf, row, false);
+            this.setText(stringValue);
+            this.setEnabled(tree.isEnabled());
 
 
-return this;
-/*
+
+
             if ((value != null) && (value instanceof DefaultMutableTreeNode)) {
                 Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
                 if (userObject instanceof PathInfo) {
@@ -466,7 +696,7 @@ return this;
                 }
             }
             return this;
-*/
+
         }
     }
 
@@ -493,22 +723,34 @@ return this;
 //    }
     // </editor-fold>
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem Exit;
     private javax.swing.ButtonGroup algoButtonGroup;
     private javax.swing.JButton browseButton;
+    private javax.swing.JTabbedPane chooseDataPane;
+    private javax.swing.JTabbedPane configurePane;
     private javax.swing.JPanel datasetPanel;
-    private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenu help_JMenu;
+    private javax.swing.JPanel fixedIntervalPanel;
     private javax.swing.ButtonGroup indexButtonGroup;
     private javax.swing.JPanel inputPanel;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JButton loadDB_Button;
-    private javax.swing.JMenuBar mainMenuBar;
+    private javax.swing.JTextField maxIntervalSize;
+    private javax.swing.JPanel parseDataPane;
+    private javax.swing.JPanel parseRepresentationPanel;
+    private javax.swing.JPanel randomIntervalPanel;
     private javax.swing.JTextArea resultArea;
     private javax.swing.JScrollPane resultPane;
     private javax.swing.JTextField searchBox;
     private javax.swing.JButton searchButton;
     private javax.swing.JLabel searchTime;
+    private javax.swing.JTextField staticTimestampSizeField;
+    private javax.swing.JScrollPane structuredScrollPane;
+    private javax.swing.JTextField timelineSize;
     private javax.swing.JTextField xmlFile_jTextField;
     // End of variables declaration//GEN-END:variables
 }

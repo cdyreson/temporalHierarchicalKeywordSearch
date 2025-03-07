@@ -9,6 +9,7 @@ package messiah.parse;
 
 import java.util.Random;
 import usu.temporal.Time;
+import usu.temporal.TimeItem;
 
 /**
  *
@@ -25,7 +26,8 @@ public class DeleteIntervalGenerator implements IntervalGenerator {
         this.percentage = percentage;
     }
     
-    public Time generate(Time parent) {
+    public TimeItem generate(TimeItem parentItem) {
+        Time parent = parentItem.getTime();
         Time t;
         if ((deleted*100/count) <= percentage) {
             deleted++;
@@ -34,6 +36,6 @@ public class DeleteIntervalGenerator implements IntervalGenerator {
             t = parent;
         }
         count++;
-        return t;
+        return new TimeItem(t);
     }
 }

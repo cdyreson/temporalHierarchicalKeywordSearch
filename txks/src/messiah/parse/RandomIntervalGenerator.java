@@ -9,6 +9,7 @@ package messiah.parse;
 
 import java.util.Random;
 import usu.temporal.Time;
+import usu.temporal.TimeItem;
 
 /**
  *
@@ -27,7 +28,8 @@ public class RandomIntervalGenerator implements IntervalGenerator {
         this.isRandomIntervals = isRandom;
     }
     
-    public Time generate(Time parent) {
+    public TimeItem generate(TimeItem parentItem) {
+        Time parent = parentItem.getTime();
         Time t;
         if (isRandomIntervals) {
             int begin = parent.getBeginTime();
@@ -41,6 +43,6 @@ public class RandomIntervalGenerator implements IntervalGenerator {
         } else {
             t = new Time(0, maxInterval);
         }
-        return t;
+        return new TimeItem(t);
     }
 }

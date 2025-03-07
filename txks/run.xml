@@ -1,5 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="targets" default="all" basedir=".">
+    <target name="dblp.json: Memory, verbose, temporal, parse, search '@slice bar'" 
+                 description="">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--json"/>
+            <arg value="dblp.json"/>
+            <arg value="--memory"/>
+            <arg value="--timestamps"/>
+            <arg value="--maxRange"/>
+            <arg value="100"/>
+            <arg value="--maxInterval"/>
+            <arg value="30"/>
+            <arg value="--randomIntervals"/>
+            <arg value="--jsonParse"/>
+            <arg value="--search"/>
+            <arg value="@nonsequenced @slice [1-3] volume"/>
+        </java>
+    </target>
+    <target name="dblp20.json: Disk, verbose, temporal, parse, search '@nonsequenced foo @contains bar'" 
+                description="">
+        <java classname="messiah.Main">
+            <classpath>
+                <pathelement location="dist/TemporalKeywordSearch.jar"/>
+            </classpath>
+            <arg value="--verbose"/>
+            <arg value="--json"/>
+            <arg value="dblp20.json"/>
+            <arg value="--disk"/>
+            <arg value="--timestamps"/>
+            <arg value="--maxRange"/>
+            <arg value="100"/>
+            <arg value="--maxInterval"/>
+            <arg value="30"/>
+            <arg value="--randomIntervals"/>
+            <arg value="--jsonParse"/>
+            <arg value="--search"/>
+            <arg value="@nonsequenced foo @contains bar"/>
+        </java>
+    </target>   
     <target name="foo.json: Memory, nontemporal, parse, search 'location payment'" 
             description="Memory, nontemporal, parse, search 'location payment'">
         <java classname="messiah.Main">
@@ -82,8 +124,8 @@
             <arg value="30"/>
             <arg value="--jsonParse"/>
             <arg value="--fullResult"/>
-                <arg value="--search"/>
-                <arg value="@sequenced foo bar"/>
+            <arg value="--search"/>
+            <arg value="@sequenced foo bar"/>
         </java>
     </target>
     <target name="data.json: Disk, verbose, temporal, parse, search 'Brady id'" 
@@ -103,12 +145,11 @@
             <arg value="30"/>
             <arg value="--randomIntervals"/>
             <arg value="--maxNodes"/>
-            <arg value="5"/>
+            <arg value="1000"/>
             <arg value="--jsonParse"/>
             <arg value="--fullResult"/>
             <arg value="--search"/>
             <arg value="Brady id"/>
-
         </java>
     </target>
     <target name="test.xml: Memory, temporal, parse, search '@nonsequenced foo @meets bar'" 

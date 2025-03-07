@@ -1,4 +1,4 @@
-// $ANTLR 3.5.3 TXKS.g 2023-10-09 09:40:09
+// $ANTLR 3.5.3 TXKS.g 2025-02-18 11:17:22
 
 package usu.grammar;
 import java.util.List;
@@ -7,6 +7,7 @@ import usu.algebra.KeywordSearchExpression;
 //import usu.algebra.operator.*;
 //import usu.algebra.operator.specific.*;
 import java.lang.UnsupportedOperationException;
+import usu.temporal.Time;
   
 
 import org.antlr.runtime.*;
@@ -23,9 +24,11 @@ public class TXKSParser extends Parser {
 		"K_DESCENDANTVERSIONS", "K_DURATION", "K_DURING", "K_EARLIEST", "K_INTERSECTS", 
 		"K_LATEST", "K_MEETS", "K_NONSEQUENCED", "K_NONTEMPORAL", "K_SEQUENCED", 
 		"K_SLICE", "LBRACE", "LBRACKET", "LE", "LETTER", "LPAREN", "LT", "NAMECHAR", 
-		"NOT", "PIPE", "RBRACE", "RBRACKET", "RPAREN", "STRING", "WILDCARD", "WS"
+		"NOT", "PIPE", "RBRACE", "RBRACKET", "RPAREN", "STRING", "WILDCARD", "WS", 
+		"'-'"
 	};
 	public static final int EOF=-1;
+	public static final int T__47=47;
 	public static final int ARROW=4;
 	public static final int AT=5;
 	public static final int COMMA=6;
@@ -181,7 +184,7 @@ public class TXKSParser extends Parser {
 
 
 	// $ANTLR start "program"
-	// TXKS.g:159:1: program returns [KeywordSearchExpression exp] : exp1= kindOfSearch EOF ;
+	// TXKS.g:136:1: program returns [KeywordSearchExpression exp] : exp1= kindOfSearch EOF ;
 	public final KeywordSearchExpression program() throws RecognitionException {
 		KeywordSearchExpression exp = null;
 
@@ -189,10 +192,10 @@ public class TXKSParser extends Parser {
 		KeywordSearchExpression exp1 =null;
 
 		try {
-			// TXKS.g:159:47: (exp1= kindOfSearch EOF )
-			// TXKS.g:160:5: exp1= kindOfSearch EOF
+			// TXKS.g:136:47: (exp1= kindOfSearch EOF )
+			// TXKS.g:137:5: exp1= kindOfSearch EOF
 			{
-			pushFollow(FOLLOW_kindOfSearch_in_program90);
+			pushFollow(FOLLOW_kindOfSearch_in_program74);
 			exp1=kindOfSearch();
 			state._fsp--;
 
@@ -201,7 +204,7 @@ public class TXKSParser extends Parser {
 			      if (hasError) { throw new TXKSParseException(errorMessage); }
 			      exp = exp1;
 			      
-			match(input,EOF,FOLLOW_EOF_in_program98); 
+			match(input,EOF,FOLLOW_EOF_in_program82); 
 			}
 
 		}
@@ -220,7 +223,7 @@ public class TXKSParser extends Parser {
 
 
 	// $ANTLR start "kindOfSearch"
-	// TXKS.g:168:1: kindOfSearch returns [KeywordSearchExpression exp] : s= searchType exp1= expression ;
+	// TXKS.g:145:1: kindOfSearch returns [KeywordSearchExpression exp] : s= searchType exp1= expression ;
 	public final KeywordSearchExpression kindOfSearch() throws RecognitionException {
 		KeywordSearchExpression exp = null;
 
@@ -229,20 +232,20 @@ public class TXKSParser extends Parser {
 		KeywordSearchExpression exp1 =null;
 
 		try {
-			// TXKS.g:168:51: (s= searchType exp1= expression )
-			// TXKS.g:169:5: s= searchType exp1= expression
+			// TXKS.g:145:51: (s= searchType exp1= expression )
+			// TXKS.g:146:5: s= searchType exp1= expression
 			{
-			pushFollow(FOLLOW_searchType_in_kindOfSearch124);
+			pushFollow(FOLLOW_searchType_in_kindOfSearch108);
 			s=searchType();
 			state._fsp--;
 
-			pushFollow(FOLLOW_expression_in_kindOfSearch128);
+			pushFollow(FOLLOW_expression_in_kindOfSearch112);
 			exp1=expression();
 			state._fsp--;
 
 
 			      exp = exp1;
-			      //System.out.println("Search type is " + s.intValue());
+			      System.out.println("Search type is " + s.intValue());
 			      exp.setSearchType(s);
 			    
 			}
@@ -263,7 +266,7 @@ public class TXKSParser extends Parser {
 
 
 	// $ANTLR start "searchType"
-	// TXKS.g:176:1: searchType returns [Integer st] : (k= statedSearchType |);
+	// TXKS.g:153:1: searchType returns [Integer st] : (k= statedSearchType |);
 	public final Integer searchType() throws RecognitionException {
 		Integer st = null;
 
@@ -271,13 +274,13 @@ public class TXKSParser extends Parser {
 		Integer k =null;
 
 		try {
-			// TXKS.g:176:32: (k= statedSearchType |)
+			// TXKS.g:153:32: (k= statedSearchType |)
 			int alt1=2;
 			int LA1_0 = input.LA(1);
 			if ( (LA1_0==K_CURRENT||LA1_0==K_DURATION||LA1_0==K_EARLIEST||LA1_0==K_LATEST||(LA1_0 >= K_NONSEQUENCED && LA1_0 <= K_SEQUENCED)) ) {
 				alt1=1;
 			}
-			else if ( (LA1_0==EOF||LA1_0==ID||LA1_0==LPAREN||LA1_0==STRING) ) {
+			else if ( (LA1_0==ID||LA1_0==K_SLICE||LA1_0==LPAREN||LA1_0==STRING) ) {
 				alt1=2;
 			}
 
@@ -289,20 +292,20 @@ public class TXKSParser extends Parser {
 
 			switch (alt1) {
 				case 1 :
-					// TXKS.g:177:5: k= statedSearchType
+					// TXKS.g:154:5: k= statedSearchType
 					{
-					pushFollow(FOLLOW_statedSearchType_in_searchType157);
+					pushFollow(FOLLOW_statedSearchType_in_searchType141);
 					k=statedSearchType();
 					state._fsp--;
 
 
-					      //System.out.println("Have search type " + k);
+					      System.out.println("Have search type " + k);
 					      st = k;
 					    
 					}
 					break;
 				case 2 :
-					// TXKS.g:181:7: 
+					// TXKS.g:158:7: 
 					{
 
 					      st = K_NONTEMPORAL;
@@ -327,7 +330,7 @@ public class TXKSParser extends Parser {
 
 
 	// $ANTLR start "statedSearchType"
-	// TXKS.g:186:1: statedSearchType returns [Integer i] : k= ( K_SEQUENCED | K_NONSEQUENCED | K_EARLIEST | K_DURATION | K_LATEST | K_NONTEMPORAL | K_CURRENT ) ;
+	// TXKS.g:163:1: statedSearchType returns [Integer i] : k= ( K_SEQUENCED | K_NONSEQUENCED | K_EARLIEST | K_DURATION | K_LATEST | K_NONTEMPORAL | K_CURRENT ) ;
 	public final Integer statedSearchType() throws RecognitionException {
 		Integer i = null;
 
@@ -335,8 +338,8 @@ public class TXKSParser extends Parser {
 		Token k=null;
 
 		try {
-			// TXKS.g:186:37: (k= ( K_SEQUENCED | K_NONSEQUENCED | K_EARLIEST | K_DURATION | K_LATEST | K_NONTEMPORAL | K_CURRENT ) )
-			// TXKS.g:187:5: k= ( K_SEQUENCED | K_NONSEQUENCED | K_EARLIEST | K_DURATION | K_LATEST | K_NONTEMPORAL | K_CURRENT )
+			// TXKS.g:163:37: (k= ( K_SEQUENCED | K_NONSEQUENCED | K_EARLIEST | K_DURATION | K_LATEST | K_NONTEMPORAL | K_CURRENT ) )
+			// TXKS.g:164:5: k= ( K_SEQUENCED | K_NONSEQUENCED | K_EARLIEST | K_DURATION | K_LATEST | K_NONTEMPORAL | K_CURRENT )
 			{
 			k=input.LT(1);
 			if ( input.LA(1)==K_CURRENT||input.LA(1)==K_DURATION||input.LA(1)==K_EARLIEST||input.LA(1)==K_LATEST||(input.LA(1) >= K_NONSEQUENCED && input.LA(1) <= K_SEQUENCED) ) {
@@ -348,6 +351,7 @@ public class TXKSParser extends Parser {
 				throw mse;
 			}
 
+			        System.out.println("Search type is " + (k!=null?k.getType():0));
 			      i = (k!=null?k.getType():0);
 			    
 			}
@@ -368,7 +372,7 @@ public class TXKSParser extends Parser {
 
 
 	// $ANTLR start "expression"
-	// TXKS.g:192:1: expression returns [KeywordSearchExpression exp] : ( ( LPAREN exp1= expression RPAREN ) | (s1= stringOrId ( (op= operator e2= expression ) | (s2= stringOrId exp1= stringExpression ) )? ) |);
+	// TXKS.g:170:1: expression returns [KeywordSearchExpression exp] : ( ( LPAREN exp1= expression RPAREN ) | (s1= stringOrId ( (op= operator e2= expression ) | (s2= stringOrId exp1= stringExpression ) )? ) | (sliceTime= sliceOperator expS= expression ) );
 	public final KeywordSearchExpression expression() throws RecognitionException {
 		KeywordSearchExpression exp = null;
 
@@ -378,9 +382,11 @@ public class TXKSParser extends Parser {
 		int op =0;
 		KeywordSearchExpression e2 =null;
 		ParserRuleReturnScope s2 =null;
+		ParserRuleReturnScope sliceTime =null;
+		KeywordSearchExpression expS =null;
 
 		try {
-			// TXKS.g:192:50: ( ( LPAREN exp1= expression RPAREN ) | (s1= stringOrId ( (op= operator e2= expression ) | (s2= stringOrId exp1= stringExpression ) )? ) |)
+			// TXKS.g:170:50: ( ( LPAREN exp1= expression RPAREN ) | (s1= stringOrId ( (op= operator e2= expression ) | (s2= stringOrId exp1= stringExpression ) )? ) | (sliceTime= sliceOperator expS= expression ) )
 			int alt3=3;
 			switch ( input.LA(1) ) {
 			case LPAREN:
@@ -394,8 +400,7 @@ public class TXKSParser extends Parser {
 				alt3=2;
 				}
 				break;
-			case EOF:
-			case RPAREN:
+			case K_SLICE:
 				{
 				alt3=3;
 				}
@@ -407,17 +412,17 @@ public class TXKSParser extends Parser {
 			}
 			switch (alt3) {
 				case 1 :
-					// TXKS.g:193:5: ( LPAREN exp1= expression RPAREN )
+					// TXKS.g:171:5: ( LPAREN exp1= expression RPAREN )
 					{
-					// TXKS.g:193:5: ( LPAREN exp1= expression RPAREN )
-					// TXKS.g:193:6: LPAREN exp1= expression RPAREN
+					// TXKS.g:171:5: ( LPAREN exp1= expression RPAREN )
+					// TXKS.g:171:6: LPAREN exp1= expression RPAREN
 					{
-					match(input,LPAREN,FOLLOW_LPAREN_in_expression242); 
-					pushFollow(FOLLOW_expression_in_expression246);
+					match(input,LPAREN,FOLLOW_LPAREN_in_expression226); 
+					pushFollow(FOLLOW_expression_in_expression230);
 					exp1=expression();
 					state._fsp--;
 
-					match(input,RPAREN,FOLLOW_RPAREN_in_expression248); 
+					match(input,RPAREN,FOLLOW_RPAREN_in_expression232); 
 					}
 
 					     
@@ -427,20 +432,21 @@ public class TXKSParser extends Parser {
 					}
 					break;
 				case 2 :
-					// TXKS.g:198:5: (s1= stringOrId ( (op= operator e2= expression ) | (s2= stringOrId exp1= stringExpression ) )? )
+					// TXKS.g:176:5: (s1= stringOrId ( (op= operator e2= expression ) | (s2= stringOrId exp1= stringExpression ) )? )
 					{
-					// TXKS.g:198:5: (s1= stringOrId ( (op= operator e2= expression ) | (s2= stringOrId exp1= stringExpression ) )? )
-					// TXKS.g:198:6: s1= stringOrId ( (op= operator e2= expression ) | (s2= stringOrId exp1= stringExpression ) )?
+					// TXKS.g:176:5: (s1= stringOrId ( (op= operator e2= expression ) | (s2= stringOrId exp1= stringExpression ) )? )
+					// TXKS.g:176:6: s1= stringOrId ( (op= operator e2= expression ) | (s2= stringOrId exp1= stringExpression ) )?
 					{
-					pushFollow(FOLLOW_stringOrId_in_expression267);
+					pushFollow(FOLLOW_stringOrId_in_expression251);
 					s1=stringOrId();
 					state._fsp--;
 
 
+					                  System.out.println("String or id " + (s1!=null?input.toString(s1.start,s1.stop):null));
 					        exp = new KeywordSearchExpression((s1!=null?input.toString(s1.start,s1.stop):null), operand--);
 					        //System.out.println("Have string  " + (s1!=null?input.toString(s1.start,s1.stop):null));
-					    
-					// TXKS.g:203:5: ( (op= operator e2= expression ) | (s2= stringOrId exp1= stringExpression ) )?
+					       
+					// TXKS.g:182:8: ( (op= operator e2= expression ) | (s2= stringOrId exp1= stringExpression ) )?
 					int alt2=3;
 					int LA2_0 = input.LA(1);
 					if ( (LA2_0==K_AFTER||(LA2_0 >= K_BEFORE && LA2_0 <= K_CONTAINS)||LA2_0==K_DURING||LA2_0==K_INTERSECTS||LA2_0==K_MEETS) ) {
@@ -451,49 +457,49 @@ public class TXKSParser extends Parser {
 					}
 					switch (alt2) {
 						case 1 :
-							// TXKS.g:203:6: (op= operator e2= expression )
+							// TXKS.g:182:9: (op= operator e2= expression )
 							{
-							// TXKS.g:203:6: (op= operator e2= expression )
-							// TXKS.g:203:7: op= operator e2= expression
+							// TXKS.g:182:9: (op= operator e2= expression )
+							// TXKS.g:182:10: op= operator e2= expression
 							{
-							pushFollow(FOLLOW_operator_in_expression284);
+							pushFollow(FOLLOW_operator_in_expression271);
 							op=operator();
 							state._fsp--;
 
-							pushFollow(FOLLOW_expression_in_expression288);
+							pushFollow(FOLLOW_expression_in_expression275);
 							e2=expression();
 							state._fsp--;
 
 
-							        exp = new KeywordSearchExpression(exp, op, e2);
-							        //System.out.println("Have expression e2 ");
-							      
+							          exp = new KeywordSearchExpression(exp, op, e2);
+							          //System.out.println("Have expression e2 ");
+							          
 							}
 
 							}
 							break;
 						case 2 :
-							// TXKS.g:207:9: (s2= stringOrId exp1= stringExpression )
+							// TXKS.g:186:12: (s2= stringOrId exp1= stringExpression )
 							{
-							// TXKS.g:207:9: (s2= stringOrId exp1= stringExpression )
-							// TXKS.g:207:10: s2= stringOrId exp1= stringExpression
+							// TXKS.g:186:12: (s2= stringOrId exp1= stringExpression )
+							// TXKS.g:186:13: s2= stringOrId exp1= stringExpression
 							{
-							pushFollow(FOLLOW_stringOrId_in_expression304);
+							pushFollow(FOLLOW_stringOrId_in_expression294);
 							s2=stringOrId();
 							state._fsp--;
 
-							pushFollow(FOLLOW_stringExpression_in_expression308);
+							pushFollow(FOLLOW_stringExpression_in_expression298);
 							exp1=stringExpression();
 							state._fsp--;
 
 							}
 
 
-							        String s = (s2!=null?input.toString(s2.start,s2.stop):null);
-							        exp = new KeywordSearchExpression(exp, 0, s, operand--);
-							        if (exp1 != null) {exp = new KeywordSearchExpression(exp, 0, exp1);}
-							        //System.out.println("Have string  " + (s2!=null?input.toString(s2.start,s2.stop):null));
-							      
+							          String s = (s2!=null?input.toString(s2.start,s2.stop):null);
+							          exp = new KeywordSearchExpression(exp, 0, s, operand--);
+							          if (exp1 != null) {exp = new KeywordSearchExpression(exp, 0, exp1);}
+							          //System.out.println("Have string  " + (s2!=null?input.toString(s2.start,s2.stop):null));
+							        
 							}
 							break;
 
@@ -504,8 +510,33 @@ public class TXKSParser extends Parser {
 					}
 					break;
 				case 3 :
-					// TXKS.g:216:7: 
+					// TXKS.g:194:9: (sliceTime= sliceOperator expS= expression )
 					{
+					// TXKS.g:194:9: (sliceTime= sliceOperator expS= expression )
+					// TXKS.g:194:10: sliceTime= sliceOperator expS= expression
+					{
+					pushFollow(FOLLOW_sliceOperator_in_expression334);
+					sliceTime=sliceOperator();
+					state._fsp--;
+
+					pushFollow(FOLLOW_expression_in_expression338);
+					expS=expression();
+					state._fsp--;
+
+
+					          
+					          String sliceText = (sliceTime!=null?input.toString(sliceTime.start,sliceTime.stop):null);
+					          // Take out @slice keyword
+					          sliceText = sliceText.substring(6).trim();
+					          // Lop off the square brackets
+					          sliceText = sliceText.substring( 1, sliceText.length() - 1 ).trim();
+					          
+					          exp = new KeywordSearchExpression(new Time(sliceText), expS);
+					          
+					          System.out.println("Slice expression is " + sliceText);
+					          
+					}
+
 
 					        //System.out.println("Expression done");
 					      
@@ -529,7 +560,7 @@ public class TXKSParser extends Parser {
 
 
 	// $ANTLR start "stringExpression"
-	// TXKS.g:221:5: stringExpression returns [KeywordSearchExpression exp] : ( (s2= stringOrId exp1= stringExpression ) |);
+	// TXKS.g:212:5: stringExpression returns [KeywordSearchExpression exp] : ( (s2= stringOrId exp1= stringExpression ) |);
 	public final KeywordSearchExpression stringExpression() throws RecognitionException {
 		KeywordSearchExpression exp = null;
 
@@ -538,7 +569,7 @@ public class TXKSParser extends Parser {
 		KeywordSearchExpression exp1 =null;
 
 		try {
-			// TXKS.g:221:60: ( (s2= stringOrId exp1= stringExpression ) |)
+			// TXKS.g:212:60: ( (s2= stringOrId exp1= stringExpression ) |)
 			int alt4=2;
 			int LA4_0 = input.LA(1);
 			if ( (LA4_0==ID||LA4_0==STRING) ) {
@@ -556,16 +587,16 @@ public class TXKSParser extends Parser {
 
 			switch (alt4) {
 				case 1 :
-					// TXKS.g:222:5: (s2= stringOrId exp1= stringExpression )
+					// TXKS.g:213:5: (s2= stringOrId exp1= stringExpression )
 					{
-					// TXKS.g:222:5: (s2= stringOrId exp1= stringExpression )
-					// TXKS.g:222:6: s2= stringOrId exp1= stringExpression
+					// TXKS.g:213:5: (s2= stringOrId exp1= stringExpression )
+					// TXKS.g:213:6: s2= stringOrId exp1= stringExpression
 					{
-					pushFollow(FOLLOW_stringOrId_in_stringExpression378);
+					pushFollow(FOLLOW_stringOrId_in_stringExpression391);
 					s2=stringOrId();
 					state._fsp--;
 
-					pushFollow(FOLLOW_stringExpression_in_stringExpression382);
+					pushFollow(FOLLOW_stringExpression_in_stringExpression395);
 					exp1=stringExpression();
 					state._fsp--;
 
@@ -580,10 +611,10 @@ public class TXKSParser extends Parser {
 					}
 					break;
 				case 2 :
-					// TXKS.g:229:5: 
+					// TXKS.g:220:5: 
 					{
 
-					      //System.out.println("Done");
+					      System.out.println("Done");
 					      //exp = null;
 					    
 					}
@@ -604,9 +635,76 @@ public class TXKSParser extends Parser {
 	// $ANTLR end "stringExpression"
 
 
+	public static class sliceOperator_return extends ParserRuleReturnScope {
+		public Time time;
+	};
+
+
+	// $ANTLR start "sliceOperator"
+	// TXKS.g:228:1: sliceOperator returns [Time time] : K_SLICE '[' start= INT ( '-' stop= INT )? ']' ;
+	public final TXKSParser.sliceOperator_return sliceOperator() throws RecognitionException {
+		TXKSParser.sliceOperator_return retval = new TXKSParser.sliceOperator_return();
+		retval.start = input.LT(1);
+
+		Token start=null;
+		Token stop=null;
+
+		try {
+			// TXKS.g:228:34: ( K_SLICE '[' start= INT ( '-' stop= INT )? ']' )
+			// TXKS.g:229:4: K_SLICE '[' start= INT ( '-' stop= INT )? ']'
+			{
+			match(input,K_SLICE,FOLLOW_K_SLICE_in_sliceOperator438); 
+			match(input,LBRACKET,FOLLOW_LBRACKET_in_sliceOperator440); 
+			start=(Token)match(input,INT,FOLLOW_INT_in_sliceOperator444); 
+			// TXKS.g:229:26: ( '-' stop= INT )?
+			int alt5=2;
+			int LA5_0 = input.LA(1);
+			if ( (LA5_0==47) ) {
+				alt5=1;
+			}
+			switch (alt5) {
+				case 1 :
+					// TXKS.g:229:27: '-' stop= INT
+					{
+					match(input,47,FOLLOW_47_in_sliceOperator447); 
+					stop=(Token)match(input,INT,FOLLOW_INT_in_sliceOperator451); 
+					}
+					break;
+
+			}
+
+			match(input,RBRACKET,FOLLOW_RBRACKET_in_sliceOperator455); 
+
+			        //System.out.println("Unary time is " + (start!=null?start.getText():null) + " " + stop + " " + $c.text);
+			        /*
+			        if (stop == null) {     
+			          time = new Time((start!=null?start.getText():null) + "-" + (start!=null?start.getText():null));
+			       } else {
+			          time = new Time((start!=null?start.getText():null) + "-" + (stop!=null?stop.getText():null));
+			       }
+			        */
+			    
+			}
+
+			retval.stop = input.LT(-1);
+
+		}
+
+		  catch (RecognitionException e) {
+		    throw e;
+		  }
+
+		finally {
+			// do for sure before leaving
+		}
+		return retval;
+	}
+	// $ANTLR end "sliceOperator"
+
+
 
 	// $ANTLR start "operator"
-	// TXKS.g:264:1: operator returns [int code] : c= ( K_CONTAINS | K_INTERSECTS | K_BEFORE | K_AFTER | K_MEETS | K_DURING ) ;
+	// TXKS.g:242:1: operator returns [int code] : c= ( K_CONTAINS | K_INTERSECTS | K_BEFORE | K_AFTER | K_MEETS | K_DURING ) ;
 	public final int operator() throws RecognitionException {
 		int code = 0;
 
@@ -614,8 +712,8 @@ public class TXKSParser extends Parser {
 		Token c=null;
 
 		try {
-			// TXKS.g:264:28: (c= ( K_CONTAINS | K_INTERSECTS | K_BEFORE | K_AFTER | K_MEETS | K_DURING ) )
-			// TXKS.g:265:5: c= ( K_CONTAINS | K_INTERSECTS | K_BEFORE | K_AFTER | K_MEETS | K_DURING )
+			// TXKS.g:242:28: (c= ( K_CONTAINS | K_INTERSECTS | K_BEFORE | K_AFTER | K_MEETS | K_DURING ) )
+			// TXKS.g:243:5: c= ( K_CONTAINS | K_INTERSECTS | K_BEFORE | K_AFTER | K_MEETS | K_DURING )
 			{
 			c=input.LT(1);
 			if ( input.LA(1)==K_AFTER||(input.LA(1) >= K_BEFORE && input.LA(1) <= K_CONTAINS)||input.LA(1)==K_DURING||input.LA(1)==K_INTERSECTS||input.LA(1)==K_MEETS ) {
@@ -648,7 +746,7 @@ public class TXKSParser extends Parser {
 
 
 	// $ANTLR start "stringOrId"
-	// TXKS.g:268:1: stringOrId : (x= STRING |v= ID );
+	// TXKS.g:252:1: stringOrId : (x= STRING |v= ID );
 	public final TXKSParser.stringOrId_return stringOrId() throws RecognitionException {
 		TXKSParser.stringOrId_return retval = new TXKSParser.stringOrId_return();
 		retval.start = input.LT(1);
@@ -657,33 +755,33 @@ public class TXKSParser extends Parser {
 		Token v=null;
 
 		try {
-			// TXKS.g:268:34: (x= STRING |v= ID )
-			int alt5=2;
-			int LA5_0 = input.LA(1);
-			if ( (LA5_0==STRING) ) {
-				alt5=1;
+			// TXKS.g:252:34: (x= STRING |v= ID )
+			int alt6=2;
+			int LA6_0 = input.LA(1);
+			if ( (LA6_0==STRING) ) {
+				alt6=1;
 			}
-			else if ( (LA5_0==ID) ) {
-				alt5=2;
+			else if ( (LA6_0==ID) ) {
+				alt6=2;
 			}
 
 			else {
 				NoViableAltException nvae =
-					new NoViableAltException("", 5, 0, input);
+					new NoViableAltException("", 6, 0, input);
 				throw nvae;
 			}
 
-			switch (alt5) {
+			switch (alt6) {
 				case 1 :
-					// TXKS.g:269:5: x= STRING
+					// TXKS.g:253:5: x= STRING
 					{
-					x=(Token)match(input,STRING,FOLLOW_STRING_in_stringOrId486); 
+					x=(Token)match(input,STRING,FOLLOW_STRING_in_stringOrId594); 
 					}
 					break;
 				case 2 :
-					// TXKS.g:270:7: v= ID
+					// TXKS.g:254:7: v= ID
 					{
-					v=(Token)match(input,ID,FOLLOW_ID_in_stringOrId499); 
+					v=(Token)match(input,ID,FOLLOW_ID_in_stringOrId607); 
 					}
 					break;
 
@@ -707,23 +805,31 @@ public class TXKSParser extends Parser {
 
 
 
-	public static final BitSet FOLLOW_kindOfSearch_in_program90 = new BitSet(new long[]{0x0000000000000000L});
-	public static final BitSet FOLLOW_EOF_in_program98 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_searchType_in_kindOfSearch124 = new BitSet(new long[]{0x0000101000002000L});
-	public static final BitSet FOLLOW_expression_in_kindOfSearch128 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_statedSearchType_in_searchType157 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_set_in_statedSearchType191 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LPAREN_in_expression242 = new BitSet(new long[]{0x0000181000002000L});
-	public static final BitSet FOLLOW_expression_in_expression246 = new BitSet(new long[]{0x0000080000000000L});
-	public static final BitSet FOLLOW_RPAREN_in_expression248 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_stringOrId_in_expression267 = new BitSet(new long[]{0x000010000A86A002L});
-	public static final BitSet FOLLOW_operator_in_expression284 = new BitSet(new long[]{0x0000101000002000L});
-	public static final BitSet FOLLOW_expression_in_expression288 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_stringOrId_in_expression304 = new BitSet(new long[]{0x0000100000002000L});
-	public static final BitSet FOLLOW_stringExpression_in_expression308 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_stringOrId_in_stringExpression378 = new BitSet(new long[]{0x0000100000002000L});
-	public static final BitSet FOLLOW_stringExpression_in_stringExpression382 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_set_in_operator439 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_STRING_in_stringOrId486 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ID_in_stringOrId499 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_kindOfSearch_in_program74 = new BitSet(new long[]{0x0000000000000000L});
+	public static final BitSet FOLLOW_EOF_in_program82 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_searchType_in_kindOfSearch108 = new BitSet(new long[]{0x0000101080002000L});
+	public static final BitSet FOLLOW_expression_in_kindOfSearch112 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_statedSearchType_in_searchType141 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_set_in_statedSearchType175 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LPAREN_in_expression226 = new BitSet(new long[]{0x0000101080002000L});
+	public static final BitSet FOLLOW_expression_in_expression230 = new BitSet(new long[]{0x0000080000000000L});
+	public static final BitSet FOLLOW_RPAREN_in_expression232 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_stringOrId_in_expression251 = new BitSet(new long[]{0x000010000A86A002L});
+	public static final BitSet FOLLOW_operator_in_expression271 = new BitSet(new long[]{0x0000101080002000L});
+	public static final BitSet FOLLOW_expression_in_expression275 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_stringOrId_in_expression294 = new BitSet(new long[]{0x0000100000002000L});
+	public static final BitSet FOLLOW_stringExpression_in_expression298 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_sliceOperator_in_expression334 = new BitSet(new long[]{0x0000101080002000L});
+	public static final BitSet FOLLOW_expression_in_expression338 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_stringOrId_in_stringExpression391 = new BitSet(new long[]{0x0000100000002000L});
+	public static final BitSet FOLLOW_stringExpression_in_stringExpression395 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_K_SLICE_in_sliceOperator438 = new BitSet(new long[]{0x0000000200000000L});
+	public static final BitSet FOLLOW_LBRACKET_in_sliceOperator440 = new BitSet(new long[]{0x0000000000004000L});
+	public static final BitSet FOLLOW_INT_in_sliceOperator444 = new BitSet(new long[]{0x0000840000000000L});
+	public static final BitSet FOLLOW_47_in_sliceOperator447 = new BitSet(new long[]{0x0000000000004000L});
+	public static final BitSet FOLLOW_INT_in_sliceOperator451 = new BitSet(new long[]{0x0000040000000000L});
+	public static final BitSet FOLLOW_RBRACKET_in_sliceOperator455 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_set_in_operator486 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_STRING_in_stringOrId594 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ID_in_stringOrId607 = new BitSet(new long[]{0x0000000000000002L});
 }

@@ -88,19 +88,19 @@ public class Main {
     }
 
     public SearchResult search(boolean indexUsed, KeywordSearchExpression exp, boolean fullResult) {
-        Search s = new Search(db, bdb, indexUsed, exp, createResultBuilder(fullResult));
+        Search s = new Search(db, bdb, indexUsed, exp, createResultBuilder(fullResult, exp));
         // get the search keywords
         //String[] tokens = parseQuery(searchText);
         //generate results and make a JTree
         return s.search();
     }
     
-    public ResultBuilder createResultBuilder(boolean fullResult) {
+    public ResultBuilder createResultBuilder(boolean fullResult, KeywordSearchExpression exp) {
         ResultBuilder resultBuilder;
         if (fullResult) {
-            resultBuilder = new SubtreeResultBuilder(db, bdb);
+            resultBuilder = new SubtreeResultBuilder(db, bdb, exp);
         } else {
-            resultBuilder = new SingleNodeResultBuilder(db,bdb);
+            resultBuilder = new SingleNodeResultBuilder(db, bdb, exp);
         }
         return resultBuilder;
 
@@ -138,6 +138,7 @@ public class Main {
      * @param datasetName Dataset name
      * @param parsedFile Input XML file
      * @param parseDialog A dialog to show the parsing progress; ignored if null
+     * @param intervalGenerator What kind of timestamps are associated with the data
      */
     public void parseDataset(String datasetName, File parsedFile, ParseDialog parseDialog, IntervalGenerator intervalGenerator, int maxNodes) {
         if (bdb == null) {

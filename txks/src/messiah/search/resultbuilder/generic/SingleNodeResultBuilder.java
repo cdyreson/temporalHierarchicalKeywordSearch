@@ -9,6 +9,7 @@ import messiah.storage.generic.DbAccess;
 import usu.NodeId;
 import messiah.database.Database;
 import java.util.Map;
+import usu.algebra.KeywordSearchExpression;
 
 /**
  *
@@ -16,12 +17,14 @@ import java.util.Map;
  */
 public class SingleNodeResultBuilder extends ResultBuilder {
     
-    private final DbAccess db;
-    private final Database bdb;
+    DbAccess db;
+    Database bdb;
+    KeywordSearchExpression exp;
 
-    public SingleNodeResultBuilder(DbAccess db, Database bdb) {
+    public SingleNodeResultBuilder(DbAccess db, Database bdb, KeywordSearchExpression exp) {
         this.db = db;
         this.bdb = bdb;
+        this.exp = exp;
     }
 
     @Override

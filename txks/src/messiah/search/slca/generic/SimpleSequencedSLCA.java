@@ -30,14 +30,14 @@ public class SimpleSequencedSLCA extends SLCAFinder {
     public final static int LATEST_SEMANTICS = 2;
     private final SimpleCachingFeedsController controller;
     int shift[];
-    int semantics = SEQUENCED_SEMANTICS;
+    // int semantics = SEQUENCED_SEMANTICS;
     Map<Integer, Integer> lcaLevelMap;
     int maxLevel = 0;
-    boolean verbose = false;
+    boolean verbose = true;
 
     public SimpleSequencedSLCA(Database db, int semantics) {
         this.db = db;
-        this.semantics = semantics;
+        // this.semantics = semantics;
         controller = new SimpleCachingFeedsController();
         if (semantics == EARLIEST_SEMANTICS) {
             controller.setEarliest();
@@ -153,9 +153,16 @@ public class SimpleSequencedSLCA extends SLCAFinder {
 
             int level = nodeId.getLevel();
             NodeId slca = slcas[level];
-            TimeElement lifetime = controller.gather();
+            TimeElement lifetime = controller.gather(level);
+            if (verbose) {
+                System.out.println("SimpleSequencedSLCA level lifetime " + level + " " + lifetime);
+            }
             // Advance controller
             controller.next();
+            
+            // Skip to next one unless we have an actual lifetime
+            if (lifetime == null || lifetime.isEmpty()) continue;
+            
             //System.out.println("SimpleSequencedSLCA lifetime " + lifetime);
             if (slca == null) {
                 slcas[level] = nodeId;
@@ -275,6 +282,9 @@ public class SimpleSequencedSLCA extends SLCAFinder {
                     System.out.println("SimpleSLCASequenced :  final checking " + slcas[i] + " lifetimes " + lifetimes[i] + " excludes " + excludes[i]);
                 }
                 TimeElement lifetime = lifetimes[i].difference(excludes[i]);
+                if (verbose) {
+                    System.out.println("SimpleSLCASequenced :  empty lifetime " + lifetime.isEmpty());
+                }
                 if (!lifetime.isEmpty()) {
                     //System.out.println("CurtSLCASequenced :  adding to result final " + slcas[i]);
                     if (verbose) {

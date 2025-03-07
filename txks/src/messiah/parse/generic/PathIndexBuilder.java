@@ -54,24 +54,24 @@ public class PathIndexBuilder implements ParserListener {
                 str = '@' + str;
 
             }
-        }
 
-        // Build off of the parent if needed
-        String parent = completeStack.peek();
-        labelStack.push(str);
-        String current = parent + "." + str;
-        completeStack.push(current);
-        if (!db.pathNameIndex.containsKey(current)) {
-            PathId pathId = db.pathNameIndex.get(parent);
-            //System.out.println("parent is " + parent + " " + pathId);
-            pathId = pathId.newChild();
-            while (db.pathIndex.containsKey(pathId)) {
-                pathId = pathId.nextSibling();
+            // Build off of the parent if needed
+            String parent = completeStack.peek();
+            labelStack.push(str);
+            String current = parent + "." + str;
+            completeStack.push(current);
+            if (!db.pathNameIndex.containsKey(current)) {
+                PathId pathId = db.pathNameIndex.get(parent);
+                //System.out.println("parent is " + parent + " " + pathId + " " + current);
+                pathId = pathId.newChild();
+                while (db.pathIndex.containsKey(pathId)) {
+                    pathId = pathId.nextSibling();
+                }
+                //db.pathIndex.put(pathId, null);
+                //System.out.println("child is " + current + " " + pathId);
+                db.pathIndex.put(pathId, new PathInfo(current, 0, false, 0, 0));
+                db.pathNameIndex.put(current, pathId);
             }
-            //db.pathIndex.put(pathId, null);
-            //System.out.println("child is " + current + " " +  pathId);
-            db.pathIndex.put(pathId, new PathInfo(current, 0, false, 0, 0));
-            db.pathNameIndex.put(current, pathId);
         }
 
     }
@@ -88,8 +88,10 @@ public class PathIndexBuilder implements ParserListener {
          return;
          }
          */
-        labelStack.pop();
-        completeStack.pop();
+        if (!isValue) {
+            labelStack.pop();
+            completeStack.pop();
+        }
     }
 
     public static void main(String[] args) {

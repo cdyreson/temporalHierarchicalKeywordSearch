@@ -19,6 +19,15 @@ import messiah.utils.Counter;
 import usu.NodeId;
 import messiah.database.Database;
 import java.util.SortedMap;
+import messiah.search.SearchAlgoEnum;
+import static messiah.search.SearchAlgoEnum.NonSequencedFSLCA;
+import static messiah.search.SearchAlgoEnum.NontemporalSearch;
+import static messiah.search.SearchAlgoEnum.SequencedSearch;
+import usu.algebra.KeywordSearchExpression;
+import usu.dln.HistoryDLN;
+import usu.dln.TimeElementHistoryDLN;
+import usu.temporal.Time;
+import usu.temporal.TimeElement;
 
 /**
  *
@@ -32,13 +41,15 @@ public class SubtreeResultBuilder extends ResultBuilder {
      */
     private final boolean displayRootPath = false;
 
-    private final DbAccess db;
-    private final Database bdb;
+    DbAccess db;
+    Database bdb;
+    KeywordSearchExpression exp;
     private HashMap<String, Counter> pathCounterMap;
 
-    public SubtreeResultBuilder(DbAccess db, Database bdb) {
+    public SubtreeResultBuilder(DbAccess db, Database bdb, KeywordSearchExpression exp) {
         this.db = db;
         this.bdb = bdb;
+        this.exp = exp;
     }
 
     @Override
@@ -64,8 +75,8 @@ public class SubtreeResultBuilder extends ResultBuilder {
     }
 
     private DefaultMutableTreeNode buildSubtree(NodeId ancestorId) {
-//        TimedMsg.printMsg("Start building subtree for " + ancestorId);
-
+        // TimedMsg.printMsg("Start building subtree for " + ancestorId);
+        
         int ancLvl = ancestorId.getLevel();
         NodeId upperBound = ancestorId.getNextFirstDescendant(ancLvl);
         if (verbose) System.out.println("Curt: SubtreeResultBuilder ancestorId " + ancestorId + " upperBound " + upperBound);
@@ -84,6 +95,19 @@ public class SubtreeResultBuilder extends ResultBuilder {
 
         int curLvl = ancLvl - 1;
         Stack<DefaultMutableTreeNode> stack = new Stack<>();
+        Stack<TimeElement> timeStack = new Stack();
+        // Temporal search needs a time on the time stack
+        switch (this.exp.getSearchType()) {
+            // Sequenced
+            case SequencedSearch:
+            case SequencedPartialFSLCA:
+            case SequencedFSLCA:
+            case EarliestSearch:
+            case LatestSearch:
+                timeStack.push(((TimeElementHistoryDLN) ancestorId).getTime(/*curLvl*/ancLvl));
+                break;
+            default:
+        }
 
 //        TimedMsg.printMsg("Start node traversal from " + ancestorId + " to " + upperBound);
         NodeId lastKey = null;
@@ -110,8 +134,24 @@ public class SubtreeResultBuilder extends ResultBuilder {
                     } else {
                         //System.out.println("Curt: SubtreeResultBuilder push on stack");
                         stack.peek().add(node);
+                        //if (this.exp.getSearchType() == SearchAlgoEnum.SequencedSearch) {
+                        //    HistoryDLN hdln = node.
+                        //} else {
+                        //     
+                        //}
                     }
                     stack.push(node);
+                    switch (this.exp.getSearchType()) {
+                        // Sequenced
+                        case SequencedSearch:
+                        case SequencedPartialFSLCA:
+                        case SequencedFSLCA:
+                        case EarliestSearch:
+                        case LatestSearch:
+                            timeStack.push(((TimeElementHistoryDLN) key).getTime(/*lvl*/ancLvl));
+                            break;
+                        default:
+                    }               
                 }
 
                 String pathExpr = path.getInfo().getPathExpr();
@@ -127,24 +167,129 @@ public class SubtreeResultBuilder extends ResultBuilder {
             //System.out.println("Curt: SubtreeResultBuilder lastKey " + lastKey + " lcaLvl " + lcaLvl + " ancLvl " + ancLvl + " curLvl " + curLvl);
             while (curLvl > lcaLvl) {
                 stack.pop();
+                switch (this.exp.getSearchType()) {
+                    // Sequenced
+                    case SequencedSearch:
+                    case SequencedPartialFSLCA:
+                    case SequencedFSLCA:
+                    case EarliestSearch:
+                    case LatestSearch:
+                        timeStack.pop();
+                        break;
+                    default:
+                }
                 curLvl--;
             }
 
-            String temp = key.toString();
-            if (temp.contains("[")) {
-                temp = temp.substring(temp.indexOf("["));
+            // System.out.println("class is " + key.getClass().getName());
+            TimeElement time;
+            String nodeInformationString = info.getData();
+            switch (this.exp.getSearchType()) {
+                // No timestamps
+                case NontemporalSearch:
+                case PartialFSLCA:
+                case CompleteFSLCA:
+                case NonTemporalFSLCA:
+                    time = null;
+                    break;
+
+                // Sequenced
+                case SequencedSearch:
+                case SequencedPartialFSLCA:
+                case SequencedFSLCA:
+                case EarliestSearch:
+                case LatestSearch:
+                    // Figure out time
+
+                    if (key.getClass() == TimeElementHistoryDLN.class) {
+                        // @earliest title year
+                        //System.out.println("here " + curLvl + " " + timeStack.size() + " " + ((TimeElementHistoryDLN) key).getTime(/*curLvl*/ancLvl));
+
+                        time = ((TimeElementHistoryDLN) key).getTime(/*curLvl*/ancLvl);
+                        if (time.isEmpty()) {
+                            time = null;
+                        } else {
+                            time = timeStack.peek().intersection(((TimeElementHistoryDLN) key).getTime(/*curLvl*/ancLvl));
+                        }
+                    } else if (key.getClass() == HistoryDLN.class) {
+                        Time t = ((HistoryDLN) key).getTime(/*curLvl*/ancLvl);
+                        if (t == null) {
+                            time = null;
+                        } else {         
+                            time = timeStack.peek().intersection(((HistoryDLN) key).getTime(/*curLvl*/ancLvl));
+                        }
+                    } else {
+                        time = null;//new TimeElement();
+                    }
+                    
+                    if (time == null || time.isEmpty()) {
+                        nodeInformationString = null;
+                    } else {
+                        nodeInformationString += " " + time.toString();
+                    }
+
+                    if (nodeInformationString != null) {
+                        // Modify time stack
+                        timeStack.push(time);
+                        /*
+                        if (key.getClass() == TimeElementHistoryDLN.class) {
+                            timeStack.push(((TimeElementHistoryDLN) key).getTime(ancLvl));
+                        } else if (key.getClass() == HistoryDLN.class) {
+                            timeStack.push(new TimeElement(((HistoryDLN) key).getTime(ancLvl)));
+                        } else {
+                            timeStack.push(new TimeElement());
+                        }
+                        */
+                    }
+
+
+                    break;
+
+                // Nonsequenced
+                case TemporalSearch:
+                case NonSequencedFSLCA:
+                case NonsequencedPartialFSLCA:
+                case DurationalSearch:
+                    if (key.getClass() == TimeElementHistoryDLN.class) {
+                        time = ((TimeElementHistoryDLN) key).getTime(/*curLvl*/ancLvl);
+                        if (time.isEmpty()) {
+                            time = null;
+                        }
+                    } else if (key.getClass() == HistoryDLN.class) {
+                        Time t = ((HistoryDLN) key).getTime(/*curLvl*/ancLvl);
+                        if (t == null) {
+                            time = null;
+                        } else { 
+                            time = new TimeElement(((HistoryDLN) key).getTime(/*curLvl*/ancLvl));
+                        }  
+                    } else {
+                        time = new TimeElement();
+                    }
+                    if (time == null) {
+                        nodeInformationString = null;
+                    } else {
+                        nodeInformationString += " " + time.toString();
+                    }
+                    
+                    break;
+                default:
+                    time = null;
             }
-            DefaultMutableTreeNode node = new DefaultMutableTreeNode(
-                    info.getData() + 
-                    " " + temp);
-            if (stack.isEmpty()) {
-                root = node;
-            } else {
-                stack.peek().add(node);
+            
+            // Subtree result builder skips some nodes if no nodeInformaitonString 
+            // (when the time at a given level is not existent)
+            if (nodeInformationString != null) {
+                DefaultMutableTreeNode node = new DefaultMutableTreeNode(nodeInformationString);
+                if (stack.isEmpty()) {
+                    root = node;
+                } else {
+                    stack.peek().add(node);
+                }
+                stack.push(node);
+                curLvl++;
+                lastKey = key;
             }
-            stack.push(node);
-            curLvl++;
-            lastKey = key;
+
 
 //            System.out.println("key = " + key);
         }

@@ -38,18 +38,6 @@ public class CachingFeed implements Operator {
         advance();
     }
 
-    //private void clearCache() {
-    //    cache = new ArrayList(1);
-    //}
-
-    /*
-     Call this to set up the cached feed, level isn't known till later
-     */
-    //public void initialize(int level) {
-    //    levelOfPathLCA = level;
-    //    advance();
-    //}
-
     /*
      Advance the iterator by one
      */

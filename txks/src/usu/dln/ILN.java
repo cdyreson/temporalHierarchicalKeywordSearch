@@ -1,24 +1,3 @@
-/*
- *  eXist Open Source Native XML Database
- *  Copyright (C) 2001-06 The eXist Project
- *  http://exist-db.org
- *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public License
- *  as published by the Free Software Foundation; either version 2
- *  of the License, or (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
- *  $Id: DLN.java 9474 2009-07-23 20:12:38Z dizzzz $
- */
 package usu.dln;
 
 import java.io.Serializable;
@@ -28,19 +7,8 @@ import usu.PathId;
 import java.io.ObjectOutputStream;
 
 /**
- * Represents a node id in the form of a dynamic level number (DLN). DLN's are
- * hierarchical ids, which borrow from Dewey's decimal classification. Examples
- * for node ids: 1, 1.1, 1.2, 1.2.1, 1.2.2, 1.3. In this case, 1 represents the
- * root node, 1.1 is the first node on the second level, 1.2 the second, and so
- * on.
- *
- * To support efficient insertion of new nodes between existing nodes, we use
- * the concept of sublevel ids. Between two nodes 1.1 and 1.2, a new node can be
- * inserted as 1.1/1, where the / is the sublevel separator. The / does not
- * start a new level. 1.1 and 1.1/1 are thus on the same level of the tree.
- *
- * In the binary encoding, the '.' is represented by a 0-bit while '/' is
- * written as a 1-bit.
+ * An Item level number, supports an item that can be moved within a 
+ * hierarchy.
  */
 public class ILN implements PathId, NodeId, Comparable, Serializable {
 
