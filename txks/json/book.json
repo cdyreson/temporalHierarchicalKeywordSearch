@@ -1,0 +1,88 @@
+{
+  "#timestamp": {
+    "#time": "0-9,1-10",
+    "book": [
+      {
+        "chapter": {
+          "number": "1",
+          "title": "Introduction",
+          "exercises": [
+            {
+              "exercise": {
+                "number": "1",
+                "content": "history"
+              }
+            },
+            {
+              "exercise": {
+                "number": "2",
+                "content": "future"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "chapter": {
+          "number": "2",
+          "title": "Stacks",
+          "exercises": [
+            {
+              "#timestamp": {
+                "#time": "0-3,1-6|4-9,1-10",
+                "exercise": {
+                  "number": "1",
+                  "#timestamp": [
+                    {
+                      "#time": "0-9,1-5",
+                      "content": "C++"
+                    },
+                    {
+                      "#time": "0-4,6-6|5-9,6-10",
+                      "content": "Java"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "exercise": {
+                "number": "2",
+                "content": "Python"
+              }
+            }
+          ],
+          "#timestamp": {
+            "#time": "0-4,7-10|5-9,null",
+            "additional": {
+              "exercise": {
+                "number": "1",
+                "content": "Java"
+              }
+            }
+          }
+        }
+      },
+      {
+        "chapter": {
+          "number": "3",
+          "title": "Lists",
+          "exercises": [
+            {
+              "exercise": {
+                "number": "1",
+                "content": "insertion"
+              }
+            },
+            {
+              "exercise": {
+                "number": "2",
+                "content": "sorting"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
