@@ -21,8 +21,8 @@ public class Config {
     public static final int CACHE_SIZE = 200000000;
 
     // Maximum number of items per split in CachedSplitTable, etc.
-    public static final int NODE_INDEX_SPLIT_TABLE_SIZE =    1000000;
-    public static final int KEYWORD_INDEX_SPLIT_TABLE_SIZE = 1000000;
+    public static final int NODE_INDEX_SPLIT_TABLE_SIZE =    10000000;
+    public static final int KEYWORD_INDEX_SPLIT_TABLE_SIZE = 10000000;
 
     // Maximum number of splits allowed
     public static final int MAX_SPLITS = 100;
