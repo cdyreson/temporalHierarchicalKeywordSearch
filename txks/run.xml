@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="targets" default="all" basedir=".">
-<<<<<<< HEAD
       <target name="test.json: Memory, nontemporal, parse, search 'd b a c'" 
             description="Memory, nontemporal, parse, search 'location payment'">
         <java classname="messiah.Main">
@@ -17,8 +16,6 @@
             <arg value="d b a c"/>
         </java>
     </target> 
-=======
->>>>>>> c363413bb1829df41520fde06ce5fffbcee5b7da
     <target name="dblp.json: Memory, verbose, temporal, parse, search '@slice bar'" 
                  description="">
         <java classname="messiah.Main">

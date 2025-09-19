@@ -1,4 +1,4 @@
-grammar TXKSExp;	
+grammar TXKS;	
 
 options {
   k=2;
@@ -8,17 +8,20 @@ options {
 package usu.grammar;
 import java.util.List;
 import java.util.ArrayList;
-import usu.algebra.operator.*;
-import usu.algebra.operator.specific.*;
+import usu.algebra.KeywordSearchExpression;
+//import usu.algebra.operator.*;
+//import usu.algebra.operator.specific.*;
 import java.lang.UnsupportedOperationException;
+import usu.temporal.Time;
   }
 
 @lexer::header {
 package usu.grammar;
 import java.util.List;
 import java.util.ArrayList;
-import usu.algebra.operator.*;
-import usu.algebra.operator.specific.*;
+import usu.algebra.KeywordSearchExpression;
+//import usu.algebra.operator.*;
+//import usu.algebra.operator.specific.*;
 import java.lang.UnsupportedOperationException;
   }
 
@@ -26,7 +29,10 @@ import java.lang.UnsupportedOperationException;
 
 protected static String errorMessage = "";
 protected boolean hasError = false;
+public int operand = -1;
 public static boolean verbose = false;
+//protected static int keywordCount = 0;
+public static List<String> keywords = new ArrayList(10); 
 
 public boolean hasError() {
    return hasError;
@@ -112,15 +118,12 @@ public Object recoverFromMisMatchedToken(
 
 @lexer::members {
     
-      public void displayRecognitionError(String[] tokenNames,
-                                        RecognitionException e) {
-   
+    public void displayRecognitionError(String[] tokenNames, RecognitionException e) {
         //errorMessage = buildErrorMessage(e);
         String hdr = getErrorHeader(e);
         String msg = getErrorMessage(e, TXKSParser.tokenNames);
         // Now do something with hdr and msg...
-        TXKSParser.errorMessage = "^Lexical Error in query at " + hdr + ": " + msg + "\n"; 
-        
+        TXKSParser.errorMessage = "^Lexical Error in query at " + hdr + ": " + msg + "\n";
     }
 }   
 
@@ -128,107 +131,146 @@ public Object recoverFromMisMatchedToken(
   catch (RecognitionException e) {
     throw e;
   }
-  }
+}
 
-program returns [Operator exp] :
-    op=kindOfResult {
-        $exp = $op.exp;
-    	if (hasError) { throw new TXKSParseException(errorMessage); }
-    	}
-    EOF ;  
-  
-kindOfResult returns [Operator exp] :
-    K_NONTEMPORAL LPAREN kindOfSearch RPAREN
-      {$exp = new NontemporalResult($kindOfSearch.exp);}
-    |
-    K_SEQUENCEDRESULT LPAREN kindOfSearch RPAREN
-      {$exp = new SequencedResult($kindOfSearch.exp);}
-    |
-    K_NONSEQUENCEDRESULT LPAREN kindOfSearch RPAREN
-      {$exp = new NonsequencedResult($kindOfSearch.exp);}
-    |
-    K_DESCENDANTVERSIONS LPAREN kindOfSearch RPAREN
-      {$exp = new DescendantVersions($kindOfSearch.exp);}
-    ; 
-  
-kindOfSearch returns [Operator exp] :
-    K_NONTEMPORALSEARCH LPAREN kindOfMatch RPAREN
-       {$exp = new NontemporalSearch($kindOfMatch.exp);}
-    |
-    K_SEQUENCEDSEARCH LPAREN kindOfMatch RPAREN
-       {$exp = new SequencedSearch($kindOfMatch.exp);}
-    |
-    K_NONSEQUENCEDSEARCH LPAREN kindOfMatch RPAREN
-       {$exp = new NonsequencedSearch($kindOfMatch.exp);}
-    |
-    K_DESCENDANTCHANGES LPAREN kindOfMatch RPAREN
-       {$exp = new DescendantChanges($kindOfMatch.exp);}
-    ;
- 
-kindOfMatch returns [Operator exp] :
-    K_SLICE LPAREN s=STRING COMMA op1=kindOfMatch RPAREN {$exp = new Slice(null, $op1.exp);} 
-    | 
-    K_AFTER LPAREN op1=kindOfMatch COMMA op2=kindOfMatch RPAREN {$exp = new After($op1.exp, $op2.exp);}
-    |
-    K_INTERSECTS LPAREN op1=kindOfMatch COMMA op2=kindOfMatch RPAREN {$exp = new Intersects($op1.exp, $op2.exp);}
-    |  
-    //K_MATCH LPAREN s=STRING RPAREN {$exp = new Match($s.text);}
-    K_MATCH LPAREN a=startStringList RPAREN {$exp = new Match($a.lst);}
-    |
-    K_ANY LPAREN op1=kindOfMatch COMMA op2=kindOfMatch RPAREN {$exp = new Any($op1.exp, $op2.exp);}
-    ;  
-
-startStringList returns [List<String> lst] :
-    s=STRING  r=restOfStringList {$lst = $r.lst; $lst.add($s.text);}
+program returns [KeywordSearchExpression exp] :
+    exp1=kindOfSearch {
+      //exp = null; //$op.exp;
+      if (hasError) { throw new TXKSParseException(errorMessage); }
+      exp = exp1;
+      }
+    EOF
     ;
     
-restOfStringList returns [List<String> lst] : 
-    COMMA s=STRING r=restOfStringList {$lst = $r.lst; $lst.add($s.text);}
-    | {$lst = new ArrayList(3); }
-    ;
-  
-integer	returns [ int value]:	
-  INT {
-    value = Integer.parseInt($INT.text);
+kindOfSearch returns [KeywordSearchExpression exp]:
+    s=searchType exp1=expression {
+      exp = exp1;
+      //System.out.println("Search type is " + s.intValue());
+      exp.setSearchType(s);
     }
-  ;
-/*
-comparator returns [int value]:	 
-  EQUALS {$value = Where.EQ;} 
-  | LE {$value = Where.LE;} 
-  | GE {$value =  Where.GE;}
-  | GT {$value = Where.GT;} 
-  | LT {$value = Where.LT;}
-  ;
-*/
-K_NONTEMPORALSEARCH
-	:	'nontemporalSeach';
-K_NONTEMPORAL
-	:	'nontemporal';
-K_SEQUENCEDSEARCH
-	:	'sequencedSearch';
-K_NONSEQUENCEDSEARCH 
-	:	'nonsequencedSearch';
-K_DESCENDANTVERSIONS 
-	:	'descendantVersions';
-K_DESCENDANTCHANGES 
-	:	'descendantChanges';
-K_SEQUENCEDRESULT
-	: 	'sequencedResult';
-K_NONSEQUENCEDRESULT 
-	:	'nonsequencedResult';
-K_SLICE
-	: 	'slice';
-K_INTERSECTS 
-	:	'intersects';
-K_TEMPORALMATCH
-	: 	'temporalMatch';
-K_MATCH
-	:	'match';
-K_AFTER
-	:	'after';
-K_ANY
-	:	'any';	
+    ;
+    
+searchType returns [Integer st]:	
+    k=statedSearchType {
+      //System.out.println("Have search type " + k);
+      st = k;
+    }
+    | {
+      st = K_NONTEMPORAL;
+    }
+    ;
+ 
+statedSearchType returns [Integer i]:	
+    k=(K_SEQUENCED | K_NONSEQUENCED | K_EARLIEST | K_DURATION | K_LATEST | K_NONTEMPORAL | K_CURRENT ) {
+        //System.out.println("Search type is " + $k.type);
+      i = $k.type;
+    }
+    ;
+
+expression returns [KeywordSearchExpression exp] :
+    (LPAREN exp1=expression RPAREN) {     
+        //System.out.println("Have expression ");
+        exp = exp1;
+      }
+    | 
+    (s1=stringOrId {
+                  //System.out.println("String or id " + $s1.text);
+        exp = new KeywordSearchExpression($s1.text, operand--);
+        //System.out.println("Have string  " + $s1.text);
+       }
+    
+       ((op=operator e2=expression {
+          exp = new KeywordSearchExpression(exp, op, e2);
+          //System.out.println("Have expression e2 ");
+          })
+         | (s2=stringOrId exp1=stringExpression) {
+          String s = $s2.text;
+          exp = new KeywordSearchExpression(exp, 0, s, operand--);
+          if (exp1 != null) {exp = new KeywordSearchExpression(exp, 0, exp1);}
+          //System.out.println("Have string  " + $s2.text);
+        }
+        ) ?
+      )
+      | (sliceTime=sliceOperator expS=expression {
+          
+          String sliceText = $sliceTime.text;
+          // Take out @slice keyword
+          sliceText = sliceText.substring(6).trim();
+          // Lop off the square brackets
+          sliceText = sliceText.substring( 1, sliceText.length() - 1 ).trim();
+          
+          exp = new KeywordSearchExpression(new Time(sliceText), expS);
+          
+          //System.out.println("Slice expression is " + sliceText);
+          }
+        )
+      {
+        //System.out.println("Expression done");
+      }
+    ;
+    
+    stringExpression returns [KeywordSearchExpression exp] : 
+    (s2=stringOrId exp1=stringExpression {
+        String s = $s2.text;
+        if (exp1 != null) {exp = new KeywordSearchExpression(s, 0, exp1, operand--);}
+        else {exp = new KeywordSearchExpression($s2.text, operand--);}
+        //System.out.println("Have string  " + $s2.text);
+      }
+      ) |
+    {
+      //System.out.println("Done");
+      //exp = null;
+    }
+    ;
+    
+
+
+sliceOperator returns [Time time]:
+   K_SLICE '[' start=INT ('-' stop=INT)? ']' 
+   {
+        //System.out.println("Unary time is " + $start.text + " " + $stop + " " + $c.text);
+        /*
+        if ($stop == null) {     
+          time = new Time($start.text + "-" + $start.text);
+       } else {
+          time = new Time($start.text + "-" + $stop.text);
+       }
+        */
+    }
+    ; 
+
+operator returns [int code]:
+    c = (K_CONTAINS 
+         | K_INTERSECTS 
+         | K_BEFORE 
+         | K_AFTER 
+         | K_MEETS 
+         | K_DURING 
+         ) {$code = $c.type;}
+    ; 
+
+stringOrId /*returns [String s]*/:
+    x = STRING //{s = $x.text; keywords.put(s);}
+    | v = ID //{s = $v.text; keywords.put(s);}
+    ;
+    
+K_NONTEMPORAL		:	'@nontemporal';
+K_EARLIEST		:	'@earliest';
+K_CURRENT		:	'@current';
+K_LATEST		:	'@latest';
+K_MEETS			: 	'@meets';
+K_DURATION		:	'@duration';
+K_SEQUENCED		:	'@sequenced';
+K_NONSEQUENCED		:	'@nonsequenced';
+K_DESCENDANTVERSIONS 	:	'@descendantVersions';
+K_DESCENDANTCHANGES 	:	'@descendantChanges';
+K_SLICE			: 	'@slice';
+K_CONTAINS 		:	'@contains';
+K_DURING 		:	'@during';
+K_INTERSECTS 		:	'@intersects';
+K_BEFORE		:	'@before';
+K_AFTER			:	'@after';
+K_ANY			:	'@any';	
 
 ID :   ( LETTER | '_' | ':') (NAMECHAR)* ;
 
@@ -245,7 +287,7 @@ fragment LETTER
     | 'A'..'Z'
     ;
 
-WILDCARD :	'*';
+WILDCARD:	'*';
 DOUBLEWILDCARD : '**';
 NOT 	:	'!';
 INT	:	'0'..'9'+ ;
@@ -256,6 +298,7 @@ LBRACE 	:	'{' ;
 RPAREN	:	')';
 LPAREN	:	'(';
 COMMA   : 	',';
+AT	:	'@';
 
 /*COMPARATOR returns [int value]:	 '==' {$value = Where.EQ;} | '=' | '<=' | '>=' ;	*/ 
 
@@ -270,7 +313,7 @@ STRING 	: 	('"' (~'"')* '"') | ('\'' (~'\'')* '\'');
 EOS	:	';' ;
 ARROW	:       '->';
 PIPE 	:	'|';
-WS      :       (' '|'\r'|'\n')+ {$channel = HIDDEN;} ;
+WS      	:       (' '|'\r'|'\n')+ {$channel = HIDDEN;} ;
 
 
 
