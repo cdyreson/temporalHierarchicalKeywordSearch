@@ -8,7 +8,7 @@ package messiah.search.slca.generic.feed;
 import java.util.*;
 import usu.NodeId;
 import usu.PathId;
-import usu.temporal.TimeElement;
+//import usu.temporal.TimeElement;
 
 /**
  *

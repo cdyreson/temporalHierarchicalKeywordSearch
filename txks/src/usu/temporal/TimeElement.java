@@ -48,7 +48,11 @@ public class TimeElement /*implements Serializable*/ {
     public TimeElement(Time t) {
         //timeSet = new HashSet();
         times = new TreeSet();
-        times.add(t);
+        if (t != null) {
+            times.add(t);
+        }
+        
+        
     }
 
     /* Put a new time into the sorted order */
@@ -629,6 +633,9 @@ public class TimeElement /*implements Serializable*/ {
         String s = "";
         for (Time t : times) {
             s += t + ",";
+        }
+        if (s.length() > 0) {
+          s = s.substring(0, s.length()-1);
         }
         return "{" + s + "}";
     }

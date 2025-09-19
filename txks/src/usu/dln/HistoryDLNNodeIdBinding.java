@@ -49,6 +49,7 @@ public class HistoryDLNNodeIdBinding extends NodeIdBinding {
     }
     */
 
+    /*
     public void objectToEntry(HistoryDLN s, TupleOutput out) {
         //System.out.println("writing historyDLN " + out.size());
         dlnBinding.objectToEntry(s, out);
@@ -57,5 +58,6 @@ public class HistoryDLNNodeIdBinding extends NodeIdBinding {
         //System.out.println("writing2 historyDLN " + out.size());
         //out.writeBoolean(s.isMoved);
     }
+    */
 
 }

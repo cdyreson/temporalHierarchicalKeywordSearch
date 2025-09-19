@@ -2,8 +2,7 @@
         {
             "year": "1961",
             "mdate": "2003-11-20",
-            "foo1" : "w", "bar1" : "x", "foo2" : "w", "bar2" : "x", "foo3" : "w", "bar3" : "x", "foo4" : "w", "bar4" : "
-x", "foo5" : "w", "bar5" : "x", "author": [
+            "foo1" : "w", "bar1" : "x", "foo2" : "w", "bar2" : "x", "foo3" : "w", "bar3" : "x", "foo4" : "w", "bar4" : "x", "foo5" : "w", "bar5" : "x", "author": [
                 "Seymour Ginsburg"
             ],
             "type": "article",

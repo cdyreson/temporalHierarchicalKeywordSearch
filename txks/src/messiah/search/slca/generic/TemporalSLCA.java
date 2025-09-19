@@ -66,7 +66,7 @@ public class TemporalSLCA extends SLCAFinder {
 
             int level = nodeId.getLevel();
             NodeId slca = slcas[level];
-            TimeElement lifetime = ((TimeElementHistoryDLN)nodeId).getTime();
+            TimeElement lifetime = ((TimeElementHistoryDLN)nodeId).getTime(level);
             if (slca == null) {
                 slcas[level] = nodeId;
                 lifetimes[level] = lifetime;

@@ -27,6 +27,7 @@ public class KeywordSearchExpression {
     Stack<Integer> stack;
     List<String> words;
     SearchAlgoEnum searchType = SearchAlgoEnum.NontemporalSearch;
+    Time sliceTime = new Time();
     private int operand = -1;
     private final boolean verbose = false;
 
@@ -61,6 +62,23 @@ public class KeywordSearchExpression {
         stack.push(op);
     }
 
+    /*
+     * Add a new slice expression to the expression
+     */
+    public KeywordSearchExpression(Time t, KeywordSearchExpression exp) {
+        initialize();
+        if (verbose) System.out.println("KeywordSearchExpression: constructor slice time exp " + t + " " + TXKSParser.K_SLICE);
+
+        sliceTime = t;
+        words.addAll(exp.words);
+
+        for (Integer i : exp.stack) {
+            stack.push(i);
+        }
+        //stack.push(count);
+        stack.push(TXKSParser.K_SLICE);
+    }
+    
     /*
      * Add a new expression to the expression
      */
@@ -114,7 +132,7 @@ public class KeywordSearchExpression {
     }
 
     public SearchAlgoEnum getSearchType() {
-        if (verbose) System.out.println("KeywordSearchExpression.java: searchType is " + searchType);
+        //if (verbose) System.out.println("KeywordSearchExpression.java: searchType is " + searchType);
         return searchType;
     }
 
@@ -137,6 +155,9 @@ public class KeywordSearchExpression {
                 break;
             case TXKSParser.K_LATEST: 
                 this.searchType = SearchAlgoEnum.LatestSearch;
+                break;
+            case TXKSParser.K_DURATION: 
+                this.searchType = SearchAlgoEnum.DurationalSearch;
                 break;
             default:
                 System.err.println("Bad searh type in Keyword Expression");
@@ -164,6 +185,16 @@ public class KeywordSearchExpression {
             Integer op = iter.next();
             if (verbose) System.out.println("KeywordSearchExpression.java: switching on " + op);
             switch (op) {
+                case TXKSParser.K_SLICE:
+                    e1 = opStack.pop();
+                    e3 = e1.intersection(sliceTime);
+                    System.out.println("Sliced time " + e3 + " " + sliceTime);
+                    if (e3 == null) {
+                        return null;
+                    }
+                    opStack.push(e3);
+                    break;
+                
                 case TXKSParser.K_INTERSECTS:
                     e2 = opStack.pop();
                     e1 = opStack.pop();
@@ -212,9 +243,13 @@ public class KeywordSearchExpression {
     }
 
     public TimeElement evaluate(TimeElement[] times) {
+        if (verbose) System.out.println("KeywordSearchExpression.java: evaluating timeElement " + times.length);
         if (verbose) {
             for (TimeElement time : times) {
                 System.out.println("KeywordSearchExpression.java: times " + time);
+            }
+            for (int op: stack) {
+                System.out.println("KeywordSearchExpression.java: op " + op);
             }
         }
         int limit = times.length;
@@ -224,17 +259,29 @@ public class KeywordSearchExpression {
         }
         //TimeElement result = times[0];
         // Sanity check - If singleton return it
+        // Not needed is slicing is in force
+        /*
         if (limit == 1) {
             return times[0];
         }
+        */
         // Need to process the elements
         Iterator<Integer> iter = stack.iterator();
         Stack<TimeElement> opStack = new Stack();
         TimeElement e1, e2, e3;
         while (iter.hasNext()) {
             Integer op = iter.next();
-            if (verbose) System.out.println("KeywordSearchExpression.java: switch on " + op);
+            if (verbose) System.out.println("KeywordSearchExpression.java: switch on " + op + " "
+                    + stack.size() + " " + TXKSParser.K_SLICE);
+            
             switch (op) {
+                case TXKSParser.K_SLICE:
+                    e1 = opStack.pop();
+                    e3 = e1.intersection(sliceTime);
+                    System.out.println("Sliced time element " + e3 + " " + sliceTime);
+                    opStack.push(e3);
+                    break;
+                    
                 case TXKSParser.K_INTERSECTS:
                     e2 = opStack.pop();
                     e1 = opStack.pop();

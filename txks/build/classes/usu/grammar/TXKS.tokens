@@ -1,3 +1,4 @@
+T__47=47
 ARROW=4
 AT=5
 COMMA=6
@@ -41,3 +42,6 @@ RPAREN=43
 STRING=44
 WILDCARD=45
 WS=46
+'-'=47
+'['=33
+']'=42

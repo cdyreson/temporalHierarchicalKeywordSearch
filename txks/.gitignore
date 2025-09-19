@@ -2,3 +2,4 @@
 Databases/*
 dist/*
 build/*
+txks/json/dblp20.json

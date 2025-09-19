@@ -1,21 +1,21 @@
 package messiah.search.slca.generic;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.List;
+//import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
-import messiah.KeywordInfo;
+//import java.util.TreeSet;
+//import messiah.KeywordInfo;
 import messiah.database.Database;
 //import messiah.database.berkeleydb.SplitIterator;
 //import messiah.database.berkeleydb.SplitMapKeywordNodeIndex;
 import messiah.search.slca.generic.feed.SimpleCachingFeedGroup;
 import messiah.search.slca.generic.feed.SimpleCachingFeedsController;
-import messiah.utils.Stopwatch;
+//import messiah.utils.Stopwatch;
 import usu.NodeId;
 import usu.PathId;
 import usu.algebra.KeywordSearchExpression;
@@ -32,7 +32,7 @@ public class SimpleSLCA extends SLCAFinder {
     int shift[];
     Map<Integer, Integer> lcaLevelMap;
     int maxLevel = 0;
-    boolean verbose = false;
+    boolean verbose = true;
 
     public SimpleSLCA(Database db) {
         this.db = db;
@@ -83,7 +83,7 @@ public class SimpleSLCA extends SLCAFinder {
         // Look up node lists for each path
         for (short i = 0; i < dimensions; i++) {
             paths[i] = db.keywordPathsIndex.get(query[i]);
-            if (verbose) System.out.println("SimpleSLCA " + query[i] + " " + paths[i]); // + " keys " + db.keywordPathsIndex.keySet());
+            if (verbose) System.out.println("SimpleSLCA " + query[i] + " path DLNs " + paths[i]); // + " keys " + db.keywordPathsIndex.keySet());
             // If no list for the path, return empty result
             if (paths[i] == null) {
                 return result;

@@ -1,10 +1,8 @@
 # Welcome to the Temporal Keyword Search Project
-There are two options for compiling and running the project.
 
-## Building and running with NetBeans 
-The project is setup as an Apache Netbeans project (version 22), so it is easiest to use NetBeans.
+The project is setup as an Apache Netbeans project (version 22), so it is easiest to use NetBeans. But the code has been compiled to a JAR file which can also be run on the command line.  Skip the next section if you use Netbeans.
 
-## Building and running on the command line
+## Building using the command line
 The project can be compiled and run through the command line using Apache Ant. Some useful targets are given below.
 
 To compile the project and construct the jarfile for the project use
@@ -18,18 +16,21 @@ There is a `run.xml` file that has numerous run targets setup.  Any of these can
       ant -f run.xml xxxxx
 ```
    where `xxxxx` is the name of the target.
+ 
 # Using Temporal Keyword Search
 There are two ways to easily interact with the system.  The first is through a GUI.  Navigate in NetBeans to the 
 file 
 ```
   src/Messiah/Application.java
 ```
-and choose to `Run File` by right-clicking on the file.
+and choose to `Run File` by right-clicking on the file. 
 
-The second method is through the command line interface.  There are many targets set up in the Ant file `run.xml` at the top level.  These can be run through NetBeans (right-click on the target to run it) or Ant on the command line, or from the command line using
+The second method is through the command line interface.  
 ```
-   java -jar dist/TemporalKeywordSearch.jar ...
+   java -jar dist/TemporalKeywordSearch.jar messiah/Application.java
 ```
+
+There are many targets set up in the Ant file `run.xml` at the top level.  These can be run through NetBeans (right-click on the target to run it) or Ant on the command line, or from the command line. 
 
 The following command line flags are available.
 

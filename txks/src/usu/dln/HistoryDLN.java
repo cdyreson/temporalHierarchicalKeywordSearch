@@ -1,27 +1,8 @@
-/*
- *  eXist Open Source Native XML Database
- *  Copyright (C) 2001-06 The eXist Project
- *  http://exist-db.org
- *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public License
- *  as published by the Free Software Foundation; either version 2
- *  of the License, or (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
- *  $Id: DLN.java 9474 2009-07-23 20:12:38Z dizzzz $
- */
 package usu.dln;
 
 import java.io.Serializable;
+//import java.util.ArrayList;
+//import java.util.List;
 import usu.NodeId;
 import usu.PathId;
 import usu.temporal.*;
@@ -54,6 +35,7 @@ public class HistoryDLN extends DLN implements PathId, NodeId, Serializable, Com
     protected transient static final HistoryDLN MIN_NODE = new HistoryDLN(0);
 
     boolean isMoved = false;
+    TimeAndLevelList<Time> times = null;
 
     public HistoryDLN() {
         super();
@@ -71,15 +53,20 @@ public class HistoryDLN extends DLN implements PathId, NodeId, Serializable, Com
         //System.out.println("Curt: DLN " + dln + " bitIndex " + dln.bitIndex);
         super((DLN) dln);
         this.timestamp = t;
-        //System.out.println("Curt: DLN2 " + this + " bitIndex " + bitIndex);
+        this.isMoved = false;
+        //System.out.println("Curt: DLN2 nm " + this + " bitIndex " + bitIndex);
     }
 
-    public HistoryDLN(DLN dln, Time t, boolean moved) {
+    public HistoryDLN(DLN dln, Time t, boolean moved, int level) {
         //System.out.println("Curt: DLN " + dln + " bitIndex " + dln.bitIndex);
         super((DLN) dln);
         this.timestamp = t;
         isMoved = moved;
-        //System.out.println("Curt: DLN2 " + this + " bitIndex " + bitIndex);
+        if (isMoved) {
+            times = new TimeAndLevelList();
+            times.add(t, level);
+        }
+        //System.out.println("Curt: DLN2 mv " + this + " bitIndex " + bitIndex);
     }
 
     public HistoryDLN(short units, byte[] data, int startOffset) {
@@ -119,6 +106,7 @@ public class HistoryDLN extends DLN implements PathId, NodeId, Serializable, Com
         this.timestamp = ALL_OF_TIME;
     }
 
+
     /**
      * Compute the common lca at this level (or below)
      *
@@ -133,16 +121,10 @@ public class HistoryDLN extends DLN implements PathId, NodeId, Serializable, Com
 
     }
 
-    /*
-     @Override
-     public int computeNCALevel(NodeId other) {
-     if (!this.timestamp.overlaps(((HistoryDLN) other).timestamp)) {
-     return 0;
-     }
-     return super.computeNCALevel((DLN) other);
-     }
-     */
-    public Time getTime() {
+    public Time getTime(int level) {
+        if (isMoved) {
+            return this.times.getTime(level);
+        }
         return this.timestamp;
     }
 
@@ -150,38 +132,18 @@ public class HistoryDLN extends DLN implements PathId, NodeId, Serializable, Com
         this.timestamp = t;
         //System.out.println("Node is in HistoryDLN " + this);
     }
-    /*
-     public int computeNCALevel(HistoryDLN other) {
-     //System.out.println("here");
-     if (!this.timestamp.overlaps(other.timestamp)) {
-     return 0;
-     }
-     return super.computeNCALevel((DLN) other);
-     }
+    
+    public void setTime(TimeItem t) {
+        if (t.isMoved()) {
+            this.isMoved = true;
+            this.times = t.getTimes();
+        } else {
+            this.timestamp = t.getTime();
+        }
+        
+        //System.out.println("Node is in HistoryDLN " + this);
+    }
 
-     public int computeNCALevel(int tlevel, HistoryDLN other, int olevel) {
-     System.out.println("here");
-     if (!this.timestamp.overlaps(other.timestamp)) {
-     return 0;
-     }
-     return super.computeNCALevel(tlevel, (DLN) other, olevel);
-     }
-     */
-    /**
-     * Is this one equal to the other to the given level in the tree? Used to
-     * check if they have a common lca at this level (or below)
-     *
-     * @return whether they are equal
-     */
-    /*
-     public boolean hasCommonLCA(HistoryDLN other, int level) {
-     return super.hasCommonLCA((DLN) other, level)  && timestamp.overlaps(other.timestamp) ;
-     }
-
-     public boolean equals(HistoryDLN other) {
-     return super.equals((DLN) other) && timestamp.equals(other.timestamp);
-     }
-     */
     @Override
     public String debug() {
         return super.debug() + timestamp.debug();
@@ -189,12 +151,16 @@ public class HistoryDLN extends DLN implements PathId, NodeId, Serializable, Com
 
     @Override
     public String toString() {
+        if (isMoved) {
+            return super.toString() + times.toString();
+        }
         if (timestamp == null) {
             return super.toString() + " null timestamp ";
         }
         return super.toString() + timestamp.toString();
     }
 
+    @Override
     public String toBitString() {
         StringBuilder buf = new StringBuilder();
         int len = bits.length; // - SIZE_OF_BITINDEX;

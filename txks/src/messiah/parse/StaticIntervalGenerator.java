@@ -7,8 +7,8 @@
  */
 package messiah.parse;
 
-import java.util.Random;
 import usu.temporal.Time;
+import usu.temporal.TimeItem;
 
 /**
  *
@@ -20,7 +20,11 @@ public class StaticIntervalGenerator implements IntervalGenerator {
     public StaticIntervalGenerator() {
     }
     
-    public Time generate(Time parent) {
-        return time;
+    public StaticIntervalGenerator(int size) {
+        this.time = new Time(0, size);
+    }
+    
+    public TimeItem generate(TimeItem parent) {
+        return new TimeItem(time);
     }
 }

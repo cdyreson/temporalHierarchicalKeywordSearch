@@ -70,13 +70,13 @@ public class TemporalFeedsOuterController implements Iterator<NodeId> {
                         lcaWindow[level] = nodes;
                         elements[level] = new TimeElement[dimensions];
                         for (int i = 0; i < dimensions; i++) {
-                            elements[level][i] = new TimeElement(((HistoryDLN) nodes[i]).getTime());
+                            elements[level][i] = new TimeElement(((HistoryDLN) nodes[i]).getTime(level));
                         }
                     } else {
                         for (int i = 0; i < dimensions; i++) {
                             if (verbose) System.out.println("TemporalFeedsOuterController: node is " + nodes[i]);
                             if (!lcaWindow[level][i].equals(nodes[i])) {
-                                elements[level][i].add(((HistoryDLN) nodes[i]).getTime());
+                                elements[level][i].add(((HistoryDLN) nodes[i]).getTime(level));
                             }
                         }
                     }
@@ -87,7 +87,7 @@ public class TemporalFeedsOuterController implements Iterator<NodeId> {
                         NodeId[] nodes = innerController.getCurrentNodeIds();
                         for (int i = 0; i < dimensions; i++) {
                             if (!lcaWindow[level][i].equals(nodes[i])) {
-                                elements[level][i].add(((HistoryDLN) nodes[i]).getTime());
+                                elements[level][i].add(((HistoryDLN) nodes[i]).getTime(level));
                             }
                         }
                     } else {
@@ -106,7 +106,7 @@ public class TemporalFeedsOuterController implements Iterator<NodeId> {
                         NodeId[] nodes = innerController.getCurrentNodeIds();
                         lcaWindow[level] = nodes;
                         for (int i = 0; i < dimensions; i++) {
-                            elements[level][i] = new TimeElement(((HistoryDLN) nodes[i]).getTime());
+                            elements[level][i] = new TimeElement(((HistoryDLN) nodes[i]).getTime(level));
                         }
                     }
                 }

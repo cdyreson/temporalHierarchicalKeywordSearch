@@ -45,6 +45,7 @@ public class ResultSizeEstimator {
             }
             typeSets[i] = typeSet;
         }
+
         Set<PathId> pathLcaIds = this.binarySLCAFinder.getSLCA(typeSets);
         double estValue = 0;
         for (PathId pathLcaId : pathLcaIds) {
@@ -72,9 +73,11 @@ public class ResultSizeEstimator {
             //for (PathId p : pathLcaIds) {
             //    System.out.println("Curt: claid " + p);
             //}
-            
+
             Path pathLca = db.getPath(pathLcaId);
-            estValue += pathLca.getInfo().getNumApp() * prob;
+            if (pathLca != null) {
+                estValue += pathLca.getInfo().getNumApp() * prob;
+            }
         }
         return estValue;
     }

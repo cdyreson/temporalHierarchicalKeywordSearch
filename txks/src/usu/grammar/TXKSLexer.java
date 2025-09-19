@@ -1,4 +1,4 @@
-// $ANTLR 3.5.3 TXKS.g 2023-10-09 09:40:09
+// $ANTLR 3.5.3 TXKS.g 2025-04-29 11:04:16
 
 package usu.grammar;
 import java.util.List;
@@ -17,6 +17,7 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class TXKSLexer extends Lexer {
 	public static final int EOF=-1;
+	public static final int T__47=47;
 	public static final int ARROW=4;
 	public static final int AT=5;
 	public static final int COMMA=6;
@@ -86,13 +87,33 @@ public class TXKSLexer extends Lexer {
 	}
 	@Override public String getGrammarFileName() { return "TXKS.g"; }
 
+	// $ANTLR start "T__47"
+	public final void mT__47() throws RecognitionException {
+		try {
+			int _type = T__47;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// TXKS.g:22:7: ( '-' )
+			// TXKS.g:22:9: '-'
+			{
+			match('-'); 
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "T__47"
+
 	// $ANTLR start "K_NONTEMPORAL"
 	public final void mK_NONTEMPORAL() throws RecognitionException {
 		try {
 			int _type = K_NONTEMPORAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:273:16: ( '@nontemporal' )
-			// TXKS.g:273:18: '@nontemporal'
+			// TXKS.g:257:16: ( '@nontemporal' )
+			// TXKS.g:257:18: '@nontemporal'
 			{
 			match("@nontemporal"); 
 
@@ -112,8 +133,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = K_EARLIEST;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:274:13: ( '@earliest' )
-			// TXKS.g:274:15: '@earliest'
+			// TXKS.g:258:13: ( '@earliest' )
+			// TXKS.g:258:15: '@earliest'
 			{
 			match("@earliest"); 
 
@@ -133,8 +154,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = K_CURRENT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:275:12: ( '@current' )
-			// TXKS.g:275:14: '@current'
+			// TXKS.g:259:12: ( '@current' )
+			// TXKS.g:259:14: '@current'
 			{
 			match("@current"); 
 
@@ -154,8 +175,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = K_LATEST;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:276:11: ( '@latest' )
-			// TXKS.g:276:13: '@latest'
+			// TXKS.g:260:11: ( '@latest' )
+			// TXKS.g:260:13: '@latest'
 			{
 			match("@latest"); 
 
@@ -175,8 +196,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = K_MEETS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:277:11: ( '@meets' )
-			// TXKS.g:277:14: '@meets'
+			// TXKS.g:261:11: ( '@meets' )
+			// TXKS.g:261:14: '@meets'
 			{
 			match("@meets"); 
 
@@ -196,8 +217,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = K_DURATION;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:278:13: ( '@duration' )
-			// TXKS.g:278:15: '@duration'
+			// TXKS.g:262:13: ( '@duration' )
+			// TXKS.g:262:15: '@duration'
 			{
 			match("@duration"); 
 
@@ -217,8 +238,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = K_SEQUENCED;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:279:14: ( '@sequenced' )
-			// TXKS.g:279:16: '@sequenced'
+			// TXKS.g:263:14: ( '@sequenced' )
+			// TXKS.g:263:16: '@sequenced'
 			{
 			match("@sequenced"); 
 
@@ -238,8 +259,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = K_NONSEQUENCED;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:280:17: ( '@nonsequenced' )
-			// TXKS.g:280:19: '@nonsequenced'
+			// TXKS.g:264:17: ( '@nonsequenced' )
+			// TXKS.g:264:19: '@nonsequenced'
 			{
 			match("@nonsequenced"); 
 
@@ -259,8 +280,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = K_DESCENDANTVERSIONS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:281:23: ( '@descendantVersions' )
-			// TXKS.g:281:25: '@descendantVersions'
+			// TXKS.g:265:23: ( '@descendantVersions' )
+			// TXKS.g:265:25: '@descendantVersions'
 			{
 			match("@descendantVersions"); 
 
@@ -280,8 +301,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = K_DESCENDANTCHANGES;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:282:22: ( '@descendantChanges' )
-			// TXKS.g:282:24: '@descendantChanges'
+			// TXKS.g:266:22: ( '@descendantChanges' )
+			// TXKS.g:266:24: '@descendantChanges'
 			{
 			match("@descendantChanges"); 
 
@@ -301,8 +322,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = K_SLICE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:283:11: ( '@slice' )
-			// TXKS.g:283:14: '@slice'
+			// TXKS.g:267:11: ( '@slice' )
+			// TXKS.g:267:14: '@slice'
 			{
 			match("@slice"); 
 
@@ -322,8 +343,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = K_CONTAINS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:284:14: ( '@contains' )
-			// TXKS.g:284:16: '@contains'
+			// TXKS.g:268:14: ( '@contains' )
+			// TXKS.g:268:16: '@contains'
 			{
 			match("@contains"); 
 
@@ -343,8 +364,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = K_DURING;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:285:12: ( '@during' )
-			// TXKS.g:285:14: '@during'
+			// TXKS.g:269:12: ( '@during' )
+			// TXKS.g:269:14: '@during'
 			{
 			match("@during"); 
 
@@ -364,8 +385,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = K_INTERSECTS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:286:16: ( '@intersects' )
-			// TXKS.g:286:18: '@intersects'
+			// TXKS.g:270:16: ( '@intersects' )
+			// TXKS.g:270:18: '@intersects'
 			{
 			match("@intersects"); 
 
@@ -385,8 +406,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = K_BEFORE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:287:11: ( '@before' )
-			// TXKS.g:287:13: '@before'
+			// TXKS.g:271:11: ( '@before' )
+			// TXKS.g:271:13: '@before'
 			{
 			match("@before"); 
 
@@ -406,8 +427,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = K_AFTER;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:288:11: ( '@after' )
-			// TXKS.g:288:13: '@after'
+			// TXKS.g:272:11: ( '@after' )
+			// TXKS.g:272:13: '@after'
 			{
 			match("@after"); 
 
@@ -427,8 +448,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = K_ANY;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:289:9: ( '@any' )
-			// TXKS.g:289:11: '@any'
+			// TXKS.g:273:9: ( '@any' )
+			// TXKS.g:273:11: '@any'
 			{
 			match("@any"); 
 
@@ -448,8 +469,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = ID;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:291:4: ( ( LETTER | '_' | ':' ) ( NAMECHAR )* )
-			// TXKS.g:291:8: ( LETTER | '_' | ':' ) ( NAMECHAR )*
+			// TXKS.g:275:4: ( ( LETTER | '_' | ':' ) ( NAMECHAR )* )
+			// TXKS.g:275:8: ( LETTER | '_' | ':' ) ( NAMECHAR )*
 			{
 			if ( input.LA(1)==':'||(input.LA(1) >= 'A' && input.LA(1) <= 'Z')||input.LA(1)=='_'||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
 				input.consume();
@@ -459,7 +480,7 @@ public class TXKSLexer extends Lexer {
 				recover(mse);
 				throw mse;
 			}
-			// TXKS.g:291:30: ( NAMECHAR )*
+			// TXKS.g:275:30: ( NAMECHAR )*
 			loop1:
 			while (true) {
 				int alt1=2;
@@ -502,7 +523,7 @@ public class TXKSLexer extends Lexer {
 	// $ANTLR start "NAMECHAR"
 	public final void mNAMECHAR() throws RecognitionException {
 		try {
-			// TXKS.g:294:5: ( LETTER | DIGIT | '.' | '-' | '_' | ':' )
+			// TXKS.g:278:5: ( LETTER | DIGIT | '.' | '-' | '_' | ':' )
 			// TXKS.g:
 			{
 			if ( (input.LA(1) >= '-' && input.LA(1) <= '.')||(input.LA(1) >= '0' && input.LA(1) <= ':')||(input.LA(1) >= 'A' && input.LA(1) <= 'Z')||input.LA(1)=='_'||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
@@ -525,7 +546,7 @@ public class TXKSLexer extends Lexer {
 	// $ANTLR start "DIGIT"
 	public final void mDIGIT() throws RecognitionException {
 		try {
-			// TXKS.g:298:5: ( '0' .. '9' )
+			// TXKS.g:282:5: ( '0' .. '9' )
 			// TXKS.g:
 			{
 			if ( (input.LA(1) >= '0' && input.LA(1) <= '9') ) {
@@ -548,7 +569,7 @@ public class TXKSLexer extends Lexer {
 	// $ANTLR start "LETTER"
 	public final void mLETTER() throws RecognitionException {
 		try {
-			// TXKS.g:302:5: ( 'a' .. 'z' | 'A' .. 'Z' )
+			// TXKS.g:286:5: ( 'a' .. 'z' | 'A' .. 'Z' )
 			// TXKS.g:
 			{
 			if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z')||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
@@ -573,8 +594,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = WILDCARD;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:306:9: ( '*' )
-			// TXKS.g:306:11: '*'
+			// TXKS.g:290:9: ( '*' )
+			// TXKS.g:290:11: '*'
 			{
 			match('*'); 
 			}
@@ -593,8 +614,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = DOUBLEWILDCARD;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:307:16: ( '**' )
-			// TXKS.g:307:18: '**'
+			// TXKS.g:291:16: ( '**' )
+			// TXKS.g:291:18: '**'
 			{
 			match("**"); 
 
@@ -614,8 +635,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = NOT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:308:6: ( '!' )
-			// TXKS.g:308:8: '!'
+			// TXKS.g:292:6: ( '!' )
+			// TXKS.g:292:8: '!'
 			{
 			match('!'); 
 			}
@@ -634,10 +655,10 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = INT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:309:5: ( ( '0' .. '9' )+ )
-			// TXKS.g:309:7: ( '0' .. '9' )+
+			// TXKS.g:293:5: ( ( '0' .. '9' )+ )
+			// TXKS.g:293:7: ( '0' .. '9' )+
 			{
-			// TXKS.g:309:7: ( '0' .. '9' )+
+			// TXKS.g:293:7: ( '0' .. '9' )+
 			int cnt2=0;
 			loop2:
 			while (true) {
@@ -686,8 +707,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = LBRACKET;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:310:9: ( '[' )
-			// TXKS.g:310:11: '['
+			// TXKS.g:294:9: ( '[' )
+			// TXKS.g:294:11: '['
 			{
 			match('['); 
 			}
@@ -706,8 +727,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = RBRACKET;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:311:9: ( ']' )
-			// TXKS.g:311:11: ']'
+			// TXKS.g:295:9: ( ']' )
+			// TXKS.g:295:11: ']'
 			{
 			match(']'); 
 			}
@@ -726,8 +747,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = RBRACE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:312:9: ( '}' )
-			// TXKS.g:312:11: '}'
+			// TXKS.g:296:9: ( '}' )
+			// TXKS.g:296:11: '}'
 			{
 			match('}'); 
 			}
@@ -746,8 +767,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = LBRACE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:313:9: ( '{' )
-			// TXKS.g:313:11: '{'
+			// TXKS.g:297:9: ( '{' )
+			// TXKS.g:297:11: '{'
 			{
 			match('{'); 
 			}
@@ -766,8 +787,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = RPAREN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:314:8: ( ')' )
-			// TXKS.g:314:10: ')'
+			// TXKS.g:298:8: ( ')' )
+			// TXKS.g:298:10: ')'
 			{
 			match(')'); 
 			}
@@ -786,8 +807,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = LPAREN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:315:8: ( '(' )
-			// TXKS.g:315:10: '('
+			// TXKS.g:299:8: ( '(' )
+			// TXKS.g:299:10: '('
 			{
 			match('('); 
 			}
@@ -806,8 +827,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = COMMA;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:316:9: ( ',' )
-			// TXKS.g:316:12: ','
+			// TXKS.g:300:9: ( ',' )
+			// TXKS.g:300:12: ','
 			{
 			match(','); 
 			}
@@ -826,8 +847,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = AT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:317:4: ( '@' )
-			// TXKS.g:317:6: '@'
+			// TXKS.g:301:4: ( '@' )
+			// TXKS.g:301:6: '@'
 			{
 			match('@'); 
 			}
@@ -846,11 +867,11 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = EQUALS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:321:8: ( '=' ( '=' )? )
-			// TXKS.g:321:10: '=' ( '=' )?
+			// TXKS.g:305:8: ( '=' ( '=' )? )
+			// TXKS.g:305:10: '=' ( '=' )?
 			{
 			match('='); 
-			// TXKS.g:321:13: ( '=' )?
+			// TXKS.g:305:13: ( '=' )?
 			int alt3=2;
 			int LA3_0 = input.LA(1);
 			if ( (LA3_0=='=') ) {
@@ -858,7 +879,7 @@ public class TXKSLexer extends Lexer {
 			}
 			switch (alt3) {
 				case 1 :
-					// TXKS.g:321:13: '='
+					// TXKS.g:305:13: '='
 					{
 					match('='); 
 					}
@@ -882,8 +903,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = LE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:322:5: ( '<=' )
-			// TXKS.g:322:7: '<='
+			// TXKS.g:306:5: ( '<=' )
+			// TXKS.g:306:7: '<='
 			{
 			match("<="); 
 
@@ -903,8 +924,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = GE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:323:5: ( '>=' )
-			// TXKS.g:323:7: '>='
+			// TXKS.g:307:5: ( '>=' )
+			// TXKS.g:307:7: '>='
 			{
 			match(">="); 
 
@@ -924,8 +945,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = GT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:324:4: ( '>' )
-			// TXKS.g:324:7: '>'
+			// TXKS.g:308:4: ( '>' )
+			// TXKS.g:308:7: '>'
 			{
 			match('>'); 
 			}
@@ -944,8 +965,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = LT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:325:4: ( '<' )
-			// TXKS.g:325:7: '<'
+			// TXKS.g:309:4: ( '<' )
+			// TXKS.g:309:7: '<'
 			{
 			match('<'); 
 			}
@@ -964,7 +985,7 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = STRING;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:328:9: ( ( '\"' (~ '\"' )* '\"' ) | ( '\\'' (~ '\\'' )* '\\'' ) )
+			// TXKS.g:312:9: ( ( '\"' (~ '\"' )* '\"' ) | ( '\\'' (~ '\\'' )* '\\'' ) )
 			int alt6=2;
 			int LA6_0 = input.LA(1);
 			if ( (LA6_0=='\"') ) {
@@ -982,13 +1003,13 @@ public class TXKSLexer extends Lexer {
 
 			switch (alt6) {
 				case 1 :
-					// TXKS.g:328:12: ( '\"' (~ '\"' )* '\"' )
+					// TXKS.g:312:12: ( '\"' (~ '\"' )* '\"' )
 					{
-					// TXKS.g:328:12: ( '\"' (~ '\"' )* '\"' )
-					// TXKS.g:328:13: '\"' (~ '\"' )* '\"'
+					// TXKS.g:312:12: ( '\"' (~ '\"' )* '\"' )
+					// TXKS.g:312:13: '\"' (~ '\"' )* '\"'
 					{
 					match('\"'); 
-					// TXKS.g:328:17: (~ '\"' )*
+					// TXKS.g:312:17: (~ '\"' )*
 					loop4:
 					while (true) {
 						int alt4=2;
@@ -1023,13 +1044,13 @@ public class TXKSLexer extends Lexer {
 					}
 					break;
 				case 2 :
-					// TXKS.g:328:32: ( '\\'' (~ '\\'' )* '\\'' )
+					// TXKS.g:312:32: ( '\\'' (~ '\\'' )* '\\'' )
 					{
-					// TXKS.g:328:32: ( '\\'' (~ '\\'' )* '\\'' )
-					// TXKS.g:328:33: '\\'' (~ '\\'' )* '\\''
+					// TXKS.g:312:32: ( '\\'' (~ '\\'' )* '\\'' )
+					// TXKS.g:312:33: '\\'' (~ '\\'' )* '\\''
 					{
 					match('\''); 
-					// TXKS.g:328:38: (~ '\\'' )*
+					// TXKS.g:312:38: (~ '\\'' )*
 					loop5:
 					while (true) {
 						int alt5=2;
@@ -1079,8 +1100,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = EOS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:329:5: ( ';' )
-			// TXKS.g:329:7: ';'
+			// TXKS.g:313:5: ( ';' )
+			// TXKS.g:313:7: ';'
 			{
 			match(';'); 
 			}
@@ -1099,8 +1120,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = ARROW;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:330:7: ( '->' )
-			// TXKS.g:330:15: '->'
+			// TXKS.g:314:7: ( '->' )
+			// TXKS.g:314:15: '->'
 			{
 			match("->"); 
 
@@ -1120,8 +1141,8 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = PIPE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:331:7: ( '|' )
-			// TXKS.g:331:9: '|'
+			// TXKS.g:315:7: ( '|' )
+			// TXKS.g:315:9: '|'
 			{
 			match('|'); 
 			}
@@ -1140,10 +1161,10 @@ public class TXKSLexer extends Lexer {
 		try {
 			int _type = WS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// TXKS.g:332:10: ( ( ' ' | '\\r' | '\\n' )+ )
-			// TXKS.g:332:18: ( ' ' | '\\r' | '\\n' )+
+			// TXKS.g:316:10: ( ( ' ' | '\\r' | '\\n' )+ )
+			// TXKS.g:316:18: ( ' ' | '\\r' | '\\n' )+
 			{
-			// TXKS.g:332:18: ( ' ' | '\\r' | '\\n' )+
+			// TXKS.g:316:18: ( ' ' | '\\r' | '\\n' )+
 			int cnt7=0;
 			loop7:
 			while (true) {
@@ -1190,285 +1211,292 @@ public class TXKSLexer extends Lexer {
 
 	@Override
 	public void mTokens() throws RecognitionException {
-		// TXKS.g:1:8: ( K_NONTEMPORAL | K_EARLIEST | K_CURRENT | K_LATEST | K_MEETS | K_DURATION | K_SEQUENCED | K_NONSEQUENCED | K_DESCENDANTVERSIONS | K_DESCENDANTCHANGES | K_SLICE | K_CONTAINS | K_DURING | K_INTERSECTS | K_BEFORE | K_AFTER | K_ANY | ID | WILDCARD | DOUBLEWILDCARD | NOT | INT | LBRACKET | RBRACKET | RBRACE | LBRACE | RPAREN | LPAREN | COMMA | AT | EQUALS | LE | GE | GT | LT | STRING | EOS | ARROW | PIPE | WS )
-		int alt8=40;
+		// TXKS.g:1:8: ( T__47 | K_NONTEMPORAL | K_EARLIEST | K_CURRENT | K_LATEST | K_MEETS | K_DURATION | K_SEQUENCED | K_NONSEQUENCED | K_DESCENDANTVERSIONS | K_DESCENDANTCHANGES | K_SLICE | K_CONTAINS | K_DURING | K_INTERSECTS | K_BEFORE | K_AFTER | K_ANY | ID | WILDCARD | DOUBLEWILDCARD | NOT | INT | LBRACKET | RBRACKET | RBRACE | LBRACE | RPAREN | LPAREN | COMMA | AT | EQUALS | LE | GE | GT | LT | STRING | EOS | ARROW | PIPE | WS )
+		int alt8=41;
 		alt8 = dfa8.predict(input);
 		switch (alt8) {
 			case 1 :
-				// TXKS.g:1:10: K_NONTEMPORAL
+				// TXKS.g:1:10: T__47
+				{
+				mT__47(); 
+
+				}
+				break;
+			case 2 :
+				// TXKS.g:1:16: K_NONTEMPORAL
 				{
 				mK_NONTEMPORAL(); 
 
 				}
 				break;
-			case 2 :
-				// TXKS.g:1:24: K_EARLIEST
+			case 3 :
+				// TXKS.g:1:30: K_EARLIEST
 				{
 				mK_EARLIEST(); 
 
 				}
 				break;
-			case 3 :
-				// TXKS.g:1:35: K_CURRENT
+			case 4 :
+				// TXKS.g:1:41: K_CURRENT
 				{
 				mK_CURRENT(); 
 
 				}
 				break;
-			case 4 :
-				// TXKS.g:1:45: K_LATEST
+			case 5 :
+				// TXKS.g:1:51: K_LATEST
 				{
 				mK_LATEST(); 
 
 				}
 				break;
-			case 5 :
-				// TXKS.g:1:54: K_MEETS
+			case 6 :
+				// TXKS.g:1:60: K_MEETS
 				{
 				mK_MEETS(); 
 
 				}
 				break;
-			case 6 :
-				// TXKS.g:1:62: K_DURATION
+			case 7 :
+				// TXKS.g:1:68: K_DURATION
 				{
 				mK_DURATION(); 
 
 				}
 				break;
-			case 7 :
-				// TXKS.g:1:73: K_SEQUENCED
+			case 8 :
+				// TXKS.g:1:79: K_SEQUENCED
 				{
 				mK_SEQUENCED(); 
 
 				}
 				break;
-			case 8 :
-				// TXKS.g:1:85: K_NONSEQUENCED
+			case 9 :
+				// TXKS.g:1:91: K_NONSEQUENCED
 				{
 				mK_NONSEQUENCED(); 
 
 				}
 				break;
-			case 9 :
-				// TXKS.g:1:100: K_DESCENDANTVERSIONS
+			case 10 :
+				// TXKS.g:1:106: K_DESCENDANTVERSIONS
 				{
 				mK_DESCENDANTVERSIONS(); 
 
 				}
 				break;
-			case 10 :
-				// TXKS.g:1:121: K_DESCENDANTCHANGES
+			case 11 :
+				// TXKS.g:1:127: K_DESCENDANTCHANGES
 				{
 				mK_DESCENDANTCHANGES(); 
 
 				}
 				break;
-			case 11 :
-				// TXKS.g:1:141: K_SLICE
+			case 12 :
+				// TXKS.g:1:147: K_SLICE
 				{
 				mK_SLICE(); 
 
 				}
 				break;
-			case 12 :
-				// TXKS.g:1:149: K_CONTAINS
+			case 13 :
+				// TXKS.g:1:155: K_CONTAINS
 				{
 				mK_CONTAINS(); 
 
 				}
 				break;
-			case 13 :
-				// TXKS.g:1:160: K_DURING
+			case 14 :
+				// TXKS.g:1:166: K_DURING
 				{
 				mK_DURING(); 
 
 				}
 				break;
-			case 14 :
-				// TXKS.g:1:169: K_INTERSECTS
+			case 15 :
+				// TXKS.g:1:175: K_INTERSECTS
 				{
 				mK_INTERSECTS(); 
 
 				}
 				break;
-			case 15 :
-				// TXKS.g:1:182: K_BEFORE
+			case 16 :
+				// TXKS.g:1:188: K_BEFORE
 				{
 				mK_BEFORE(); 
 
 				}
 				break;
-			case 16 :
-				// TXKS.g:1:191: K_AFTER
+			case 17 :
+				// TXKS.g:1:197: K_AFTER
 				{
 				mK_AFTER(); 
 
 				}
 				break;
-			case 17 :
-				// TXKS.g:1:199: K_ANY
+			case 18 :
+				// TXKS.g:1:205: K_ANY
 				{
 				mK_ANY(); 
 
 				}
 				break;
-			case 18 :
-				// TXKS.g:1:205: ID
+			case 19 :
+				// TXKS.g:1:211: ID
 				{
 				mID(); 
 
 				}
 				break;
-			case 19 :
-				// TXKS.g:1:208: WILDCARD
+			case 20 :
+				// TXKS.g:1:214: WILDCARD
 				{
 				mWILDCARD(); 
 
 				}
 				break;
-			case 20 :
-				// TXKS.g:1:217: DOUBLEWILDCARD
+			case 21 :
+				// TXKS.g:1:223: DOUBLEWILDCARD
 				{
 				mDOUBLEWILDCARD(); 
 
 				}
 				break;
-			case 21 :
-				// TXKS.g:1:232: NOT
+			case 22 :
+				// TXKS.g:1:238: NOT
 				{
 				mNOT(); 
 
 				}
 				break;
-			case 22 :
-				// TXKS.g:1:236: INT
+			case 23 :
+				// TXKS.g:1:242: INT
 				{
 				mINT(); 
 
 				}
 				break;
-			case 23 :
-				// TXKS.g:1:240: LBRACKET
+			case 24 :
+				// TXKS.g:1:246: LBRACKET
 				{
 				mLBRACKET(); 
 
 				}
 				break;
-			case 24 :
-				// TXKS.g:1:249: RBRACKET
+			case 25 :
+				// TXKS.g:1:255: RBRACKET
 				{
 				mRBRACKET(); 
 
 				}
 				break;
-			case 25 :
-				// TXKS.g:1:258: RBRACE
+			case 26 :
+				// TXKS.g:1:264: RBRACE
 				{
 				mRBRACE(); 
 
 				}
 				break;
-			case 26 :
-				// TXKS.g:1:265: LBRACE
+			case 27 :
+				// TXKS.g:1:271: LBRACE
 				{
 				mLBRACE(); 
 
 				}
 				break;
-			case 27 :
-				// TXKS.g:1:272: RPAREN
+			case 28 :
+				// TXKS.g:1:278: RPAREN
 				{
 				mRPAREN(); 
 
 				}
 				break;
-			case 28 :
-				// TXKS.g:1:279: LPAREN
+			case 29 :
+				// TXKS.g:1:285: LPAREN
 				{
 				mLPAREN(); 
 
 				}
 				break;
-			case 29 :
-				// TXKS.g:1:286: COMMA
+			case 30 :
+				// TXKS.g:1:292: COMMA
 				{
 				mCOMMA(); 
 
 				}
 				break;
-			case 30 :
-				// TXKS.g:1:292: AT
+			case 31 :
+				// TXKS.g:1:298: AT
 				{
 				mAT(); 
 
 				}
 				break;
-			case 31 :
-				// TXKS.g:1:295: EQUALS
+			case 32 :
+				// TXKS.g:1:301: EQUALS
 				{
 				mEQUALS(); 
 
 				}
 				break;
-			case 32 :
-				// TXKS.g:1:302: LE
+			case 33 :
+				// TXKS.g:1:308: LE
 				{
 				mLE(); 
 
 				}
 				break;
-			case 33 :
-				// TXKS.g:1:305: GE
+			case 34 :
+				// TXKS.g:1:311: GE
 				{
 				mGE(); 
 
 				}
 				break;
-			case 34 :
-				// TXKS.g:1:308: GT
+			case 35 :
+				// TXKS.g:1:314: GT
 				{
 				mGT(); 
 
 				}
 				break;
-			case 35 :
-				// TXKS.g:1:311: LT
+			case 36 :
+				// TXKS.g:1:317: LT
 				{
 				mLT(); 
 
 				}
 				break;
-			case 36 :
-				// TXKS.g:1:314: STRING
+			case 37 :
+				// TXKS.g:1:320: STRING
 				{
 				mSTRING(); 
 
 				}
 				break;
-			case 37 :
-				// TXKS.g:1:321: EOS
+			case 38 :
+				// TXKS.g:1:327: EOS
 				{
 				mEOS(); 
 
 				}
 				break;
-			case 38 :
-				// TXKS.g:1:325: ARROW
+			case 39 :
+				// TXKS.g:1:331: ARROW
 				{
 				mARROW(); 
 
 				}
 				break;
-			case 39 :
-				// TXKS.g:1:331: PIPE
+			case 40 :
+				// TXKS.g:1:337: PIPE
 				{
 				mPIPE(); 
 
 				}
 				break;
-			case 40 :
-				// TXKS.g:1:336: WS
+			case 41 :
+				// TXKS.g:1:342: WS
 				{
 				mWS(); 
 
@@ -1481,90 +1509,94 @@ public class TXKSLexer extends Lexer {
 
 	protected DFA8 dfa8 = new DFA8(this);
 	static final String DFA8_eotS =
-		"\1\uffff\1\37\1\uffff\1\41\12\uffff\1\43\1\45\57\uffff";
+		"\1\uffff\1\26\1\41\1\uffff\1\43\12\uffff\1\45\1\47\60\uffff";
 	static final String DFA8_eofS =
-		"\77\uffff";
+		"\101\uffff";
 	static final String DFA8_minS =
-		"\1\12\1\141\1\uffff\1\52\12\uffff\2\75\5\uffff\1\157\1\uffff\1\157\2\uffff"+
-		"\2\145\2\uffff\1\146\7\uffff\1\156\2\uffff\1\162\1\163\4\uffff\1\163\1"+
-		"\141\1\143\4\uffff\1\145\1\156\1\144\1\141\1\156\1\164\1\103\2\uffff";
-	static final String DFA8_maxS =
-		"\1\175\1\163\1\uffff\1\52\12\uffff\2\75\5\uffff\1\157\1\uffff\1\165\2"+
-		"\uffff\1\165\1\154\2\uffff\1\156\7\uffff\1\156\2\uffff\1\162\1\163\4\uffff"+
-		"\1\164\1\151\1\143\4\uffff\1\145\1\156\1\144\1\141\1\156\1\164\1\126\2"+
+		"\1\12\1\76\1\141\1\uffff\1\52\12\uffff\2\75\6\uffff\1\157\1\uffff\1\157"+
+		"\2\uffff\2\145\2\uffff\1\146\7\uffff\1\156\2\uffff\1\162\1\163\4\uffff"+
+		"\1\163\1\141\1\143\4\uffff\1\145\1\156\1\144\1\141\1\156\1\164\1\103\2"+
 		"\uffff";
+	static final String DFA8_maxS =
+		"\1\175\1\76\1\163\1\uffff\1\52\12\uffff\2\75\6\uffff\1\157\1\uffff\1\165"+
+		"\2\uffff\1\165\1\154\2\uffff\1\156\7\uffff\1\156\2\uffff\1\162\1\163\4"+
+		"\uffff\1\164\1\151\1\143\4\uffff\1\145\1\156\1\144\1\141\1\156\1\164\1"+
+		"\126\2\uffff";
 	static final String DFA8_acceptS =
-		"\2\uffff\1\22\1\uffff\1\25\1\26\1\27\1\30\1\31\1\32\1\33\1\34\1\35\1\37"+
-		"\2\uffff\1\44\1\45\1\46\1\47\1\50\1\uffff\1\2\1\uffff\1\4\1\5\2\uffff"+
-		"\1\16\1\17\1\uffff\1\36\1\24\1\23\1\40\1\43\1\41\1\42\1\uffff\1\3\1\14"+
-		"\2\uffff\1\7\1\13\1\20\1\21\3\uffff\1\1\1\10\1\6\1\15\7\uffff\1\11\1\12";
+		"\3\uffff\1\23\1\uffff\1\26\1\27\1\30\1\31\1\32\1\33\1\34\1\35\1\36\1\40"+
+		"\2\uffff\1\45\1\46\1\50\1\51\1\47\1\1\1\uffff\1\3\1\uffff\1\5\1\6\2\uffff"+
+		"\1\17\1\20\1\uffff\1\37\1\25\1\24\1\41\1\44\1\42\1\43\1\uffff\1\4\1\15"+
+		"\2\uffff\1\10\1\14\1\21\1\22\3\uffff\1\2\1\11\1\7\1\16\7\uffff\1\12\1"+
+		"\13";
 	static final String DFA8_specialS =
-		"\77\uffff}>";
+		"\101\uffff}>";
 	static final String[] DFA8_transitionS = {
-			"\1\24\2\uffff\1\24\22\uffff\1\24\1\4\1\20\4\uffff\1\20\1\13\1\12\1\3"+
-			"\1\uffff\1\14\1\22\2\uffff\12\5\1\2\1\21\1\16\1\15\1\17\1\uffff\1\1\32"+
-			"\2\1\6\1\uffff\1\7\1\uffff\1\2\1\uffff\32\2\1\11\1\23\1\10",
-			"\1\36\1\35\1\27\1\32\1\26\3\uffff\1\34\2\uffff\1\30\1\31\1\25\4\uffff"+
-			"\1\33",
-			"",
-			"\1\40",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
+			"\1\24\2\uffff\1\24\22\uffff\1\24\1\5\1\21\4\uffff\1\21\1\14\1\13\1\4"+
+			"\1\uffff\1\15\1\1\2\uffff\12\6\1\3\1\22\1\17\1\16\1\20\1\uffff\1\2\32"+
+			"\3\1\7\1\uffff\1\10\1\uffff\1\3\1\uffff\32\3\1\12\1\23\1\11",
+			"\1\25",
+			"\1\40\1\37\1\31\1\34\1\30\3\uffff\1\36\2\uffff\1\32\1\33\1\27\4\uffff"+
+			"\1\35",
 			"",
 			"\1\42",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
 			"\1\44",
-			"",
-			"",
-			"",
-			"",
-			"",
 			"\1\46",
 			"",
-			"\1\50\5\uffff\1\47",
-			"",
-			"",
-			"\1\52\17\uffff\1\51",
-			"\1\53\6\uffff\1\54",
-			"",
-			"",
-			"\1\55\7\uffff\1\56",
 			"",
 			"",
 			"",
 			"",
 			"",
+			"\1\50",
+			"",
+			"\1\52\5\uffff\1\51",
 			"",
 			"",
-			"\1\57",
+			"\1\54\17\uffff\1\53",
+			"\1\55\6\uffff\1\56",
 			"",
 			"",
-			"\1\60",
+			"\1\57\7\uffff\1\60",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
 			"\1\61",
 			"",
 			"",
-			"",
-			"",
-			"\1\63\1\62",
-			"\1\64\7\uffff\1\65",
-			"\1\66",
+			"\1\62",
+			"\1\63",
 			"",
 			"",
 			"",
 			"",
-			"\1\67",
+			"\1\65\1\64",
+			"\1\66\7\uffff\1\67",
 			"\1\70",
+			"",
+			"",
+			"",
+			"",
 			"\1\71",
 			"\1\72",
 			"\1\73",
 			"\1\74",
-			"\1\76\22\uffff\1\75",
+			"\1\75",
+			"\1\76",
+			"\1\100\22\uffff\1\77",
 			"",
 			""
 	};
@@ -1600,7 +1632,7 @@ public class TXKSLexer extends Lexer {
 		}
 		@Override
 		public String getDescription() {
-			return "1:1: Tokens : ( K_NONTEMPORAL | K_EARLIEST | K_CURRENT | K_LATEST | K_MEETS | K_DURATION | K_SEQUENCED | K_NONSEQUENCED | K_DESCENDANTVERSIONS | K_DESCENDANTCHANGES | K_SLICE | K_CONTAINS | K_DURING | K_INTERSECTS | K_BEFORE | K_AFTER | K_ANY | ID | WILDCARD | DOUBLEWILDCARD | NOT | INT | LBRACKET | RBRACKET | RBRACE | LBRACE | RPAREN | LPAREN | COMMA | AT | EQUALS | LE | GE | GT | LT | STRING | EOS | ARROW | PIPE | WS );";
+			return "1:1: Tokens : ( T__47 | K_NONTEMPORAL | K_EARLIEST | K_CURRENT | K_LATEST | K_MEETS | K_DURATION | K_SEQUENCED | K_NONSEQUENCED | K_DESCENDANTVERSIONS | K_DESCENDANTCHANGES | K_SLICE | K_CONTAINS | K_DURING | K_INTERSECTS | K_BEFORE | K_AFTER | K_ANY | ID | WILDCARD | DOUBLEWILDCARD | NOT | INT | LBRACKET | RBRACKET | RBRACE | LBRACE | RPAREN | LPAREN | COMMA | AT | EQUALS | LE | GE | GT | LT | STRING | EOS | ARROW | PIPE | WS );";
 		}
 	}
 

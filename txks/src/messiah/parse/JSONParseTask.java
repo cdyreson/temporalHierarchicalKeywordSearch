@@ -1,7 +1,7 @@
 package messiah.parse;
 
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
+//import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import static com.fasterxml.jackson.core.JsonToken.END_ARRAY;
@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.core.JsonToken.VALUE_FALSE;
 import static com.fasterxml.jackson.core.JsonToken.VALUE_NULL;
 import static com.fasterxml.jackson.core.JsonToken.VALUE_STRING;
 import static com.fasterxml.jackson.core.JsonToken.VALUE_TRUE;
-import com.fasterxml.jackson.dataformat.xml.XmlFactory;
+//import com.fasterxml.jackson.dataformat.xml.XmlFactory;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -29,9 +29,13 @@ import messiah.parse.generic.KeywordIndexBuilder;
 import messiah.parse.generic.NodeIndexBuilder;
 import messiah.parse.generic.PathIndexBuilder;
 import messiah.parse.generic.TypeIndexBuilder;
+import messiah.parse.ParsedTimetampIntervalGenerator;
 import org.apache.wink.json4j.utils.XML;
 import usu.dln.DLNFactory;
 import usu.dln.HistoryDLNFactory;
+import usu.temporal.Time;
+import usu.temporal.TimeAndLevelList;
+import usu.temporal.TimeItem;
 //import usu.dln.HistoryDLNFactory;
 
 /**
@@ -94,7 +98,9 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
     
      private int innerParse() {
         //System.out.println("maxNodes are " + this.maxNodes);
-         int count = 0;
+        int count = 0;
+        // Create the stack again if needed
+        ParsedTimetampIntervalGenerator parsedTimestampGenerator = new ParsedTimetampIntervalGenerator(); 
         try {          
             JsonToken t;
             // initializing
@@ -102,75 +108,101 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
                 listener.startDocument();
             }
             Stack<String> nameStack = new Stack();
-            Stack<Boolean> arrayStack = new Stack();
-            //String currentName = "root";
+            //Stack<Boolean> arrayStack = new Stack();
+            Stack<Boolean> previousStack = new Stack(); // Previous thing is a field name
             nameStack.push("root");
-            arrayStack.push(false);
-            // Introduce a root element
-            /*
-            for (ParserListener listener : listeners) {
-                listener.start("root", false, false);
-            }
-            */
+            previousStack.push(true);
+            //arrayStack.push(false);
+            String name = ""; // temporary string name
             int depth = 0;
             while ((t = this.jp.nextToken()) != null) {
+                //System.out.println("Namestack size " + nameStack.size());
+                //System.out.println("Prevouis size " + previousStack.size());
+                if (count % 100000 == 0) System.out.println("Number of nodes stored " + count);
                 if (this.maxNodes != 0 && count > this.maxNodes) break;
                 //System.out.println("depht is " + depth);
                 switch (t) {
                     case START_OBJECT:
-                        count++;
-                        //System.out.println("start object");
-                        for (ParserListener listener : listeners) {
-                            listener.start(nameStack.peek(), false, false);
-                        } 
-                        arrayStack.push(false);
+                        name = nameStack.peek();
+                        //System.out.println("start object" + name + " " + previousStack.peek());
+                        
+                        // Check if the thing before was a field name, if so then this is an object associated
+                        // with the field name
+                        //if (!previousStack.peek()) {
+                        //    previousStack.push(false);
+                        //}
+                        // Only process if not a temporal thing
+
+                        //arrayStack.push(false);
                         depth++;
-                        break;
-                    case END_OBJECT:
-                        //System.out.println("end object");
-                        depth--;
-                        arrayStack.pop();
-                        if (arrayStack.peek()) {
-                            
-                        }
-                        for (ParserListener listener : listeners) {
-                            if (depth == 0) {
-                                listener.endDocument();
-                            } else {
-                                listener.end(false, false);
-                            } 
-                        }
-                        //nameStack.pop();
-                        break;
-                    case START_ARRAY:
-                        depth++;
-                        //System.out.println("start array");
-                        break;
-                    case END_ARRAY:
-                        depth--;
-                        //System.out.println("end array");
-                        /*
-                        arrayStack.pop();
-                        nameStack.pop();
-                        //nameStack.pop();
-                        for (ParserListener listener : listeners) {
-                            if (depth == 0) {
-                                listener.endDocument();
-                            } else {
-                                listener.end(false, false);
+                        if (!(name.equals("#timestamp") || name.equals("#time"))) {
+                            count++;
+                            for (ParserListener listener : listeners) {
+                                listener.start(nameStack.peek(), false, false);
                             }
                         }
-                        previousIsFieldName = false;
-                        */
+                        break;
+                    case END_OBJECT:
+
+                        // Only process if not special temporal elements
+                        name = nameStack.peek();
+                        //System.out.println("end object " + nameStack.peek() + " " + previousStack.peek());
+                        if (previousStack.peek()) {
+                            // pop name stack as we concluded the object associated with this field
+                            nameStack.pop();  // Pop unless in an array
+                            previousStack.pop();
+                        }
+  
+
+                        //System.out.println("Popping " + nameStack.peek());
+                        depth--;
+                        if (name.equals("#timestamp")) {
+                            ParsedTimetampIntervalGenerator.popTime();
+                        }
+                        if (!(name.equals("#timestamp") || name.equals("#time"))) {
+                            for (ParserListener listener : listeners) {
+                                if (depth == 0) {
+                                    listener.endDocument();
+                                } else {
+                                    listener.end(false, false);
+                                }
+                            }
+                        }
+                        break;
+                    case START_ARRAY:
+                        //System.out.println("start array " + nameStack.peek() + " " + previousStack.peek());
+                        //if (!previousStack.peek()) {
+                            // Array associated with field name
+                            previousStack.push(false);
+                        //}
+                        depth++;
+                        //arrayStack.push(true);
+ 
+                        break;
+                    case END_ARRAY:
+
+                        depth--;
+                        //arrayStack.pop();
+                        previousStack.pop();
+                        //System.out.println("end array " + nameStack.peek() + " " + previousStack.peek());
+
+                        if (previousStack.peek()) {
+                            nameStack.pop();
+                            previousStack.pop();
+                        } // Pop from the name stack at the end of any kind of value
+
+                        //System.out.println("end array " + nameStack.peek());
                         break;
                     case FIELD_NAME:
                         //depth++;
                         count++;
-                        String name = this.jp.getCurrentName();
-                        //System.out.println("field name " + name);
-                        nameStack.push(name);
+                        String fieldName = this.jp.getCurrentName();
+                        previousStack.push(true);
+                        //System.out.println("Pushing " + fieldName);
+                        nameStack.push(fieldName);
+                        //arrayStack.push(false);
                         //currentName = jp.getCurrentName();
-                        //System.out.println("Start element " + reader.getLocalName());
+                        //System.out.println("Start element " + fieldName);
                         // read the start tag of an element
                         break;
                     case VALUE_NUMBER_INT:
@@ -195,24 +227,75 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
                                 value = this.jp.getText();
                                 break;
                         }
-                        //depth--;
-                        //System.out.println("field value " + value);
-                        for (ParserListener listener : listeners) {
-                            listener.start(nameStack.peek(), false, false);
+                        // Only process if not special temporal elements
+                        //System.out.println("Value is " + value);
+                        name = nameStack.peek();
+                        
+                        if (name.equals("#time")) {
+                            // Let's parse the time
+                            // First determine if multiple levels
+                            TimeAndLevelList timeList = new TimeAndLevelList();
+                            //System.out.println("value is " + value);
+                            String[] splits = value.split("\\|");
+                            for (String time: splits) {
+                                // Now split each time by a ,
+                                //System.out.println("#time is " + time);
+                                String[] parts = time.split(",");
+                                int maxLevel = 100;
+                                int minLevel = 0;
+                                boolean isMoved = false;
+                                String timeString = parts[0];
+                                if (parts.length > 1) {
+                                    // Have a time and a level
+                                    String[] levels = parts[0].split("-");
+                                    minLevel = Integer.parseInt(levels[0]);
+                                    maxLevel = Integer.parseInt(levels[1]);
+                                    isMoved = true;
+                                    timeString = parts[1];
+                                }
+                                // Parse the time
+                                //System.out.println("Timestring is " + timeString);
+                                if (timeString.contains("null")) {
+                                    timeList.add(null, minLevel);     
+                                } else {
+                                    String[] timeParts = timeString.split("-");
+                                    String s = timeParts[0];
+                                    String e = timeParts[1];
+                                    //System.out.println("Time is |" + s + "| |" + e + "|");
+                                    Time ct = new Time(Integer.parseInt(s.trim()), Integer.parseInt(e.trim()));
+                                    timeList.add(ct, minLevel);
+                                }                             
+                            }
+                              
+                            ParsedTimetampIntervalGenerator.pushTime(new TimeItem(timeList));
+                            //ParsedTimetampIntervalGenerator.currentTime = new Time(start, end);
                         }
-                        for (ParserListener listener : listeners) {
-                            listener.start(value, false, true);
-                        }
-                        for (ParserListener listener : listeners) {
-                            listener.end(false, true);
-                        }
-                        for (ParserListener listener : listeners) {
-                            if (depth == 0) {
-                                listener.endDocument();
-                            } else {
-                                listener.end(false, false);
+                        if (!(name.equals("#timestamp") || name.equals("#time"))) {
+                            //depth--;
+                            //System.out.println("field value " + value);
+                            for (ParserListener listener : listeners) {
+                                listener.start(nameStack.peek(), false, false);
+                            }
+                            for (ParserListener listener : listeners) {
+                                listener.start(value, false, true);
+                            }
+                            for (ParserListener listener : listeners) {
+                                listener.end(false, true);
+                            }
+                            for (ParserListener listener : listeners) {
+                                if (depth == 0) {
+                                    listener.endDocument();
+                                } else {
+                                    listener.end(false, false);
+                                }
                             }
                         }
+                        //System.out.println("Popping " + nameStack.peek());
+                        if (previousStack.peek()) {
+                            // If arrayStack is false, then there was a field for this value, so pop it 
+                            nameStack.pop();
+                            previousStack.pop();
+                        }  // Always pop at the end of a value
                         break;
                     default:
                         break;
@@ -231,248 +314,6 @@ public class JSONParseTask extends SwingWorker<Void, Void> {
         }
 
         return count;
-    }
-    private void innerParseOld() {
-        /*
-    }
-                   while ((t = jp.nextToken()) != null) {
-                switch (t) {
-                    case START_OBJECT:
-                        xg.writeStartObject();
-                        break;
-                    case END_OBJECT:
-                        xg.writeEndObject();
-                        break;
-                    case START_ARRAY:
-                        xg.writeStartArray();
-                        break;
-                    case END_ARRAY:
-                        xg.writeEndArray();
-                        break;
-                    case FIELD_NAME:
-                        xg.writeFieldName(jp.getCurrentName());
-                        break;
-                    case VALUE_STRING:
-                        xg.writeString(jp.getText());
-                        break;
-                    case VALUE_FALSE:
-                        xg.writeBoolean(false);
-                        break;
-                    case VALUE_TRUE:
-                        xg.writeBoolean(true);
-                        break;
-                    case VALUE_NULL:
-                        xg.writeString("");
-                    // some tokens missing here
-                        break;
-                    default:
-                        break;
-                }
-                */
-        try {
-            /*
-            JsonFactory jf = new JsonFactory();
-            JsonParser jp = jf.createParser("foo");
-            XmlFactory xf = new XmlFactory();
-            //DataOutput out;
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            JsonGenerator xg = xf.createGenerator(out);
-
-            xg.writeFieldName("root"); // need a root element
-
-            */
-            
-            JsonToken t;
-            // initializing
-            for (ParserListener listener : listeners) {
-                listener.startDocument();
-            }
-            Stack<String> nameStack = new Stack();
-            Stack<Boolean> arrayStack = new Stack();
-            //String currentName = "root";
-            nameStack.push("root");
-            arrayStack.push(false);
-            // Introduce a root element
-            for (ParserListener listener : listeners) {
-                listener.start("root", false, false);
-            }
-            int depth = 0;
-            boolean previousIsFieldName = false;
-            while ((t = this.jp.nextToken()) != null) {
-                System.out.println("depht is " + depth);
-                switch (t) {
-                    case START_OBJECT:
-                        System.out.println("start object");
-                        //nameStack.push(currentName);
-                        if (arrayStack.peek()) {
-                            System.out.println(" in context " + nameStack.peek());
-                            if (previousIsFieldName) {
-                                for (ParserListener listener : listeners) {
-                                    listener.start(nameStack.peek(), false, false);
-                                }
-                            }
-                        }
-                        arrayStack.push(false);
-                        depth++;
-                        previousIsFieldName = false;
-                        break;
-                    case END_OBJECT:
-                        System.out.println("end object");
-                        depth--;
-                        arrayStack.pop();
-                        if (arrayStack.peek()) {
-                            
-                        }
-                        for (ParserListener listener : listeners) {
-                            if (depth == 0) {
-                                listener.endDocument();
-                            } else {
-                                listener.end(false, false);
-                            } 
-                        }
-                        //nameStack.pop();
-                        previousIsFieldName = false;
-                        break;
-                    case START_ARRAY:
-                        depth++;
-                        System.out.println("start array");
-                        if (previousIsFieldName) {
-                            arrayStack.push(true);
-                            nameStack.push(nameStack.peek());
-                        }
-                        //nameStack.push(currentName);
-                        previousIsFieldName = false;
-                        break;
-                    case END_ARRAY:
-                        depth--;
-                        System.out.println("end array");
-                        arrayStack.pop();
-                        nameStack.pop();
-                        //nameStack.pop();
-                        for (ParserListener listener : listeners) {
-                            if (depth == 0) {
-                                listener.endDocument();
-                            } else {
-                                listener.end(false, false);
-                            }
-                        }
-                        previousIsFieldName = false;
-                        break;
-                    case FIELD_NAME:
-                        //depth++;
-                        String name = this.jp.getCurrentName();
-                        System.out.println("field name " + name);
-                        nameStack.push(name);
-                        //currentName = jp.getCurrentName();
-                        //System.out.println("Start element " + reader.getLocalName());
-                        // read the start tag of an element
-                        for (ParserListener listener : listeners) {
-                            listener.start(name, false, false);
-                        }
-                        previousIsFieldName = true;
-                        break;
-                    case VALUE_NUMBER_INT:
-                    case VALUE_NUMBER_FLOAT:
-                    case VALUE_STRING:
-                        //depth--;
-                        String text = this.jp.getText();
-                        //String[] words = text.split("\\s+");
-                        System.out.println("field value " + this.jp.getText());
-                        //if (!reader.isWhiteSpace()) {
-                        if (previousIsFieldName) {
-                            nameStack.pop();
-                        } else {
-                            for (ParserListener listener : listeners) {
-                                listener.start(nameStack.peek(), false, false);
-                            }
-                        }
-
-                        //for (String word : words) {
-                            for (ParserListener listener : listeners) {
-                                listener.start(text, false, true);
-                            }
-                            for (ParserListener listener : listeners) {
-                                listener.end(false, true);
-                            }
-                            for (ParserListener listener : listeners) {
-                                if (depth == 0) {
-                                    listener.endDocument();
-                                } else {
-                                    listener.end(false, false);
-                                }
-                            }
-                        //}
-
-                        //}
-                        break;
-                    case VALUE_FALSE:
-                        //depth--;
-                        nameStack.pop();
-                        for (ParserListener listener : listeners) {
-                            listener.start("false", false, true);
-                        }
-                        for (ParserListener listener : listeners) {
-                            listener.end(false, true);
-                        }
-                        for (ParserListener listener : listeners) {
-                            if (depth == 0) {
-                                listener.endDocument();
-                            } else {
-                                listener.end(false, false);
-                            }
-                        }
-                        break;
-                    case VALUE_TRUE:
-                        //depth--;
-                        nameStack.pop();                        
-                        for (ParserListener listener : listeners) {
-                            listener.start("true", false, true);
-                        }
-                        for (ParserListener listener : listeners) {
-                            listener.end(false, true);
-                        }
-                        for (ParserListener listener : listeners) {
-                            if (depth == 0) {
-                                listener.endDocument();
-                            } else {
-                                listener.end(false, false);
-                            }
-                        }
-                        break;
-                    case VALUE_NULL:
-                        //depth--;
-                        nameStack.pop();                        
-                        for (ParserListener listener : listeners) {
-                            listener.start("", false, true);
-                        }
-                        for (ParserListener listener : listeners) {
-                            listener.end(false, true);
-                        }
-                        for (ParserListener listener : listeners) {
-                            if (depth == 0) {
-                                listener.endDocument();
-                            } else {
-                                listener.end(false, false);
-                            }
-                        }
-                        // some tokens missing here
-                        break;
-                    default:
-                        break;
-                }
-            }
-            if (depth > 0) {
-                for (ParserListener listener : listeners) {
-                    listener.endDocument();
-                }
-            }
-
-        } catch (IOException e) {
-            Logger.getLogger(JSONParseTask.class.getName()).log(Level.SEVERE, null, e);
-            System.err.println(" exception in JSON parsing " + e);
-            System.exit(-1);
-        }
-
     }
 
     public JSONParseTask(/*Main controller, */String old, Database db, File inputFile, int maxNodes) throws FileNotFoundException {
