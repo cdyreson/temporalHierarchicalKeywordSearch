@@ -29,7 +29,7 @@ public class KeywordSearchExpression {
     SearchAlgoEnum searchType = SearchAlgoEnum.NontemporalSearch;
     Time sliceTime = new Time();
     private int operand = -1;
-    private final boolean verbose = false;
+    private final boolean verbose = true;
 
     /*
      * Create an empty postfix expression

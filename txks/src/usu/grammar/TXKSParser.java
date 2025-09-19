@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // $ANTLR 3.5.3 TXKS.g 2025-04-29 11:04:16
+=======
+// $ANTLR 3.5.3 TXKS.g 2025-02-18 11:17:22
+>>>>>>> c363413bb1829df41520fde06ce5fffbcee5b7da
 
 package usu.grammar;
 import java.util.List;
@@ -245,7 +249,7 @@ public class TXKSParser extends Parser {
 
 
 			      exp = exp1;
-			      //System.out.println("Search type is " + s.intValue());
+			      System.out.println("Search type is " + s.intValue());
 			      exp.setSearchType(s);
 			    
 			}
@@ -299,7 +303,7 @@ public class TXKSParser extends Parser {
 					state._fsp--;
 
 
-					      //System.out.println("Have search type " + k);
+					      System.out.println("Have search type " + k);
 					      st = k;
 					    
 					}
@@ -351,7 +355,11 @@ public class TXKSParser extends Parser {
 				throw mse;
 			}
 
+<<<<<<< HEAD
 			        //System.out.println("Search type is " + (k!=null?k.getType():0));
+=======
+			        System.out.println("Search type is " + (k!=null?k.getType():0));
+>>>>>>> c363413bb1829df41520fde06ce5fffbcee5b7da
 			      i = (k!=null?k.getType():0);
 			    
 			}
@@ -442,7 +450,11 @@ public class TXKSParser extends Parser {
 					state._fsp--;
 
 
+<<<<<<< HEAD
 					                  //System.out.println("String or id " + (s1!=null?input.toString(s1.start,s1.stop):null));
+=======
+					                  System.out.println("String or id " + (s1!=null?input.toString(s1.start,s1.stop):null));
+>>>>>>> c363413bb1829df41520fde06ce5fffbcee5b7da
 					        exp = new KeywordSearchExpression((s1!=null?input.toString(s1.start,s1.stop):null), operand--);
 					        //System.out.println("Have string  " + (s1!=null?input.toString(s1.start,s1.stop):null));
 					       
@@ -533,7 +545,11 @@ public class TXKSParser extends Parser {
 					          
 					          exp = new KeywordSearchExpression(new Time(sliceText), expS);
 					          
+<<<<<<< HEAD
 					          //System.out.println("Slice expression is " + sliceText);
+=======
+					          System.out.println("Slice expression is " + sliceText);
+>>>>>>> c363413bb1829df41520fde06ce5fffbcee5b7da
 					          
 					}
 
@@ -614,7 +630,7 @@ public class TXKSParser extends Parser {
 					// TXKS.g:220:5: 
 					{
 
-					      //System.out.println("Done");
+					      System.out.println("Done");
 					      //exp = null;
 					    
 					}

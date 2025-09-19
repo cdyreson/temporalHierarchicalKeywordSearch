@@ -145,14 +145,14 @@ program returns [KeywordSearchExpression exp] :
 kindOfSearch returns [KeywordSearchExpression exp]:
     s=searchType exp1=expression {
       exp = exp1;
-      //System.out.println("Search type is " + s.intValue());
+      System.out.println("Search type is " + s.intValue());
       exp.setSearchType(s);
     }
     ;
     
 searchType returns [Integer st]:	
     k=statedSearchType {
-      //System.out.println("Have search type " + k);
+      System.out.println("Have search type " + k);
       st = k;
     }
     | {
@@ -162,7 +162,11 @@ searchType returns [Integer st]:
  
 statedSearchType returns [Integer i]:	
     k=(K_SEQUENCED | K_NONSEQUENCED | K_EARLIEST | K_DURATION | K_LATEST | K_NONTEMPORAL | K_CURRENT ) {
+<<<<<<< HEAD
         //System.out.println("Search type is " + $k.type);
+=======
+        System.out.println("Search type is " + $k.type);
+>>>>>>> c363413bb1829df41520fde06ce5fffbcee5b7da
       i = $k.type;
     }
     ;
@@ -174,7 +178,11 @@ expression returns [KeywordSearchExpression exp] :
       }
     | 
     (s1=stringOrId {
+<<<<<<< HEAD
                   //System.out.println("String or id " + $s1.text);
+=======
+                  System.out.println("String or id " + $s1.text);
+>>>>>>> c363413bb1829df41520fde06ce5fffbcee5b7da
         exp = new KeywordSearchExpression($s1.text, operand--);
         //System.out.println("Have string  " + $s1.text);
        }
@@ -201,7 +209,11 @@ expression returns [KeywordSearchExpression exp] :
           
           exp = new KeywordSearchExpression(new Time(sliceText), expS);
           
+<<<<<<< HEAD
           //System.out.println("Slice expression is " + sliceText);
+=======
+          System.out.println("Slice expression is " + sliceText);
+>>>>>>> c363413bb1829df41520fde06ce5fffbcee5b7da
           }
         )
       {
@@ -218,7 +230,7 @@ expression returns [KeywordSearchExpression exp] :
       }
       ) |
     {
-      //System.out.println("Done");
+      System.out.println("Done");
       //exp = null;
     }
     ;
